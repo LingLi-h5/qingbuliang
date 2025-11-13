@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清补凉第一产业 - 乡村振兴就业分析</title>
+    <script src="../js/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c7744 0%, #5a9c76 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: rgba(44, 119, 68, 0.1);
+            border-bottom: 2px solid rgba(44, 119, 68, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #2c7744;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #5a9c76;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex;
+            min-height: 600px;
+            flex-wrap: wrap;
+        }
+
+        .chart-container {
+            flex: 2;
+            min-width: 500px;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .info-panel {
+            flex: 1;
+            min-width: 350px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 3px solid #2c7744;
+        }
+
+        .info-title {
+            font-size: 1.6em;
+            color: #2c7744;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #5a9c76;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #5a9c76;
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .detail-item h3 {
+            color: #2c7744;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .income-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .income-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd666 0%, #ffa940 100%);
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+            box-shadow: 0 2px 8px rgba(255, 168, 64, 0.3);
+        }
+
+        .income-text {
+            font-size: 1em;
+            color: #495057;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .highlight {
+            color: #f5222d;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .comparison {
+            color: #52c41a;
+            font-weight: bold;
+            background: rgba(82, 196, 26, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .icon {
+            font-size: 1.4em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #6c757d;
+            font-size: 1em;
+            border-top: 2px solid rgba(44, 119, 68, 0.2);
+            background: rgba(44, 119, 68, 0.05);
+        }
+
+        @media (max-width: 968px) {
+            .content {
+                flex-direction: column;
+            }
+            .info-panel {
+                border-left: none;
+                border-top: 3px solid #2c7744;
+            }
+            .chart-container {
+                min-width: 100%;
+            }
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .stat-value {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 清补凉第一产业就业分析</h1>
+            <div class="subtitle">乡村振兴 · 农业带动 · 农民增收</div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">9,300</div>
+                <div class="stat-label">农业就业总人数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3,215</div>
+                <div class="stat-label">返乡务农青年</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">82%</div>
+                <div class="stat-label">本地就业率</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3,458</div>
+                <div class="stat-label">月均收入(元)</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="sunburst-chart" class="chart-container"></div>
+            <div class="info-panel">
+                <div class="info-title">📊 农业就业详情</div>
+                <div id="detail-content">
+                    <div class="detail-item">
+                        <h3><span class="icon">👆</span>互动指南</h3>
+                        <p>点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            🌟 数据来源：清补凉农业产业乡村振兴调研报告 | 更新时间：2024年
+        </div>
+    </div>
+
+    <script>
+        // 初始化ECharts实例
+        const chartDom = document.getElementById('sunburst-chart');
+        const myChart = echarts.init(chartDom);
+        
+        // 只保留第一产业的数据
+        const agricultureData = {
+            name: '第一产业',
+            itemStyle: {
+                color: '#2c7744'
+            },
+            children: [
+                {
+                    name: '椰农',
+                    value: 3200,
+                    income: 3850,
+                    localRate: '95%',
+                    detail: '主要负责椰子种植和采收，采用生态种植技术，工作地点主要在海南、广东等热带乡村地区。',
+                    comparison: '较传统种植收入提升45%',
+                    icon: '🥥'
+                },
+                {
+                    name: '豆类种植',
+                    value: 2800,
+                    income: 4200,
+                    localRate: '92%',
+                    detail: '种植红豆、绿豆等核心原料，采用"公司+合作社+农户"模式，统一技术标准和收购。',
+                    comparison: '较传统种植收入提升55%',
+                    icon: '🫘'
+                },
+                {
+                    name: '杂粮种植',
+                    value: 1800,
+                    income: 4000,
+                    localRate: '90%',
+                    detail: '种植薏米、西米等特色杂粮，产品附加值高，带动山区农民增收致富。',
+                    comparison: '较传统种植收入提升60%',
+                    icon: '🌾'
+                },
+                {
+                    name: '水果种植',
+                    value: 1500,
+                    income: 4800,
+                    localRate: '88%',
+                    detail: '种植西瓜、菠萝、芒果等搭配水果，实现四季轮作，提高土地利用率。',
+                    comparison: '较传统种植收入提升65%',
+                    icon: '🍉'
+                }
+            ]
+        };
+
+        // 配置项
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    if (params.data.value) {
+                        return `
+                            <div style="font-weight: bold; color: #2c7744; margin-bottom: 8px;">
+                                ${params.data.icon || '🌱'} ${params.name}
+                            </div>
+                            <div>👥 就业人数: ${params.data.value.toLocaleString()}人</div>
+                            <div>💰 月均收入: ${params.data.income}元</div>
+                            <div>🏠 本地就业率: ${params.data.localRate}</div>
+                        `;
+                    }
+                    return `<div style="font-weight: bold; font-size: 16px; color: #2c7744;">${params.name}</div>`;
+                }
+            },
+            series: {
+                type: 'sunburst',
+                data: [agricultureData],
+                radius: ['20%', '85%'],
+                itemStyle: {
+                    borderWidth: 3,
+                    borderColor: 'white',
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.2)'
+                },
+                label: {
+                    rotate: 'radial',
+                    color: '#333',
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    textBorderColor: 'white',
+                    textBorderWidth: 2
+                },
+                emphasis: {
+                    focus: 'ancestor',
+                    itemStyle: {
+                        shadowBlur: 20,
+                        shadowColor: 'rgba(0, 0, 0, 0.4)'
+                    },
+                    label: {
+                        fontSize: 16,
+                        fontWeight: 'bold'
+                    }
+                },
+                levels: [
+                    {},
+                    {
+                        r0: '20%',
+                        r: '45%',
+                        itemStyle: {
+                            borderWidth: 4
+                        },
+                        label: {
+                            rotate: 'tangential',
+                            fontSize: 18,
+                            color: 'white',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    {
+                        r0: '45%',
+                        r: '85%',
+                        label: {
+                            align: 'right',
+                            fontSize: 14
+                        }
+                    }
+                ]
+            }
+        };
+
+        // 点击事件处理
+        myChart.on('click', function (params) {
+            const detailContent = document.getElementById('detail-content');
+            
+            if (params.data.value) {
+                // 显示具体职业的详细信息
+                const incomePercent = Math.min(100, (params.data.income / 6000) * 100);
+                
+                detailContent.innerHTML = `
+                    <div class="detail-item">
+                        <h3><span class="icon">${params.data.icon}</span>${params.name}</h3>
+                        <div class="income-text">
+                            <span>就业人数:</span>
+                            <span class="highlight">${params.data.value.toLocaleString()}人</span>
+                        </div>
+                        <div class="income-text">
+                            <span>月均收入:</span>
+                            <span class="highlight">${params.data.income}元</span>
+                        </div>
+                        <div class="income-bar">
+                            <div class="income-fill" style="width: ${incomePercent}%"></div>
+                        </div>
+                        <div class="income-text">
+                            <span>本地就业率:</span>
+                            <span class="highlight">${params.data.localRate}</span>
+                        </div>
+                        <div class="income-text">
+                            <span>收入提升:</span>
+                            <span class="comparison">${params.data.comparison}</span>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.95em; color: #666; line-height: 1.6;">${params.data.detail}</p>
+                    </div>
+                `;
+            } else if (params.data.children) {
+                // 显示第一产业的汇总信息
+                const totalEmployment = params.data.children.reduce((sum, child) => sum + child.value, 0);
+                const avgIncome = Math.round(params.data.children.reduce((sum, child) => sum + child.income * child.value, 0) / totalEmployment);
+                
+                detailContent.innerHTML = `
+                    <div class="detail-item">
+                        <h3><span class="icon">🌱</span>第一产业就业概况</h3>
+                        <div class="income-text">
+                            <span>总就业人数:</span>
+                            <span class="highlight">${totalEmployment.toLocaleString()}人</span>
+                        </div>
+                        <div class="income-text">
+                            <span>平均月收入:</span>
+                            <span class="highlight">${avgIncome}元</span>
+                        </div>
+                        <div class="income-text" style="margin-top: 15px; font-weight: bold;">主要农业岗位:</div>
+                        <div style="margin-top: 10px;">
+                            ${params.data.children.map(child => `
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                    <span>${child.icon} ${child.name}</span>
+                                    <span style="color: #2c7744; font-weight: bold;">${child.value}人</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // 设置配置项并渲染图表
+        myChart.setOption(option);
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>

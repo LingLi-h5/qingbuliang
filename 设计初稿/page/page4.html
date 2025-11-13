@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清补凉材料介绍</title>
+     <link rel="stylesheet" href="../css/main.css">
+	 <link rel="stylesheet" href="../css/page4.css">
+</head>
+<body>
+    <div class="header">
+        <h1>清补凉材料介绍</h1>
+        <p>清补凉是一道流行于中国南方的传统甜品，尤其在海南、广东和广西地区广受欢迎。它由多种天然食材组成，具有清凉解暑、滋补养生的功效。</p>
+    </div>
+
+    <div class="controls">
+        <button id="completeBtn">完成制作</button>
+    </div>
+
+    <div class="bowl-container">
+        <div class="bowl">
+            <div class="bowl-content" id="bowlContent"></div>
+            <div class="ingredients" id="ingredientsVisual"></div>
+        </div>
+    </div>
+
+    <div class="container" id="ingredientsContainer">
+        <!-- 材料卡片将通过JavaScript动态生成 -->
+    </div>
+
+    <!-- 完成弹窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <h2 class="modal-title">您的清补凉制作完成！</h2>
+            <div id="selectedIngredientsList" class="selected-ingredients">
+                <!-- 选中的材料将在这里显示 -->
+            </div>
+            <p class="modal-description" id="modalDescription">
+                <!-- 描述将根据选择的材料动态生成 -->
+            </p>
+            <button class="close-btn" id="closeModal">关闭</button>
+        </div>
+    </div>
+	<!-- 页面跳转箭头 -->
+	<div class="page-nav">
+	    <a href="page04.html" class="nav-arrow nav-prev">
+	        <span class="arrow-icon">←</span>
+	    </a>
+	    <a href="page05.html" class="nav-arrow nav-next">
+	        <span class="arrow-icon">→</span>
+	    </a>
+	</div>
+	<script src="../js/page4.js"></script>
+</body>
+</html>

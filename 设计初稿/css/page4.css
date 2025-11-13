@@ -1,0 +1,240 @@
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .header h1 {
+            color: #e74c3c;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card.selected {
+            border: 3px solid #e74c3c;
+            transform: scale(1.05);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .card h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .card .more-info {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            margin-top: 15px;
+            color: #34495e;
+        }
+
+        .card.active .more-info {
+            max-height: 200px;
+        }
+
+        .bowl-container {
+            margin: 40px 0;
+            position: relative;
+            width: 300px;
+            height: 150px;
+        }
+
+        .bowl {
+            width: 300px;
+            height: 150px;
+            background: linear-gradient(to right, #f8c291, #e55039);
+            border-radius: 0 0 150px 150px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .bowl-content {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to right, #fad390, #f8c291);
+            border-radius: 0 0 150px 150px;
+            transition: height 1s ease;
+        }
+
+        .ingredients {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .ingredient {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 2px;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        button:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* 完成弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-content.show {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            color: #e74c3c;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .selected-ingredients {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .selected-ingredient {
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            border: 2px solid #e74c3c;
+        }
+
+        .modal-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .close-btn {
+            background: #27ae60 !important;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card {
+                width: 90%;
+            }
+        }
