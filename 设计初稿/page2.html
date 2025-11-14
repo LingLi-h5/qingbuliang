@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清补凉在中国分布的可视化地图</title>
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/page2.css">
+	<!-- 引入ECharts库（离线版本） -->
+	<script src="../js/echarts.min.js"></script>
+	<script src="../js/china.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>清补凉在中国分布的可视化地图</h1>
+            <p>探索清补凉在中国各地的分布情况</p>
+        </div>
+        <div id="map"></div>
+        <div class="legend">
+            <div class="legend-item" data-type="high">
+                <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                <div class="legend-text">高分布区域</div>
+            </div>
+            <div class="legend-item" data-type="medium">
+                <div class="legend-color" style="background-color: #ffa726;"></div>
+                <div class="legend-text">中分布区域</div>
+            </div>
+            <div class="legend-item" data-type="low">
+                <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                <div class="legend-text">低分布区域</div>
+            </div>
+            <div class="legend-item" data-type="none">
+                <div class="legend-color" style="background-color: #c7c7c7;"></div>
+                <div class="legend-text">无分布区域</div>
+            </div>
+        </div>
+    </div>
+	<!-- 页面跳转箭头 -->
+	<div class="page-nav">
+	    <a href="page01.html" class="nav-arrow nav-prev">
+	        <span class="arrow-icon">←</span>
+	    </a>
+	    <a href="page03.html" class="nav-arrow nav-next">
+	        <span class="arrow-icon">→</span>
+	    </a>
+	</div>
+	<script src="../js/page2.js"></script>
+</body>
+</html>

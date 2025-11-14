@@ -1,0 +1,286 @@
+
+        .comic-container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+            border: 5px solid #333;
+            min-height: 600px;
+        }
+
+        .comic-header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #333;
+        }
+
+        .comic-title {
+            font-size: 2.8rem;
+            color: white;
+            text-shadow: 3px 3px 0 #333;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .comic-subtitle {
+            font-size: 1.4rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #333;
+        }
+
+        .comic-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            min-height: 450px;
+            position: relative;
+        }
+
+        .characters {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .character {
+            text-align: center;
+            width: 40%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .character:hover {
+            transform: translateY(-10px);
+        }
+
+        .character-img {
+            width: 180px;
+            height: 220px;
+            margin: 0 auto 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .character-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .dialogues-container {
+            min-height: 200px;
+            position: relative;
+        }
+
+        .dialogue-bubble {
+            position: absolute;
+            max-width: 60%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+            border: 3px solid;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .dialogue-bubble.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .dialogue-left {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            left: 10%;
+            top: 20px;
+        }
+
+        .dialogue-right {
+            background: #fff8e1;
+            border-color: #ffb300;
+            right: 10%;
+            top: 20px;
+        }
+
+        .dialogue-bubble::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            bottom: -20px;
+        }
+
+        .dialogue-left::after {
+            left: 30px;
+            border-top: 20px solid #2196f3;
+            border-right: 15px solid transparent;
+            border-left: 15px solid transparent;
+        }
+
+        .dialogue-right::after {
+            right: 30px;
+            border-top: 20px solid #ffb300;
+            border-right: 15px solid transparent;
+            border-left: 15px solid transparent;
+        }
+
+        .click-hint {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #666;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* 角色形象样式 */
+        .body {
+            width: 120px;
+            height: 160px;
+            background: #4fc3f7;
+            border-radius: 60px 60px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+        }
+
+        .head {
+            width: 100px;
+            height: 100px;
+            background: #ffdbac;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            z-index: 2;
+        }
+
+        .hair {
+            width: 110px;
+            height: 50px;
+            background: #8d6e63;
+            border-radius: 55px 55px 0 0;
+            position: absolute;
+            top: 10px;
+            left: 35px;
+            z-index: 1;
+        }
+
+        .eyes {
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50px;
+            z-index: 3;
+        }
+
+        .eye-left {
+            left: 35px;
+        }
+
+        .eye-right {
+            right: 35px;
+        }
+
+        .mouth {
+            width: 30px;
+            height: 10px;
+            background: #e91e63;
+            border-radius: 0 0 15px 15px;
+            position: absolute;
+            bottom: 25px;
+            left: 35px;
+            z-index: 3;
+        }
+
+        /* 第二个角色 */
+        .body2 {
+            width: 120px;
+            height: 160px;
+            background: #ffb74d;
+            border-radius: 60px 60px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+        }
+
+        .head2 {
+            width: 100px;
+            height: 100px;
+            background: #ffccbc;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            z-index: 2;
+        }
+
+        .hair2 {
+            width: 120px;
+            height: 60px;
+            background: #5d4037;
+            border-radius: 60px 60px 0 0;
+            position: absolute;
+            top: 5px;
+            left: 30px;
+            z-index: 1;
+        }
+
+        .ribbon {
+            width: 80px;
+            height: 20px;
+            background: #e91e63;
+            border-radius: 10px;
+            position: absolute;
+            top: 45px;
+            left: 40px;
+            z-index: 3;
+        }
+
+        @media (max-width: 768px) {
+            .characters {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+            }
+            
+            .character {
+                width: 80%;
+                margin-bottom: 30px;
+            }
+            
+            .comic-title {
+                font-size: 2rem;
+            }
+            
+            .dialogue-bubble {
+                max-width: 80%;
+            }
+        }
