@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏东坡与清补凉 - 交互对话</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #5a3921;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #654321;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dialogue-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dialogue-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+            overflow-y: auto;
+            max-height: 400px;
+            padding-right: 10px;
+        }
+
+        .dialogue-bubble {
+            padding: 15px 20px;
+            border-radius: 20px;
+            max-width: 80%;
+            text-align: left;
+            line-height: 1.6;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .character {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sufang {
+            align-self: flex-start;
+            background: #e8f4f8;
+            border: 2px solid #4a90a4;
+        }
+
+        .sufang .character {
+            color: #2c6b7c;
+        }
+
+        .dongpo {
+            align-self: flex-end;
+            background: #fff0e0;
+            border: 2px solid #d4a574;
+        }
+
+        .dongpo .character {
+            color: #8B4513;
+        }
+
+        .villager {
+            align-self: flex-start;
+            background: #f0f8e8;
+            border: 2px solid #7a9c5e;
+        }
+
+        .villager .character {
+            color: #556b2f;
+        }
+
+        .choice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(139, 69, 19, 0.6);
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .scene-indicator {
+            color: #654321;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .ingredient-showcase {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+
+        .ingredient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .ingredient-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+            transition: transform 0.3s ease;
+        }
+
+        .ingredient-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .ingredient-icon {
+            font-size: 2rem;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .thinking-indicator {
+            text-align: center;
+            padding: 15px;
+            color: #8B4513;
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .completion-message {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .restart-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
+            margin-top: 20px;
+            animation: fadeIn 0.8s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px auto 0;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(139, 69, 19, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dialogue-bubble {
+                max-width: 90%;
+            }
+            
+            .choice-btn {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            
+            .ingredient-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>苏东坡与清补凉</h1>
+            <p>扮演苏东坡的书童"苏方"，体验这段美食奇缘</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="scene-indicator" id="sceneIndicator">第一幕：初到岭南</div>
+        
+        <div class="dialogue-container">
+            <div class="dialogue-content" id="dialogueContent">
+                <!-- 对话内容将通过JavaScript动态添加 -->
+            </div>
+            
+            <div class="choice-container" id="choiceContainer">
+                <!-- 选择按钮将通过JavaScript动态添加 -->
+            </div>
+        </div>
+        
+        <div class="ingredient-showcase" id="ingredientShowcase">
+            <h2 style="color: #8B4513; margin-bottom: 15px;">清补凉食材展示</h2>
+            <p style="color: #654321; margin-bottom: 15px;">清补凉是岭南地区的传统养生甜品，具有清热祛湿、健脾益气的功效</p>
+            <div class="ingredient-grid" id="ingredientGrid">
+                <!-- 食材展示将通过JavaScript动态添加 -->
+            </div>
+        </div>
+        
+        <div class="completion-message" id="completionMessage">
+            <h2 style="color: #8B4513; margin-bottom: 15px;">对话完成！</h2>
+            <p style="color: #654321; line-height: 1.6; margin-bottom: 20px;">
+                恭喜你完成了与苏东坡的对话体验！<br>
+                通过这次互动，你了解了清补凉的养生智慧<br>
+                以及苏东坡对这份岭南美食的赞叹。
+            </p>
+            <button class="restart-btn" id="restartBtn">
+                <i class="fas fa-redo"></i> 重新开始
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 缓存DOM元素
+        let dialogueContent, choiceContainer, progressBar, sceneIndicator;
+        let currentDialogueIndex = 0;
+
+        // 对话数据 - 修复了索引问题
+        const dialogueData = [
+            {
+                scene: "第一幕：初到岭南",
+                progress: 10,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "苏方啊，这岭南暑气实在难耐，连日烦热，食不知味，夜不能寐...你可有什么好法子？",
+                choices: [
+                    {
+                        text: "建议大人饮用冰镇酸梅汤",
+                        next: 1,
+                        response: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊..."
+                    },
+                    {
+                        text: "询问当地百姓有何消暑良方",
+                        next: 2,
+                        response: "此计甚好！速去打听当地有何消暑妙方。"
+                    }
+                ]
+            },
+            {
+                scene: "第一幕：初到岭南",
+                progress: 20,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊...",
+                choices: [
+                    {
+                        text: "那我们去问问当地百姓吧",
+                        next: 2,
+                        response: "善！就依你所言。"
+                    }
+                ]
+            },
+            {
+                scene: "第二幕：百姓献方",
+                progress: 30,
+                speaker: "苏方",
+                type: "sufang",
+                message: "大人，我打听到当地百姓在暑热时常用一种叫'清补凉'的食饮，据说既能解暑又能补益。",
+                choices: [
+                    {
+                        text: "详细询问清补凉的配方",
+                        next: 3,
+                        response: "当地老农说，清补凉用绿豆、薏米、莲子等多种食材配制而成。"
+                    }
+                ]
+            },
+            {
+                scene: "第二幕：百姓献方",
+                progress: 40,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "哦？竟有如此妙物？速请那位老农前来一叙！",
+                choices: [
+                    {
+                        text: "邀请老农前来介绍清补凉",
+                        next: 4,
+                        response: "老农已到，正在门外等候。"
+                    }
+                ]
+            },
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 50,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "先生，此乃我们岭南的'清补凉'。以绿豆清热，薏米祛湿，莲子安神，再配以百合、红枣、桂圆等，最后用椰汁调和。",
+                choices: [
+                    {
+                        text: "询问为何要如此搭配食材",
+                        next: 5,
+                        response: "这正是清补凉的智慧所在——清而不寒，补而不燥。"
+                    },
+                    {
+                        text: "请老农详细讲解每种食材的功效",
+                        next: 6,
+                        response: "容我细细道来每种食材的妙用..."
+                    }
+                ]
+            },
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 60,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "这正是清补凉的智慧所在——清而不寒，补而不燥。暑热需清，但不可过寒；体虚当补，但不可温燥。",
+                choices: [
+                    {
+                        text: "赞叹这份养生智慧",
+                        next: 7,
+                        response: "大人说得是，这正是老祖宗传下来的平衡之道。"
+                    }
+                ]
+            },
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 70,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "容我细细道来：绿豆清热解暑，薏米祛湿健脾，莲子养心安神，百合润肺止咳，红枣桂圆补血益气...各种食材相得益彰。",
+                choices: [
+                    {
+                        text: "请大人品尝清补凉",
+                        next: 8,
+                        response: "快请大人尝尝这清补凉的滋味如何。"
+                    }
+                ]
+            },
+            {
+                scene: "第四幕：文人的赞叹",
+                progress: 80,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "（品尝后）妙哉！清凉甘润，暑气顿消。此物之妙，不仅在味，更在其理！",
+                choices: [
+                    {
+                        text: "询问大人有何感悟",
+                        next: 9,
+                        response: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！"
+                    }
+                ]
+            },
+            {
+                scene: "第四幕：文人的赞叹",
+                progress: 90,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！我在中原时，只知以冰镇之物解暑，却不知暑热伤人元气，一味寒凉，反伤脾胃。",
+                choices: [
+                    {
+                        text: "请大人为此物赋诗",
+                        next: 10, // 这里指向索引10
+                        response: "待我细细品味，必当赋诗以记。"
+                    }
+                ]
+            },
+            // 新增第10个对话（索引10）- 这是关键修复！
+            {
+                scene: "第五幕：赋诗传世",
+                progress: 95,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "（沉思片刻，挥毫写下）<br><br>'岭南暑气盛，清补凉意长。<br>绿豆消烦热，薏米祛湿强。<br>莲子安神志，百合润肺肠。<br>天地藏至味，民间有妙方。'",
+                choices: [
+                    {
+                        text: "赞叹大人的诗才",
+                        next: 11,
+                        response: "大人此诗将清补凉的妙处描绘得淋漓尽致！"
+                    }
+                ]
+            },
+            {
+                scene: "第五幕：赋诗传世",
+                progress: 100,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "苏方，速将配方和此诗一并记下，寄与子由，让他也知岭南有此养生至味。这清补凉不仅解暑，更蕴含了'中和之道'的哲理啊！",
+                choices: [
+                    {
+                        text: "完成对话，查看清补凉食材",
+                        next: -1,
+                        response: ""
+                    }
+                ]
+            }
+        ];
+
+        // 食材数据
+        const ingredients = [
+            { name: "绿豆", icon: "fas fa-seedling", effect: "清热解暑" },
+            { name: "薏米", icon: "fas fa-wheat-alt", effect: "祛湿健脾" },
+            { name: "莲子", icon: "fas fa-circle", effect: "养心安神" },
+            { name: "百合", icon: "fas fa-leaf", effect: "润肺止咳" },
+            { name: "红枣", icon: "fas fa-apple-alt", effect: "补血益气" },
+            { name: "桂圆", icon: "fas fa-circle-notch", effect: "补血安神" },
+            { name: "椰汁", icon: "fas fa-glass-whiskey", effect: "甘润生津" }
+        ];
+
+        // 初始化对话
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化时缓存元素
+            dialogueContent = document.getElementById('dialogueContent');
+            choiceContainer = document.getElementById('choiceContainer');
+            progressBar = document.getElementById('progress');
+            sceneIndicator = document.getElementById('sceneIndicator');
+            
+            loadDialogue(currentDialogueIndex);
+            
+            // 重新开始按钮事件
+            document.getElementById('restartBtn').addEventListener('click', function() {
+                currentDialogueIndex = 0;
+                document.getElementById('completionMessage').style.display = 'none';
+                document.getElementById('ingredientShowcase').style.display = 'none';
+                loadDialogue(currentDialogueIndex);
+            });
+        });
+
+        // 加载对话函数
+        function loadDialogue(index) {
+            // 检查索引是否有效
+            if (index < 0) {
+                // 结束对话，显示完成界面
+                document.getElementById('ingredientShowcase').style.display = 'block';
+                document.getElementById('completionMessage').style.display = 'block';
+                showIngredients();
+                return;
+            }
+            
+            if (index >= dialogueData.length) {
+                console.error("无效的对话索引:", index);
+                return;
+            }
+            
+            const dialogue = dialogueData[index];
+            
+            // 使用缓存的元素，不再重复查询
+            progressBar.style.width = `${dialogue.progress}%`;
+            sceneIndicator.textContent = dialogue.scene;
+            
+            // 清空内容
+            dialogueContent.innerHTML = '';
+            choiceContainer.innerHTML = '';
+            
+            // 添加对话气泡
+            const bubble = document.createElement('div');
+            bubble.className = `dialogue-bubble ${dialogue.type}`;
+            
+            // 根据角色设置不同的图标
+            let iconClass = "fas fa-user";
+            if (dialogue.type === "dongpo") iconClass = "fas fa-user-tie";
+            if (dialogue.type === "villager") iconClass = "fas fa-user-friends";
+            
+            bubble.innerHTML = `
+                <div class="character">
+                    <i class="${iconClass}"></i>${dialogue.speaker}
+                </div>
+                <div>${dialogue.message}</div>
+            `;
+            dialogueContent.appendChild(bubble);
+            
+            // 添加选择按钮
+            dialogue.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.innerHTML = `<i class="fas fa-comment"></i>${choice.text}`;
+                button.setAttribute('aria-label', choice.text);
+                
+                button.addEventListener('click', function() {
+                    // 禁用所有按钮
+                    const allButtons = choiceContainer.querySelectorAll('.choice-btn');
+                    allButtons.forEach(btn => {
+                        btn.disabled = true;
+                    });
+                    
+                    // 添加用户选择的回复
+                    if (choice.response) {
+                        const userBubble = document.createElement('div');
+                        userBubble.className = 'dialogue-bubble sufang';
+                        userBubble.innerHTML = `
+                            <div class="character">
+                                <i class="fas fa-user"></i>苏方
+                            </div>
+                            <div>${choice.response}</div>
+                        `;
+                        dialogueContent.appendChild(userBubble);
+                    }
+                    
+                    // 添加"思考中..."提示
+                    const thinkingIndicator = document.createElement('div');
+                    thinkingIndicator.className = 'thinking-indicator';
+                    thinkingIndicator.innerHTML = '<i class="fas fa-spinner"></i> 思考中...';
+                    choiceContainer.appendChild(thinkingIndicator);
+                    
+                    // 滚动到最新对话
+                    dialogueContent.scrollTop = dialogueContent.scrollHeight;
+                    
+                    // 延迟后加载下一个对话
+                    setTimeout(() => {
+                        currentDialogueIndex = choice.next;
+                        loadDialogue(currentDialogueIndex);
+                    }, 2000);
+                });
+                choiceContainer.appendChild(button);
+            });
+            
+            // 滚动到最新对话
+            dialogueContent.scrollTop = dialogueContent.scrollHeight;
+        }
+
+        // 显示食材函数
+        function showIngredients() {
+            const ingredientGrid = document.getElementById('ingredientGrid');
+            ingredientGrid.innerHTML = '';
+            
+            ingredients.forEach(ingredient => {
+                const item = document.createElement('div');
+                item.className = 'ingredient-item';
+                item.innerHTML = `
+                    <div class="ingredient-icon">
+                        <i class="${ingredient.icon}"></i>
+                    </div>
+                    <div style="font-weight: bold; color: #8B4513;">${ingredient.name}</div>
+                    <div style="font-size: 0.9rem; color: #654321;">${ingredient.effect}</div>
+                `;
+                ingredientGrid.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
