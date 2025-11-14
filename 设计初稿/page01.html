@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史改革信息可视化</title>
+	<link rel="stylesheet" href="css/main.css">
+	 <link rel="stylesheet" href="css/page01.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">第二幕：解构 · 清补凉的智慧</h1>
+        <div class="enter-prompt" id="enterPrompt">点击进入</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const enterPrompt = document.getElementById('enterPrompt');
+            
+            // 鼠标悬停效果
+            enterPrompt.addEventListener('mouseover', function() {
+                this.style.cursor = 'pointer';
+            });
+            
+            // 点击跳转
+            enterPrompt.addEventListener('click', function() {
+                // 添加点击动画
+                this.style.transform = 'scale(0.95)';
+                this.style.opacity = '0.7';
+                
+                // 页面跳转 - 修改这里
+                setTimeout(function() {
+                    window.location.href = 'page1.html';
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
