@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D模型展示 - 360°旋转</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #8B4513;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: #654321;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .model-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border: 2px solid #8B4513;
+        }
+        
+        #model-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 30px;
+            border-radius: 8px;
+            color: #8B4513;
+        }
+        
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            color: #8B0000;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            line-height: 1.6;
+        }
+        
+        .error h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .error a {
+            color: #8B4513;
+            text-decoration: underline;
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.4);
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(to right, #A0522D, #8B4513);
+            transform: translateY(-2px);
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+            color: #654321;
+        }
+        
+        .instructions h2 {
+            margin-bottom: 10px;
+            text-align: center;
+            color: #8B4513;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: #654321;
+        }
+        
+        .mobile-fallback {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        
+        @media (max-width: 768px) {
+            .model-container {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .model-container {
+                height: 300px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>3D模型交互展示</h1>
+            <p class="subtitle">使用鼠标拖拽即可360°旋转查看模型，支持缩放和平移操作</p>
+        </header>
+        
+        <div class="model-container">
+            <div class="loading" id="loading">正在加载3D模型...</div>
+            <div class="error" id="error" style="display: none;"></div>
+            <canvas id="model-canvas"></canvas>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="reset-btn">重置视角</button>
+            <button class="control-btn" id="auto-rotate-btn">自动旋转</button>
+            <button class="control-btn" id="wireframe-btn" disabled>线框模式</button>
+        </div>
+        
+        <div class="instructions">
+            <h2>操作指南</h2>
+            <ul>
+                <li><strong>旋转模型：</strong>按住鼠标左键并拖动</li>
+                <li><strong>平移视图：</strong>按住鼠标右键并拖动</li>
+                <li><strong>缩放模型：</strong>使用鼠标滚轮或触摸板</li>
+                <li><strong>重置视角：</strong>点击"重置视角"按钮</li>
+                <li><strong>自动旋转：</strong>点击"自动旋转"按钮切换模式</li>
+                <li><strong>线框模式：</strong>模型加载后可用</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>基于Three.js构建的3D模型展示系统 | 支持GLTF、OBJ、FBX等主流3D格式</p>
+        </footer>
+    </div>
+
+    <!-- 引入Three.js库 -->
+    <script src="../js/three.min.js"></script>
+    <script src="../js/OrbitControls.js"></script>
+    <script src="../js/GLTFLoader.js"></script>
+
+    <script>
+        // 移动端检测和降级处理
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // 检查WebGL支持
+        function isWebGLSupported() {
+            try {
+                const canvas = document.createElement('canvas');
+                return !!(window.WebGLRenderingContext && 
+                         (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // 主应用程序
+        document.addEventListener('DOMContentLoaded', function() {
+            // 移动端或WebGL不支持时显示降级内容
+            if (isMobileDevice() || !isWebGLSupported()) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').innerHTML = `
+                    <h3>🎨 3D展示预览</h3>
+                    <p>为了最佳体验，建议在电脑端查看完整的3D交互功能</p>
+                    <p>移动端正在优化中，当前展示静态预览</p>
+                    <div style="margin-top: 20px;">
+                        <a href="page6.html" style="color: #8B4513; text-decoration: underline; font-weight: bold;">← 返回上一页</a>
+                    </div>
+                `;
+                return; // 停止执行3D代码
+            }
+            
+            // 以下是您原有的3D代码...
+            // 场景设置
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffecd2);
+            
+            // 相机设置
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+            
+            // 渲染器设置
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('model-canvas'),
+                antialias: true 
+            });
+            renderer.setSize(document.querySelector('.model-container').clientWidth, 
+                            document.querySelector('.model-container').clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            scene.add(directionalLight);
+            
+            // 添加轨道控制器 - 降低灵敏度
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.1;  // 从 0.05 增加到 0.1，降低灵敏度
+            controls.rotateSpeed = 0.5;    // 降低旋转速度
+            controls.zoomSpeed = 0.8;      // 降低缩放速度
+            controls.panSpeed = 0.8;       // 降低平移速度
+            
+            // 添加辅助网格
+            const gridHelper = new THREE.GridHelper(10, 10);
+            scene.add(gridHelper);
+            
+            // 存储加载的模型引用
+            let loadedModel = null;
+            let wireframeMode = false;
+            
+            // 加载GLTF模型
+            const loader = new THREE.GLTFLoader();
+            
+            // 尝试不同的文件路径
+            const modelPaths = [
+                '202215003649.glb',
+                './202215003649.glb',
+                'assets/202215003649.glb',
+                './assets/202215003649.glb',
+                'page/202215003649.glb',
+                './page/202215003649.glb'
+            ];
+            
+            let currentPathIndex = 0;
+            
+            function tryLoadModel() {
+                if (currentPathIndex >= modelPaths.length) {
+                    showError('无法找到模型文件。请检查文件路径和文件名是否正确。');
+                    return;
+                }
+                
+                const modelPath = modelPaths[currentPathIndex];
+                console.log('尝试加载模型:', modelPath);
+                
+                loader.load(
+                    modelPath,
+                    // 加载成功
+                    function(gltf) {
+                        console.log('模型加载成功:', gltf);
+                        
+                        // 移除之前的模型
+                        if (loadedModel) {
+                            scene.remove(loadedModel);
+                        }
+                        
+                        loadedModel = gltf.scene;
+                        scene.add(loadedModel);
+                        
+                        // 调整相机位置以适应模型
+                        const box = new THREE.Box3().setFromObject(loadedModel);
+                        const center = box.getCenter(new THREE.Vector3());
+                        const size = box.getSize(new THREE.Vector3());
+                        
+                        // 计算合适的相机距离
+                        const maxDim = Math.max(size.x, size.y, size.z);
+                        const fov = camera.fov * (Math.PI / 180);
+                        let cameraZ = Math.abs(maxDim / Math.sin(fov / 2));
+                        
+                        cameraZ *= 1.5; // 稍微远一点
+                        camera.position.z = cameraZ;
+                        camera.lookAt(center);
+                        
+                        controls.target.copy(center);
+                        controls.update();
+                        
+                        // 启用线框模式按钮
+                        document.getElementById('wireframe-btn').disabled = false;
+                        
+                        // 隐藏加载提示
+                        document.getElementById('loading').style.display = 'none';
+                    },
+                    // 加载进度
+                    function(xhr) {
+                        console.log((xhr.loaded / xhr.total * 100) + '% 已加载');
+                        document.getElementById('loading').textContent = 
+                            '正在加载3D模型... ' + Math.round(xhr.loaded / xhr.total * 100) + '%';
+                    },
+                    // 加载失败
+                    function(error) {
+                        console.error('加载失败:', error, '路径:', modelPath);
+                        currentPathIndex++;
+                        setTimeout(tryLoadModel, 100);
+                    }
+                );
+            }
+            
+            // 显示错误信息
+            function showError(message) {
+                document.getElementById('loading').style.display = 'none';
+                const errorElement = document.getElementById('error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                console.error(message);
+            }
+            
+            // 开始加载模型
+            tryLoadModel();
+            
+            // 控制按钮功能
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                controls.reset();
+            });
+            
+            let autoRotate = false;
+            document.getElementById('auto-rotate-btn').addEventListener('click', function() {
+                autoRotate = !autoRotate;
+                controls.autoRotate = autoRotate;
+                this.textContent = autoRotate ? '停止旋转' : '自动旋转';
+            });
+            
+            document.getElementById('wireframe-btn').addEventListener('click', function() {
+                if (!loadedModel) return;
+                
+                wireframeMode = !wireframeMode;
+                toggleWireframe(loadedModel, wireframeMode);
+                this.textContent = wireframeMode ? '实体模式' : '线框模式';
+            });
+            
+            // 切换线框模式的函数
+            function toggleWireframe(object, wireframe) {
+                object.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material.wireframe = wireframe;
+                    }
+                });
+            }
+            
+            // 窗口大小调整处理
+            window.addEventListener('resize', function() {
+                const container = document.querySelector('.model-container');
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+            
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        });
+    </script>
+</body>
+</html>
