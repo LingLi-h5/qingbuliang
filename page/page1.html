@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清补凉文化溯源</title>
-	<link rel="stylesheet" href="../css/main.css">
     <style>
         * {
             margin: 0;
@@ -51,6 +50,7 @@
 
         .timeline-container {
             width: 100%;
+            max-width: 800px; /* 限制最大宽度 */
             margin: 0 auto 30px;
             position: relative;
         }
@@ -58,27 +58,30 @@
         .timeline {
             display: flex;
             overflow-x: auto;
-            padding: 30px 15px;
+            padding: 30px 20px; /* 增加左右内边距 */
             gap: 40px;
             scroll-behavior: smooth;
             position: relative;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            min-width: 100%; /* 确保时间轴足够宽 */
         }
 
         .timeline::-webkit-scrollbar {
             display: none;
         }
 
+        /* 修复时间轴线条 - 关键修改 */
         .timeline::before {
             content: '';
             position: absolute;
             top: 70px;
-            left: 20px;
-            right: 20px;
+            left: 50px; /* 从左边开始 */
+            right: 50px; /* 到右边结束 */
             height: 4px;
             background: linear-gradient(to right, #8B4513, #D2691E, #CD853F);
             border-radius: 2px;
+            z-index: 1; /* 确保线条在节点后面 */
         }
 
         .timeline-node {
@@ -91,6 +94,8 @@
             transition: all 0.3s ease;
             padding: 10px 5px;
             border-radius: 16px;
+            position: relative;
+            z-index: 2; /* 确保节点在线条上面 */
         }
 
         .timeline-node:active {
@@ -124,6 +129,24 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            background-color: #f5e3d4;
+        }
+
+        /* 添加占位图片样式 */
+        .node-icon::before {
+            content: '📜';
+            font-size: 1.5rem;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .node-icon img {
+            position: relative;
+            z-index: 1;
         }
 
         .timeline-node.active .node-icon {
@@ -346,6 +369,13 @@
         }
 
         /* 响应式设计 */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+                right: 30px;
+            }
+        }
+
         @media (max-width: 480px) {
             .header h1 {
                 font-size: 1.8rem;
@@ -353,6 +383,7 @@
             
             .timeline {
                 gap: 30px;
+                padding: 30px 15px;
             }
             
             .timeline-node {
@@ -369,8 +400,8 @@
             }
             
             .timeline::before {
-                left: 15px;
-                right: 15px;
+                left: 20px;
+                right: 20px;
             }
         }
 
@@ -385,6 +416,11 @@
             
             .node-title {
                 font-size: 0.85rem;
+            }
+            
+            .timeline::before {
+                left: 15px;
+                right: 15px;
             }
         }
         
@@ -416,7 +452,7 @@
             <!-- 时间轴节点 -->
             <div class="timeline-node" data-year="秦汉时期" data-title="药食同源起源">
                 <div class="node-icon">
-                    <img src="../assets/images/1.jpg" alt="秦汉时期">
+                    <img src="../assets/images/1.jpg" alt="秦汉时期" onerror="this.style.display='none'">
                 </div>
                 <div class="node-year">秦汉时期</div>
                 <div class="node-title">药食同源起源</div>
@@ -424,7 +460,7 @@
 
             <div class="timeline-node" data-year="唐宋时期" data-title="中原文化传入">
                 <div class="node-icon">
-                    <img src="../assets/images/2.jpg" alt="唐宋时期">
+                    <img src="../assets/images/2.jpg" alt="唐宋时期" onerror="this.style.display='none'">
                 </div>
                 <div class="node-year">唐宋时期</div>
                 <div class="node-title">中原文化传入</div>
@@ -432,7 +468,7 @@
 
             <div class="timeline-node" data-year="明清时期" data-title="岭南特色形成">
                 <div class="node-icon">
-                    <img src="../assets/images/3.jpg" alt="明清时期">
+                    <img src="../assets/images/3.jpg" alt="明清时期" onerror="this.style.display='none'">
                 </div>
                 <div class="node-year">明清时期</div>
                 <div class="node-title">岭南特色形成</div>
@@ -440,7 +476,7 @@
 
             <div class="timeline-node" data-year="民国时期" data-title="海南本土化">
                 <div class="node-icon">
-                    <img src="../assets/images/4.jpg" alt="民国时期">
+                    <img src="../assets/images/4.jpg" alt="民国时期" onerror="this.style.display='none'">
                 </div>
                 <div class="node-year">民国时期</div>
                 <div class="node-title">海南本土化</div>
@@ -448,19 +484,18 @@
 
             <div class="timeline-node" data-year="现代" data-title="文化传承与创新">
                 <div class="node-icon">
-                    <img src="../assets/images/5.jpg" alt="现代">
+                    <img src="../assets/images/5.jpg" alt="现代" onerror="this.style.display='none'">
                 </div>
                 <div class="node-year">现代</div>
                 <div class="node-title">文化传承与创新</div>
             </div>
         </div>
         <div class="scroll-hint">
-            <i class="fas fa-arrows-alt-h"></i>
-            <span>左右滑动查看更多</span>
+            <span>← 左右滑动查看更多 →</span>
         </div>
         
         <div class="swipe-indicator">
-            <div class="swipe-dot"></div>
+            <div class="swipe-dot active"></div>
             <div class="swipe-dot"></div>
             <div class="swipe-dot"></div>
             <div class="swipe-dot"></div>
@@ -481,7 +516,7 @@
                 </div>
                 <div class="modal-map">
                     <div class="map-placeholder">
-                        <i class="fas fa-map-marked-alt"></i>
+                        <span style="font-size: 2.5rem;">🗺️</span>
                         <span>清补凉传播路径图</span>
                     </div>
                     <div class="map-caption" id="modalMapCaption">点击时间轴节点查看不同时期的传播路径</div>
@@ -672,14 +707,5 @@
             updateActiveNode(0);
         });
     </script>
-	<!-- 页面跳转箭头 -->
-	<div class="page-nav">
-	    <a href="page01.html" class="nav-arrow nav-prev">
-	        <span class="arrow-icon">←</span>
-	    </a>
-	    <a href="page02.html" class="nav-arrow nav-next">
-	        <span class="arrow-icon">→</span>
-	    </a>
-	</div>
 </body>
 </html>
