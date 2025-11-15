@@ -84,13 +84,11 @@
             background-color: rgba(255, 255, 255, 0.85);
             padding: 25px 20px;
             border-radius: 25px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             z-index: 15;
             position: relative;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            animation: float 4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-            will-change: transform;
         }
         
         .title {
@@ -299,14 +297,15 @@
             -webkit-touch-callout: none;
         }
         
-        /* 优化浮动动画效果 - 更流畅 */
+        /* 添加一些动画效果 */
         @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px); 
-            }
-            50% { 
-                transform: translateY(-20px); 
-            }
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
         }
     </style>
 </head>
@@ -319,7 +318,7 @@
         
         <!-- 加载页面 -->
         <div id="loading-page">
-            <div class="loading-content">
+            <div class="loading-content floating">
                 <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
@@ -338,6 +337,9 @@
                     </div>
                     <div class="ingredient">
                         <img src="assets/images/5.jpg" alt="花生" class="ingredient-img">
+                    </div>
+                    <div class="ingredient">
+                        <img src="assets/images/coconut-milk.png" alt="椰奶" class="ingredient-img">
                     </div>
                 </div>
                 
@@ -397,6 +399,10 @@
                 if (progress > 65) {
                     ingredients[4].style.opacity = "1";
                     ingredients[4].style.transform = "translateY(0)";
+                }
+                if (progress > 80) {
+                    ingredients[5].style.opacity = "1";
+                    ingredients[5].style.transform = "translateY(0)";
                 }
                 
             }, 300);
