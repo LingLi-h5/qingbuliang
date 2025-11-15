@@ -2,64 +2,830 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>海南清补凉乡村振兴漫画对话</title>
-    <link rel="stylesheet" href="../css/main.css">
-	 <link rel="stylesheet" href="../css/page5.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>清补凉食材功效连线游戏</title>
+	<link rel="stylesheet" href="../css/main.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            color: #5a3921;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #654321;
+            font-size: 0.9rem;
+            max-width: 100%;
+            margin: 0 auto;
+            line-height: 1.4;
+            padding: 0 8px;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            color: #8B4513;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            line-height: 1.3;
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-bottom: 20px;
+            min-height: 350px;
+            position: relative;
+            width: 100%;
+        }
+
+        .ingredients-area {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .effects-area {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .ingredient {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: 2px solid #8B4513;
+            border-radius: 12px;
+            padding: 10px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-height: 45px;
+            text-align: center;
+            width: 100%;
+            max-width: 120px;
+            margin: 0 auto;
+        }
+
+        .ingredient:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .ingredient.selected {
+            border: 3px solid #FFA500;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            transform: scale(1.05);
+        }
+
+        /* 匹配成功后的视觉标记 */
+        .ingredient.matched {
+            border: 3px solid #4CAF50;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            cursor: default;
+        }
+
+        .ingredient-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #8B4513;
+        }
+
+        .effect {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 10px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 45px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 120px;
+            margin: 0 auto;
+        }
+
+        .effect.selected {
+            border: 3px solid #FFA500;
+            transform: scale(1.05);
+        }
+
+        /* 匹配成功后的功效样式 */
+        .effect.matched {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+        }
+
+        .effect-text {
+            font-weight: bold;
+            font-size: 0.95rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .effect.correct {
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            80% { transform: translateY(-2px); }
+        }
+
+        /* 连线动画效果 - 加长并增强视觉效果 */
+        .connection-line {
+            position: absolute;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            height: 4px;
+            transform-origin: left center;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .connection-line.show {
+            opacity: 1;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: none;
+            max-width: 90%;
+            width: 300px;
+            text-align: center;
+        }
+
+        .message h3 {
+            color: #8B4513;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .message p {
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .ingredient-details {
+            text-align: left;
+            background: rgba(139, 69, 19, 0.1);
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .ingredient-details p {
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .message button {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+            margin-top: 8px;
+        }
+
+        .message button:active {
+            transform: scale(0.95);
+        }
+
+        .completion-message {
+            display: none;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .completion-message h2 {
+            color: #8B4513;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .completion-message p {
+            line-height: 1.4;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .restart-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.4);
+            transition: transform 0.3s;
+            margin: 5px;
+        }
+
+        .restart-btn:active {
+            transform: scale(0.95);
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 250px;
+            margin: 12px auto;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            margin-top: 6px;
+            color: #654321;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            max-width: 250px;
+            margin: 0 auto 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer, .score {
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 0.9rem;
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-width: 480px) {
+            .game-area {
+                gap: 3px;
+                min-height: 320px;
+            }
+            
+            .ingredients-area, .effects-area {
+                width: 42%;
+            }
+            
+            .ingredient, .effect {
+                min-height: 40px;
+                padding: 8px 6px;
+                max-width: 100px;
+            }
+            
+            .ingredient-name, .effect-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header p {
+                font-size: 0.85rem;
+            }
+            
+            .instructions {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+            
+            .ingredient, .effect {
+                min-height: 38px;
+                padding: 7px 5px;
+                max-width: 90px;
+            }
+            
+            .ingredient-name, .effect-text {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .ingredient, .effect {
+                min-height: 36px;
+                padding: 6px 4px;
+                max-width: 85px;
+            }
+            
+            .ingredient-name, .effect-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .game-area {
+                min-height: 200px;
+            }
+            
+            .ingredient, .effect {
+                min-height: 35px;
+                padding: 5px 4px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="comic-container">
-        <div class="comic-header">
-            <h1 class="comic-title">海南清补凉</h1>
-            <p class="comic-subtitle">乡村振兴的甜蜜力量 - 互动漫画</p>
+    <div class="container">
+        <div class="header">
+            <h1>清补凉食材功效连线</h1>
+            <p>这些食材小精灵都有什么本领？请帮它们找到自己的家！</p>
         </div>
         
-        <div class="comic-content">
-            <div class="characters">
-                <div class="character" id="character1">
-                    <div class="character-img">
-                        <div class="body"></div>
-                        <div class="head"></div>
-                        <div class="hair"></div>
-                        <div class="eyes eye-left"></div>
-                        <div class="eyes eye-right"></div>
-                        <div class="mouth"></div>
-                    </div>
-                    <div class="character-name" style="background: #2196f3; color: white;">小海</div>
-                    <div class="character-desc">海南返乡创业青年</div>
-                </div>
-                
-                <div class="character" id="character2">
-                    <div class="character-img">
-                        <div class="body2"></div>
-                        <div class="head2"></div>
-                        <div class="hair2"></div>
-                        <div class="ribbon"></div>
-                        <div class="eyes eye-left"></div>
-                        <div class="eyes eye-right"></div>
-                        <div class="mouth"></div>
-                    </div>
-                    <div class="character-name" style="background: #ffb300; color: white;">小北</div>
-                    <div class="character-desc">乡村振兴调研员</div>
-                </div>
+        <div class="instructions">
+            <p>提示：点击左侧食材，然后点击右侧对应的功效</p>
+        </div>
+        
+        <div class="game-info" id="gameInfo">
+            <div class="timer">时间: <span id="timer">0</span>秒</div>
+            <div class="score">得分: <span id="score">0</span></div>
+        </div>
+        
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">匹配进度: 0/6</div>
+        
+        <div class="game-area">
+            <div class="ingredients-area" id="ingredientsArea">
+                <!-- 食材将通过JavaScript动态添加 -->
             </div>
             
-            <div class="dialogues-container">
-                <!-- 对话气泡将在这里动态显示 -->
+            <div class="effects-area" id="effectsArea">
+                <!-- 功效将通过JavaScript动态添加 -->
             </div>
-            
-            <div class="click-hint" id="clickHint">点击角色开始对话</div>
+        </div>
+        
+        <div class="message" id="message">
+            <h3 id="messageTitle">匹配成功！</h3>
+            <div id="messageContent"></div>
+            <button id="messageButton">继续游戏</button>
+        </div>
+        
+        <div class="completion-message" id="completionMessage">
+            <h2>恭喜你！你已经掌握了清补凉的养生密码！</h2>
+            <p>你已成功帮助所有食材找到它们的功效，现在你已经是清补凉养生小达人了！</p>
+            <div class="score-display">
+                <h3>你的得分: <span id="finalScore">0</span></h3>
+                <p>用时: <span id="finalTime">0</span>秒</p>
+            </div>
+            <button class="restart-btn" id="restartBtn">再玩一次</button>
         </div>
     </div>
-<!-- 页面跳转箭头 -->
-	<div class="page-nav">
-	    <a href="page05.html" class="nav-arrow nav-prev">
-	        <span class="arrow-icon">←</span>
-	    </a>
-	    <a href="page06.html" class="nav-arrow nav-next">
-	        <span class="arrow-icon">→</span>
-	    </a>
-	</div>
-	<script src="../js/page5.js"></script>
+
+    <script>
+        // 食材与功效数据
+        const ingredientsData = [
+            {
+                id: 1,
+                name: "绿豆",
+                effect: "清热解毒",
+                description: "匹配成功！绿豆，清凉解暑，是清热解毒的天然良药。",
+                details: {
+                    season: "夏季最佳",
+                    pairing: "与薏米、百合搭配更佳",
+                    nutrition: "富含蛋白质、膳食纤维和多种维生素"
+                }
+            },
+            {
+                id: 2,
+                name: "薏米",
+                effect: "健脾祛湿",
+                description: "匹配成功！薏米，利水渗湿，是健脾祛湿的养生佳品。",
+                details: {
+                    season: "夏季最佳",
+                    pairing: "与绿豆、赤小豆搭配更佳",
+                    nutrition: "富含蛋白质、维生素B群和矿物质"
+                }
+            },
+            {
+                id: 3,
+                name: "桂圆",
+                effect: "补心安神",
+                description: "匹配成功！桂圆，补血养心，是补心安神的滋补圣品。",
+                details: {
+                    season: "四季皆宜",
+                    pairing: "与红枣、枸杞搭配更佳",
+                    nutrition: "富含葡萄糖、蔗糖、蛋白质和多种维生素"
+                }
+            },
+            {
+                id: 4,
+                name: "红枣",
+                effect: "补气养血",
+                description: "匹配成功！红枣，补中益气，是补气养血的天然维生素丸。",
+                details: {
+                    season: "四季皆宜",
+                    pairing: "与桂圆、枸杞搭配更佳",
+                    nutrition: "富含维生素C、维生素P和环磷酸腺苷"
+                }
+            },
+            {
+                id: 5,
+                name: "银耳",
+                effect: "滋阴润肺",
+                description: "匹配成功！银耳，滋阴润燥，是润肺养颜的滋补佳品。",
+                details: {
+                    season: "秋季最佳",
+                    pairing: "与莲子、枸杞搭配更佳",
+                    nutrition: "富含胶质蛋白、多糖体和多种氨基酸"
+                }
+            },
+            {
+                id: 6,
+                name: "枸杞",
+                effect: "明目补肾",
+                description: "匹配成功！枸杞，滋补肝肾，是明目益精的养生宝贝。",
+                details: {
+                    season: "四季皆宜",
+                    pairing: "与红枣、桂圆搭配更佳",
+                    nutrition: "富含枸杞多糖、胡萝卜素和多种微量元素"
+                }
+            }
+        ];
+
+        // 固定打乱的食材顺序（让连线有交叉效果）
+        const fixedShuffledIngredients = [
+            ingredientsData[2], // 桂圆
+            ingredientsData[0], // 绿豆
+            ingredientsData[4], // 银耳
+            ingredientsData[1], // 薏米
+            ingredientsData[5], // 枸杞
+            ingredientsData[3]  // 红枣
+        ];
+
+        // 功效保持原顺序
+        const effects = [...new Set(ingredientsData.map(item => item.effect))];
+
+        // 游戏状态
+        let matchedPairs = 0;
+        const totalPairs = ingredientsData.length;
+        let selectedIngredient = null;
+        let startTime;
+        let score = 0;
+        let timerInterval;
+
+        // DOM元素
+        const ingredientsArea = document.getElementById('ingredientsArea');
+        const effectsArea = document.getElementById('effectsArea');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const message = document.getElementById('message');
+        const messageTitle = document.getElementById('messageTitle');
+        const messageContent = document.getElementById('messageContent');
+        const messageButton = document.getElementById('messageButton');
+        const completionMessage = document.getElementById('completionMessage');
+        const gameInfo = document.getElementById('gameInfo');
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('finalScore');
+        const finalTimeElement = document.getElementById('finalTime');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // 初始化游戏
+        function initGame() {
+            // 清空区域
+            ingredientsArea.innerHTML = '';
+            effectsArea.innerHTML = '';
+            
+            // 清除所有连线
+            const connectionLines = document.querySelectorAll('.connection-line');
+            connectionLines.forEach(line => line.remove());
+            
+            // 重置游戏状态
+            matchedPairs = 0;
+            score = 0;
+            selectedIngredient = null;
+            updateScore();
+            
+            // 开始计时
+            startTimer();
+            
+            // 创建食材元素（使用固定打乱的顺序）
+            fixedShuffledIngredients.forEach(ingredient => {
+                const ingredientElement = document.createElement('div');
+                ingredientElement.className = 'ingredient';
+                ingredientElement.dataset.id = ingredient.id;
+                
+                ingredientElement.innerHTML = `
+                    <div class="ingredient-name">${ingredient.name}</div>
+                `;
+                
+                // 添加点击事件
+                ingredientElement.addEventListener('click', handleIngredientClick);
+                
+                ingredientsArea.appendChild(ingredientElement);
+            });
+            
+            // 创建功效元素（保持原顺序）
+            effects.forEach(effect => {
+                const effectElement = document.createElement('div');
+                effectElement.className = 'effect';
+                effectElement.dataset.effect = effect;
+                
+                effectElement.innerHTML = `
+                    <div class="effect-text">${effect}</div>
+                `;
+                
+                // 添加点击事件
+                effectElement.addEventListener('click', handleEffectClick);
+                
+                effectsArea.appendChild(effectElement);
+            });
+            
+            // 更新进度
+            updateProgress();
+            
+            // 添加消息按钮事件
+            messageButton.addEventListener('click', () => {
+                message.style.display = 'none';
+            });
+            
+            // 添加重新开始按钮事件
+            restartBtn.addEventListener('click', () => {
+                completionMessage.style.display = 'none';
+                initGame();
+            });
+        }
+
+        // 处理食材点击
+        function handleIngredientClick() {
+            if (this.classList.contains('matched')) return;
+            
+            // 移除之前的选择状态
+            const previouslySelected = document.querySelector('.ingredient.selected');
+            if (previouslySelected) {
+                previouslySelected.classList.remove('selected');
+            }
+            
+            // 设置当前选择
+            this.classList.add('selected');
+            selectedIngredient = this;
+        }
+
+        // 处理功效点击
+        function handleEffectClick() {
+            if (!selectedIngredient || this.classList.contains('matched')) return;
+            
+            const ingredientId = selectedIngredient.dataset.id;
+            // 从原始数据中查找食材信息
+            const ingredient = ingredientsData.find(item => item.id == ingredientId);
+            const effect = this.dataset.effect;
+            
+            // 检查匹配是否正确
+            if (ingredient.effect === effect) {
+                // 匹配正确
+                this.classList.add('correct');
+                setTimeout(() => {
+                    this.classList.remove('correct');
+                }, 500);
+                
+                // 显示成功消息
+                messageTitle.textContent = "匹配成功！";
+                messageContent.innerHTML = `
+                    <p>${ingredient.description}</p>
+                    <div class="ingredient-details">
+                        <p><strong>食用季节:</strong> ${ingredient.details.season}</p>
+                        <p><strong>搭配建议:</strong> ${ingredient.details.pairing}</p>
+                        <p><strong>营养价值:</strong> ${ingredient.details.nutrition}</p>
+                    </div>
+                `;
+                message.style.display = 'block';
+                
+                // 标记匹配成功的元素
+                selectedIngredient.classList.remove('selected');
+                selectedIngredient.classList.add('matched');
+                this.classList.add('matched');
+                
+                // 创建连线
+                createConnectionLine(selectedIngredient, this);
+                
+                // 更新进度和分数
+                matchedPairs++;
+                score += 100;
+                updateProgress();
+                updateScore();
+                
+                // 重置选择
+                selectedIngredient = null;
+                
+                // 检查是否完成所有匹配
+                if (matchedPairs === totalPairs) {
+                    finishGame();
+                }
+            } else {
+                // 匹配错误
+                messageTitle.textContent = "再想想哦";
+                messageContent.innerHTML = `<p>${ingredient.name}的特长不是${effect}。</p>`;
+                message.style.display = 'block';
+                
+                // 扣分
+                score = Math.max(0, score - 50);
+                updateScore();
+                
+                // 重置选择
+                selectedIngredient.classList.remove('selected');
+                selectedIngredient = null;
+            }
+        }
+
+        // 创建连线
+        function createConnectionLine(ingredient, effect) {
+            const line = document.createElement('div');
+            line.className = 'connection-line';
+            
+            const ingredientRect = ingredient.getBoundingClientRect();
+            const effectRect = effect.getBoundingClientRect();
+            const gameAreaRect = document.querySelector('.game-area').getBoundingClientRect();
+            
+            const startX = ingredientRect.right - gameAreaRect.left;
+            const startY = ingredientRect.top + ingredientRect.height/2 - gameAreaRect.top;
+            const endX = effectRect.left - gameAreaRect.left;
+            const endY = effectRect.top + effectRect.height/2 - gameAreaRect.top;
+            
+            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            
+            line.style.width = `${length}px`;
+            line.style.left = `${startX}px`;
+            line.style.top = `${startY}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            document.querySelector('.game-area').appendChild(line);
+            
+            // 显示连线
+            setTimeout(() => {
+                line.classList.add('show');
+            }, 100);
+        }
+
+        // 开始计时
+        function startTimer() {
+            startTime = new Date();
+            clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                const currentTime = new Date();
+                const elapsed = Math.floor((currentTime - startTime) / 1000);
+                timerElement.textContent = elapsed;
+            }, 1000);
+        }
+
+        // 计算最终得分
+        function calculateScore() {
+            const endTime = new Date();
+            const timeTaken = Math.floor((endTime - startTime) / 1000);
+            const baseScore = 1000;
+            const timeBonus = Math.max(0, 300 - timeTaken) * 2;
+            const perfectBonus = matchedPairs === totalPairs ? 500 : 0;
+            
+            return {
+                finalScore: baseScore + timeBonus + perfectBonus + score,
+                timeTaken: timeTaken
+            };
+        }
+
+        // 完成游戏
+        function finishGame() {
+            clearInterval(timerInterval);
+            
+            const result = calculateScore();
+            finalScoreElement.textContent = result.finalScore;
+            finalTimeElement.textContent = result.timeTaken;
+            
+            setTimeout(() => {
+                completionMessage.style.display = 'block';
+            }, 1000);
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = (matchedPairs / totalPairs) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `匹配进度: ${matchedPairs}/${totalPairs}`;
+        }
+
+        // 更新分数显示
+        function updateScore() {
+            scoreElement.textContent = score;
+        }
+
+        // 页面加载完成后初始化游戏
+        window.addEventListener('DOMContentLoaded', initGame);
+
+        // 防止页面缩放
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+	<!-- 页面跳转箭头 -->
+		<div class="page-nav">
+		    <a href="page05.html" class="nav-arrow nav-prev">
+		        <span class="arrow-icon">←</span>
+		    </a>
+		    <a href="page06.html" class="nav-arrow nav-next">
+		        <span class="arrow-icon">→</span>
+		    </a>
+		</div>
 </body>
 </html>
