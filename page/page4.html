@@ -2,45 +2,547 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>清补凉材料介绍</title>
-     <link rel="stylesheet" href="../css/main.css">
-	 <link rel="stylesheet" href="../css/page4.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>清补凉食材互动展示</title>
+	<link rel="stylesheet" href="../css/main.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            touch-action: manipulation;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #654321;
+            font-size: 0.95rem;
+            max-width: 100%;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 500px;
+            align-items: center;
+            position: relative;
+        }
+
+        .bowl-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bowl {
+            width: 220px;
+            height: 110px;
+            background: linear-gradient(to right, #f5f5dc, #e6e6c5);
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                inset 0 -8px 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .bowl::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border-radius: 50% 50% 40% 40%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            z-index: 3;
+        }
+
+        .ingredients-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .ingredient {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            border: 2px solid transparent;
+        }
+
+        .ingredient:active {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 选中食材的高亮边框和放大效果 */
+        .ingredient.selected {
+            border: 3px solid #8B4513;
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .ingredient img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .info-card {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+            position: relative;
+            z-index: 5;
+            margin-bottom: 20px;
+        }
+
+        .info-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-card h2 {
+            color: #8B4513;
+            margin-bottom: 12px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0c9a6;
+            padding-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-card h3 {
+            color: #8B4513;
+            margin: 12px 0 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: #654321;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .info-card ul {
+            padding-left: 18px;
+            color: #654321;
+            margin-bottom: 12px;
+        }
+
+        .info-card li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .ingredient-in-bowl {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .ingredient-in-bowl.active {
+            opacity: 1;
+        }
+
+        .ingredient-in-bowl img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes flyToBowl {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3) translate(var(--tx), var(--ty));
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1) translate(0, 0);
+                opacity: 0;
+            }
+        }
+
+        .flying {
+            animation: flyToBowl 1s forwards;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            text-align: center;
+            color: #654321;
+            font-size: 0.9rem;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        /* 默认状态提示 */
+        .default-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #8B4513;
+            font-size: 1rem;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s;
+            width: 80%;
+        }
+
+        .default-state.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 食材特定样式 - 针对手机重新布局 */
+        .mung-bean { background: linear-gradient(135deg, #90EE90, #7CFC00); top: 10%; left: 5%; }
+        .red-bean { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 5%; }
+        .jobstears { background: linear-gradient(135deg, #F5DEB3, #D2B48C); bottom: 20%; left: 10%; }
+        .macaroni { background: linear-gradient(135deg, #FFE4B5, #FFD700); bottom: 25%; right: 10%; }
+        .wintermelon { background: linear-gradient(135deg, #98FB98, #32CD32); top: 30%; left: 20%; }
+        .red-date { background: linear-gradient(135deg, #8B0000, #A52A2A); top: 40%; right: 15%; }
+        .quail-egg { background: linear-gradient(135deg, #F5F5DC, #FFF8DC); bottom: 10%; right: 25%; }
+
+        /* 响应式设计 - 针对更小屏幕优化 */
+        @media (max-width: 380px) {
+            .bowl-container {
+                height: 250px;
+            }
+            
+            .bowl {
+                width: 200px;
+                height: 100px;
+            }
+            
+            .ingredient {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .info-card {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .ingredient {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .bowl {
+                width: 180px;
+                height: 90px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="header">
-        <h1>清补凉材料介绍</h1>
-        <p>清补凉是一道流行于中国南方的传统甜品，尤其在海南、广东和广西地区广受欢迎。它由多种天然食材组成，具有清凉解暑、滋补养生的功效。</p>
+        <h1>清补凉食材互动展示</h1>
+        <p>点击食材图标，了解各种养生食材的功效与作用</p>
     </div>
 
-    <div class="controls">
-        <button id="completeBtn">完成制作</button>
-    </div>
-
-    <div class="bowl-container">
-        <div class="bowl">
-            <div class="bowl-content" id="bowlContent"></div>
-            <div class="ingredients" id="ingredientsVisual"></div>
-        </div>
-    </div>
-
-    <div class="container" id="ingredientsContainer">
-        <!-- 材料卡片将通过JavaScript动态生成 -->
-    </div>
-
-    <!-- 完成弹窗 -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content" id="modalContent">
-            <h2 class="modal-title">您的清补凉制作完成！</h2>
-            <div id="selectedIngredientsList" class="selected-ingredients">
-                <!-- 选中的材料将在这里显示 -->
+    <div class="container">
+        <div class="bowl-container">
+            <!-- 默认状态提示 -->
+            <div class="default-state" id="defaultState">
+                <p>👆 点击任意食材开始探索</p>
             </div>
-            <p class="modal-description" id="modalDescription">
-                <!-- 描述将根据选择的材料动态生成 -->
-            </p>
-            <button class="close-btn" id="closeModal">关闭</button>
+            <div class="bowl" id="bowl">
+                <!-- 碗中食材将通过JS动态添加 -->
+            </div>
+            <div class="ingredients-container">
+                <div class="ingredient mung-bean" data-id="mung-bean">
+                    <img src="../assets/images/1.jpg" alt="绿豆">
+                </div>
+                <div class="ingredient red-bean" data-id="red-bean">
+                    <img src="../assets/images/2.jpg" alt="红豆">
+                </div>
+                <div class="ingredient jobstears" data-id="jobstears">
+                    <img src="../assets/images/3.jpg" alt="薏米">
+                </div>
+                <div class="ingredient macaroni" data-id="macaroni">
+                    <img src="../assets/images/4.jpg" alt="通心粉">
+                </div>
+                <div class="ingredient wintermelon" data-id="wintermelon">
+                    <img src="../assets/images/5.jpg" alt="冬瓜薏">
+                </div>
+                <div class="ingredient red-date" data-id="red-date">
+                    <img src="../assets/images/66.jpg" alt="红枣">
+                </div>
+                <div class="ingredient quail-egg" data-id="quail-egg">
+                    <img src="../assets/images/1.jpg" alt="鹌鹑蛋">
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card" id="info-card">
+            <h2>选择一种食材</h2>
+            <p>点击上方的食材图标，了解其营养功效和食用方法。</p>
         </div>
     </div>
+
+    <div class="instructions">
+        <p>提示：点击任意食材图标，它会飞入碗中并显示详细信息。再次点击其他食材可以更换。</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ingredients = document.querySelectorAll('.ingredient');
+            const infoCard = document.getElementById('info-card');
+            const bowl = document.getElementById('bowl');
+            const defaultState = document.getElementById('defaultState');
+            
+            // 食材信息数据
+            const ingredientData = {
+                'mung-bean': {
+                    name: '绿豆',
+                    description: '绿豆是一种常见的豆类食材，富含蛋白质、膳食纤维和多种维生素。',
+                    benefits: [
+                        '清热解毒，消暑止渴',
+                        '降低血脂和胆固醇',
+                        '促进肠道蠕动，改善便秘',
+                        '富含抗氧化物质，延缓衰老'
+                    ],
+                    usage: '可煮粥、做汤、制作绿豆沙等甜品。夏季常用来制作绿豆汤解暑。'
+                },
+                'red-bean': {
+                    name: '红豆',
+                    description: '红豆营养丰富，含有丰富的蛋白质、维生素B群和矿物质。',
+                    benefits: [
+                        '补血养心，改善气色',
+                        '利水消肿，帮助排除体内多余水分',
+                        '富含膳食纤维，促进消化',
+                        '含有皂角苷，有利尿作用'
+                    ],
+                    usage: '常用于煮粥、做红豆沙、制作甜品和糕点。'
+                },
+                'jobstears': {
+                    name: '薏米',
+                    description: '薏米又称薏苡仁，是传统的药食同源食材，具有很高的营养价值。',
+                    benefits: [
+                        '利水渗湿，健脾止泻',
+                        '美白肌肤，减少色斑',
+                        '增强免疫力，抗肿瘤',
+                        '降血糖，适合糖尿病患者'
+                    ],
+                    usage: '可煮粥、炖汤，或与其它谷物一起烹饪。'
+                },
+                'macaroni': {
+                    name: '通心粉',
+                    description: '通心粉是一种面食，主要由小麦粉制成，是西方常见的主食之一。',
+                    benefits: [
+                        '提供碳水化合物，补充能量',
+                        '含有蛋白质和少量维生素',
+                        '易于消化，适合肠胃虚弱者',
+                        '可搭配各种蔬菜肉类，营养均衡'
+                    ],
+                    usage: '可煮汤、炒制或做成沙拉，搭配各种酱料食用。'
+                },
+                'wintermelon': {
+                    name: '冬瓜薏',
+                    description: '冬瓜薏是冬瓜的种子，在传统中医中常被用作药材。',
+                    benefits: [
+                        '清热利湿，消除水肿',
+                        '润肺化痰，缓解咳嗽',
+                        '富含不饱和脂肪酸，有益心血管',
+                        '含有多种氨基酸，增强免疫力'
+                    ],
+                    usage: '通常煮水饮用，或与其他药材一起煎服。'
+                },
+                'red-date': {
+                    name: '红枣',
+                    description: '红枣是鼠李科植物枣的成熟果实，营养丰富，被誉为"天然维生素丸"。',
+                    benefits: [
+                        '补中益气，养血安神',
+                        '富含维生素C，增强免疫力',
+                        '改善贫血，提升血色',
+                        '保护肝脏，减轻化学药物对肝脏的损害'
+                    ],
+                    usage: '可直接食用，也可煮粥、泡茶、炖汤或制作甜品。'
+                },
+                'quail-egg': {
+                    name: '鹌鹑蛋',
+                    description: '鹌鹑蛋虽然体积小，但营养价值高，有"动物中的人参"之称。',
+                    benefits: [
+                        '富含卵磷脂，健脑益智',
+                        '维生素B2含量高，促进生长发育',
+                        '保护视力，预防眼疾',
+                        '调节血脂，预防动脉硬化'
+                    ],
+                    usage: '可煮食、蒸蛋、卤制或作为配菜加入各种菜肴中。'
+                }
+            };
+
+            // 当前选中的食材
+            let currentIngredient = null;
+
+            // 为每个食材添加点击事件
+            ingredients.forEach(ingredient => {
+                ingredient.addEventListener('click', function() {
+                    const ingredientId = this.getAttribute('data-id');
+                    
+                    // 如果点击的是当前已选中的食材，则不执行任何操作
+                    if (currentIngredient === ingredientId) return;
+                    
+                    // 更新当前选中的食材
+                    currentIngredient = ingredientId;
+                    
+                    // 获取食材数据
+                    const data = ingredientData[ingredientId];
+                    
+                    // 更新信息卡片
+                    updateInfoCard(data);
+                    
+                    // 执行飞入动画
+                    flyToBowl(this, ingredientId);
+                    
+                    // 隐藏默认状态提示
+                    defaultState.classList.add('hidden');
+                });
+            });
+
+            // 更新信息卡片内容
+            function updateInfoCard(data) {
+                infoCard.innerHTML = `
+                    <h2>${data.name}</h2>
+                    <p>${data.description}</p>
+                    <h3>主要功效：</h3>
+                    <ul>
+                        ${data.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+                    </ul>
+                    <h3>食用方法：</h3>
+                    <p>${data.usage}</p>
+                `;
+                
+                // 激活卡片显示动画
+                infoCard.classList.add('active');
+            }
+
+            // 飞入碗中的动画效果
+            function flyToBowl(element, ingredientId) {
+                // 移除其他食材的选中状态
+                ingredients.forEach(ing => ing.classList.remove('selected'));
+                // 添加当前选中状态
+                element.classList.add('selected');
+                
+                // 计算飞行动画路径
+                const bowlRect = bowl.getBoundingClientRect();
+                const ingredientRect = element.getBoundingClientRect();
+                
+                // 计算从食材位置到碗中心的偏移量
+                const deltaX = bowlRect.left + bowlRect.width/2 - ingredientRect.left - ingredientRect.width/2;
+                const deltaY = bowlRect.top + bowlRect.height/2 - ingredientRect.top - ingredientRect.height/2;
+                
+                // 设置CSS变量用于动画
+                element.style.setProperty('--tx', `${deltaX}px`);
+                element.style.setProperty('--ty', `${deltaY}px`);
+                
+                // 添加飞行动画类
+                element.classList.add('flying');
+                
+                // 动画结束后，在碗中显示食材
+                setTimeout(() => {
+                    // 移除碗中已有的食材
+                    const existingIngredient = bowl.querySelector('.ingredient-in-bowl');
+                    if (existingIngredient) {
+                        existingIngredient.remove();
+                    }
+                    
+                    // 创建碗中的食材
+                    const ingredientInBowl = document.createElement('div');
+                    ingredientInBowl.className = `ingredient-in-bowl active`;
+                    ingredientInBowl.innerHTML = `<img src="${element.querySelector('img').src}" alt="${ingredientData[ingredientId].name}">`;
+                    bowl.appendChild(ingredientInBowl);
+                    
+                    // 重置外部食材状态
+                    element.classList.remove('flying');
+                    element.style.removeProperty('--tx');
+                    element.style.removeProperty('--ty');
+                }, 1000);
+            }
+        });
+    </script>
 	<!-- 页面跳转箭头 -->
 	<div class="page-nav">
 	    <a href="page04.html" class="nav-arrow nav-prev">
@@ -49,7 +551,5 @@
 	    <a href="page05.html" class="nav-arrow nav-next">
 	        <span class="arrow-icon">→</span>
 	    </a>
-	</div>
-	<script src="../js/page4.js"></script>
 </body>
 </html>
