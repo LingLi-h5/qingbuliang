@@ -2,14 +2,16 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清补凉文化溯源</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -19,50 +21,59 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
+            color: #5a3921;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             width: 100%;
+            padding: 0 10px;
         }
 
         .header h1 {
             color: #8B4513;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
         }
 
         .header p {
             color: #654321;
-            font-size: 1.2rem;
-            max-width: 800px;
+            font-size: 1rem;
+            max-width: 100%;
             margin: 0 auto;
             line-height: 1.6;
+            opacity: 0.9;
         }
 
         .timeline-container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto 50px;
+            width: 100%;
+            margin: 0 auto 30px;
             position: relative;
         }
 
         .timeline {
             display: flex;
             overflow-x: auto;
-            padding: 40px 20px;
-            gap: 60px;
+            padding: 30px 15px;
+            gap: 40px;
             scroll-behavior: smooth;
             position: relative;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .timeline::-webkit-scrollbar {
+            display: none;
         }
 
         .timeline::before {
             content: '';
             position: absolute;
-            top: 80px;
+            top: 70px;
             left: 0;
             right: 0;
             height: 4px;
@@ -72,50 +83,87 @@
 
         .timeline-node {
             flex: 0 0 auto;
-            width: 180px;
+            width: 140px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            padding: 10px 5px;
+            border-radius: 16px;
         }
 
-        .timeline-node:hover {
-            transform: translateY(-10px);
+        .timeline-node:active {
+            transform: scale(0.95);
+            background-color: rgba(255, 255, 255, 0.5);
         }
 
         .node-icon {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background-color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             position: relative;
             z-index: 2;
             border: 3px solid #D2691E;
+            transition: all 0.3s ease;
         }
 
-        .node-icon img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
+        .timeline-node.active .node-icon {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(210, 105, 30, 0.4);
+        }
+
+        .node-icon i {
+            font-size: 1.8rem;
+            color: #8B4513;
         }
 
         .node-year {
-            font-weight: bold;
+            font-weight: 700;
             color: #8B4513;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 5px;
         }
 
         .node-title {
             color: #654321;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            color: #8B4513;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0.8;
+        }
+
+        .scroll-hint i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(0);
+            }
+            40% {
+                transform: translateX(-5px);
+            }
+            60% {
+                transform: translateX(5px);
+            }
         }
 
         .modal {
@@ -125,18 +173,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 100;
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.3s ease;
+            padding: 15px;
         }
 
         .modal-content {
             background-color: #fff;
-            width: 90%;
-            max-width: 900px;
-            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.4s ease;
@@ -151,10 +200,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .modal-header h2 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
         .close-btn {
@@ -164,36 +217,61 @@
             font-size: 1.8rem;
             cursor: pointer;
             transition: transform 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
-        .close-btn:hover {
-            transform: scale(1.2);
+        .close-btn:active {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(0.9);
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
         }
 
         .modal-text {
             line-height: 1.7;
             color: #333;
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+
+        .modal-text p {
+            margin-bottom: 15px;
         }
 
         .modal-map {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #f9f5f0;
+            padding: 15px;
+            text-align: center;
         }
 
-        .modal-map img {
+        .map-placeholder {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 180px;
+            background: linear-gradient(135deg, #f5e3d4 0%, #e9d0b8 100%);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #8B4513;
+        }
+
+        .map-placeholder i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
         .map-caption {
@@ -201,17 +279,46 @@
             font-style: italic;
             color: #666;
             margin-top: 8px;
+            font-size: 0.9rem;
         }
 
-        .scroll-hint {
-            text-align: center;
-            color: #8B4513;
-            margin-top: 10px;
-            font-size: 0.9rem;
+        .ingredients {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
             justify-content: center;
-            gap: 8px;
+        }
+
+        .ingredient {
+            background: #f5e3d4;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #8B4513;
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .swipe-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(139, 69, 19, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .swipe-dot.active {
+            background-color: #8B4513;
+            transform: scale(1.2);
         }
 
         @keyframes fadeIn {
@@ -231,25 +338,11 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 768px) {
-            .timeline {
-                gap: 40px;
-            }
-            
-            .timeline-node {
-                width: 150px;
-            }
-            
-            .modal-body {
-                flex-direction: column;
-            }
-            
-            .header h1 {
-                font-size: 2.2rem;
-            }
-        }
-
         @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
             .timeline {
                 gap: 30px;
             }
@@ -263,9 +356,26 @@
                 height: 60px;
             }
             
-            .node-icon img {
-                width: 35px;
-                height: 35px;
+            .node-icon i {
+                font-size: 1.5rem;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .timeline-node {
+                width: 110px;
+            }
+            
+            .node-year {
+                font-size: 1rem;
+            }
+            
+            .node-title {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -279,9 +389,9 @@
     <div class="timeline-container">
         <div class="timeline">
             <!-- 时间轴节点 -->
-            <div class="timeline-node" data-year="秦汉时期" data-title="药食同源起源">
+            <div class="timeline-node active" data-year="秦汉时期" data-title="药食同源起源">
                 <div class="node-icon">
-                    <img src="../assets/images/1.jpg" alt="古书图标">
+                    <i class="fas fa-book"></i>
                 </div>
                 <div class="node-year">秦汉时期</div>
                 <div class="node-title">药食同源起源</div>
@@ -289,7 +399,7 @@
 
             <div class="timeline-node" data-year="唐宋时期" data-title="中原文化传入">
                 <div class="node-icon">
-                    <img src="../assets/images/2.jpg" alt="卷轴图标">
+                    <i class="fas fa-scroll"></i>
                 </div>
                 <div class="node-year">唐宋时期</div>
                 <div class="node-title">中原文化传入</div>
@@ -297,7 +407,7 @@
 
             <div class="timeline-node" data-year="明清时期" data-title="岭南特色形成">
                 <div class="node-icon">
-                    <img src="../assets/images/3.jpg" alt="古建筑图标">
+                    <i class="fas fa-landmark"></i>
                 </div>
                 <div class="node-year">明清时期</div>
                 <div class="node-title">岭南特色形成</div>
@@ -305,7 +415,7 @@
 
             <div class="timeline-node" data-year="民国时期" data-title="海南本土化">
                 <div class="node-icon">
-                    <img src="../assets/images/4.jpg" alt="椰子树图标">
+                    <i class="fas fa-palm-tree"></i>
                 </div>
                 <div class="node-year">民国时期</div>
                 <div class="node-title">海南本土化</div>
@@ -313,14 +423,23 @@
 
             <div class="timeline-node" data-year="现代" data-title="文化传承与创新">
                 <div class="node-icon">
-                    <img src="../assets/images/5.jpg" alt="现代图标">
+                    <i class="fas fa-utensils"></i>
                 </div>
                 <div class="node-year">现代</div>
                 <div class="node-title">文化传承与创新</div>
             </div>
         </div>
         <div class="scroll-hint">
-            <span>← 左右滑动查看更多 →</span>
+            <i class="fas fa-arrows-alt-h"></i>
+            <span>左右滑动查看更多</span>
+        </div>
+        
+        <div class="swipe-indicator">
+            <div class="swipe-dot active"></div>
+            <div class="swipe-dot"></div>
+            <div class="swipe-dot"></div>
+            <div class="swipe-dot"></div>
+            <div class="swipe-dot"></div>
         </div>
     </div>
 
@@ -336,9 +455,19 @@
                     <p>秦汉时期，岭南地区开始形成独特的饮食文化。清补凉的前身可以追溯到这一时期的中医"药食同源"理念。</p>
                     <p>当时人们发现，将多种具有药用价值的食材组合食用，不仅能够解暑降温，还能调理身体。这些食材包括绿豆、薏米、百合等，奠定了清补凉的基本配方。</p>
                     <p>《黄帝内经》中记载的"春夏养阳，秋冬养阴"理念，与清补凉夏季食用以清热祛湿、冬季食用以温补养生的特点相吻合。</p>
+                    
+                    <div class="ingredients">
+                        <div class="ingredient">绿豆</div>
+                        <div class="ingredient">薏米</div>
+                        <div class="ingredient">百合</div>
+                        <div class="ingredient">莲子</div>
+                    </div>
                 </div>
                 <div class="modal-map">
-                    <img id="modalMap" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=" alt="秦汉时期清补凉传播路径图">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>清补凉传播路径图</span>
+                    </div>
                     <div class="map-caption" id="modalMapCaption">秦汉时期清补凉相关食材在岭南地区的传播路径</div>
                 </div>
             </div>
@@ -351,11 +480,11 @@
         const modal = document.getElementById('historyModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalText = document.getElementById('modalText');
-        const modalMap = document.getElementById('modalMap');
         const modalMapCaption = document.getElementById('modalMapCaption');
         const closeBtn = document.querySelector('.close-btn');
+        const swipeDots = document.querySelectorAll('.swipe-dot');
 
-        // 历史数据 - 这里可以替换为您提供的GIF图片路径
+        // 历史数据
         const historyData = {
             "秦汉时期": {
                 title: "药食同源起源",
@@ -363,9 +492,13 @@
                     <p>秦汉时期，岭南地区开始形成独特的饮食文化。清补凉的前身可以追溯到这一时期的中医"药食同源"理念。</p>
                     <p>当时人们发现，将多种具有药用价值的食材组合食用，不仅能够解暑降温，还能调理身体。这些食材包括绿豆、薏米、百合等，奠定了清补凉的基本配方。</p>
                     <p>《黄帝内经》中记载的"春夏养阳，秋冬养阴"理念，与清补凉夏季食用以清热祛湿、冬季食用以温补养生的特点相吻合。</p>
+                    <div class="ingredients">
+                        <div class="ingredient">绿豆</div>
+                        <div class="ingredient">薏米</div>
+                        <div class="ingredient">百合</div>
+                        <div class="ingredient">莲子</div>
+                    </div>
                 `,
-                mapSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=",
-                // 替换为您的GIF图片路径，例如: "../assets/maps/qinhan.gif"
                 mapCaption: "秦汉时期清补凉相关食材在岭南地区的传播路径"
             },
             "唐宋时期": {
@@ -374,9 +507,13 @@
                     <p>唐宋时期，随着中原文化与岭南地区的交流日益频繁，清补凉的配方和制作工艺得到了丰富和发展。</p>
                     <p>这一时期，丝绸之路的繁荣带来了更多食材和香料，如红枣、桂圆等，这些食材逐渐融入清补凉的配方中。</p>
                     <p>唐代医学家孙思邈在《千金要方》中详细记载了多种食疗方剂，为清补凉的发展提供了理论支持。</p>
+                    <div class="ingredients">
+                        <div class="ingredient">红枣</div>
+                        <div class="ingredient">桂圆</div>
+                        <div class="ingredient">枸杞</div>
+                        <div class="ingredient">银耳</div>
+                    </div>
                 `,
-                mapSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=",
-                // 替换为您的GIF图片路径，例如: "../assets/maps/tangsong.gif"
                 mapCaption: "唐宋时期清补凉在中原与岭南之间的传播路径"
             },
             "明清时期": {
@@ -385,9 +522,13 @@
                     <p>明清时期，清补凉在岭南地区形成了独特的地方特色，成为夏季消暑的必备饮品。</p>
                     <p>随着海上贸易的发展，东南亚的椰浆、西米等食材传入，进一步丰富了清补凉的配料和口感。</p>
                     <p>这一时期，清补凉开始从药膳向甜品转变，更加注重口感和风味，逐渐成为大众喜爱的日常食品。</p>
+                    <div class="ingredients">
+                        <div class="ingredient">椰浆</div>
+                        <div class="ingredient">西米</div>
+                        <div class="ingredient">芋头</div>
+                        <div class="ingredient">红豆</div>
+                    </div>
                 `,
-                mapSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=",
-                // 替换为您的GIF图片路径，例如: "../assets/maps/mingqing.gif"
                 mapCaption: "明清时期清补凉在岭南地区的传播与演变"
             },
             "民国时期": {
@@ -396,9 +537,13 @@
                     <p>民国时期，随着海南岛的开发，清补凉在当地实现了进一步的本土化，形成了独特的海南风味。</p>
                     <p>海南丰富的热带水果资源，如芒果、菠萝、木瓜等，被加入清补凉中，创造了更加多样化的口味。</p>
                     <p>这一时期，清补凉在海南的街头巷尾随处可见，成为最具代表性的海南夏日甜品。</p>
+                    <div class="ingredients">
+                        <div class="ingredient">芒果</div>
+                        <div class="ingredient">菠萝</div>
+                        <div class="ingredient">木瓜</div>
+                        <div class="ingredient">西瓜</div>
+                    </div>
                 `,
-                mapSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=",
-                // 替换为您的GIF图片路径，例如: "../assets/maps/minguo.gif"
                 mapCaption: "民国时期清补凉在海南地区的本土化发展"
             },
             "现代": {
@@ -407,28 +552,39 @@
                     <p>现代社会中，清补凉不仅保留了传统配方和制作工艺，还不断创新，适应现代人的口味需求。</p>
                     <p>随着健康饮食理念的普及，清补凉的低糖、天然、养生特点受到越来越多消费者的青睐。</p>
                     <p>如今，清补凉已成为海南的文化符号之一，不仅在当地广受欢迎，还走向全国乃至世界，成为传播海南文化的重要载体。</p>
+                    <div class="ingredients">
+                        <div class="ingredient">仙草</div>
+                        <div class="ingredient">芋圆</div>
+                        <div class="ingredient">布丁</div>
+                        <div class="ingredient">椰果</div>
+                    </div>
                 `,
-                mapSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgODAwIDQwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2Y1ZjVmNSIvPjxwYXRoIGQ9Ik0xMDAgMTUwIEMxNTAgMTAwLCAyMDAgMTUwLCAyNTAgMTAwIiBzdHJva2U9IiM4QjQ1MTMiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjE1MCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzhCNDUxMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPue+juWbvTwvdGV4dD48dGV4dCB4PSIyNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QjQ1MTMiPuW3neW3neWtkDwvdGV4dD48L3N2Zz4=",
-                // 替换为您的GIF图片路径，例如: "../assets/maps/xiandai.gif"
                 mapCaption: "现代清补凉在全国及海外的传播路径"
             }
         };
 
         // 为每个时间轴节点添加点击事件
-        timelineNodes.forEach(node => {
+        timelineNodes.forEach((node, index) => {
             node.addEventListener('click', () => {
                 const year = node.getAttribute('data-year');
                 const data = historyData[year];
                 
                 if (data) {
+                    // 更新模态框内容
                     modalTitle.textContent = `${year} - ${data.title}`;
                     modalText.innerHTML = data.content;
-                    
-                    modalMap.src = data.mapSrc;
-                    modalMap.alt = `${year}清补凉传播路径图`;
                     modalMapCaption.textContent = data.mapCaption;
                     
+                    // 显示模态框
                     modal.style.display = 'flex';
+                    
+                    // 更新活动节点样式
+                    timelineNodes.forEach(n => n.classList.remove('active'));
+                    node.classList.add('active');
+                    
+                    // 更新指示点
+                    swipeDots.forEach(dot => dot.classList.remove('active'));
+                    swipeDots[index].classList.add('active');
                 }
             });
         });
@@ -444,6 +600,53 @@
                 modal.style.display = 'none';
             }
         });
+
+        // 添加触摸滑动支持
+        let startX = 0;
+        let currentIndex = 0;
+        
+        const timeline = document.querySelector('.timeline');
+        
+        timeline.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+        
+        timeline.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            
+            // 滑动阈值
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0 && currentIndex < timelineNodes.length - 1) {
+                    // 向右滑动
+                    currentIndex++;
+                } else if (diffX < 0 && currentIndex > 0) {
+                    // 向左滑动
+                    currentIndex--;
+                }
+                
+                // 更新活动节点
+                timelineNodes.forEach((node, index) => {
+                    if (index === currentIndex) {
+                        node.classList.add('active');
+                        // 触发点击事件以更新内容
+                        node.click();
+                    } else {
+                        node.classList.remove('active');
+                    }
+                });
+                
+                // 滚动到活动节点
+                timelineNodes[currentIndex].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        });
+
+        // 初始激活第一个节点
+        timelineNodes[0].click();
     </script>
 </body>
 </html>

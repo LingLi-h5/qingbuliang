@@ -2,189 +2,342 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>海南清补凉</title>
     <style>
-		* {
-		    margin: 0;
-		    padding: 0;
-		    box-sizing: border-box;
-		    font-family: "Microsoft YaHei", sans-serif;
-		}
-		
-		body {
-		    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-		    overflow: hidden;
-		    height: 100vh;
-		}
-		
-		.container {
-		    width: 100%;
-		    height: 100vh;
-		    position: relative;
-		}
-		
-		#loading-page {
-		    width: 100%;
-		    height: 100%;
-		    display: flex;
-		    flex-direction: column;
-		    justify-content: center;
-		    align-items: center;
-		    position: absolute;
-		    top: 0;
-		    left: 0;
-		    background: linear-gradient(135deg, rgba(255, 236, 210, 0.8) 0%, rgba(252, 182, 159, 0.8) 100%);
-		    transition: opacity 0.8s ease;
-		    z-index: 10;
-		}
-		
-		.background-art {
-		    position: absolute;
-		    top: 0;
-		    left: 0;
-		    width: 100%;
-		    height: 100%;
-		    z-index: 1;
-		    overflow: hidden;
-		}
-		
-		.background-art img {
-		    width: 100%;
-		    height: 100%;
-		    object-fit: cover;
-		}
-		
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow: hidden;
+            height: 100vh;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        
+        #loading-page {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.9) 0%, rgba(252, 182, 159, 0.9) 100%);
+            transition: opacity 0.8s ease;
+            z-index: 10;
+        }
+        
+        .background-art {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .background-art::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.7) 0%, rgba(252, 182, 159, 0.7) 100%);
+            z-index: 2;
+        }
+        
+        .background-art .pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 60% 10%, rgba(255, 255, 255, 0.3) 2px, transparent 2px);
+            background-size: 100px 100px;
+            z-index: 1;
+        }
+        
         .loading-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 90%;
             max-width: 800px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
             z-index: 15;
             position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: float 4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+            will-change: transform;
         }
         
         .title {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             color: #d35400;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
+            border-radius: 2px;
         }
         
         .ingredients-container {
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            gap: 12px;
         }
         
         .ingredient {
-           width: 80px;
-           height: 80px;
-           border-radius: 50%;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           font-size: 1.8rem;
-           color: white;
-           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-           opacity: 0;
-           transform: translateY(20px);
-           transition: all 0.5s ease;
-           overflow: hidden;
-       }
-       
-       /* 食材图片样式 */
-       .ingredient img {
-           width: 100%;
-           height: 100%;
-           object-fit: cover;
-           border-radius: 50%;
-       }
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .ingredient::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+            border-radius: 50%;
+        }
+        
+        /* 食材图片样式 */
+        .ingredient-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            z-index: 1;
+        }
         
         .loading-bar-container {
-           width: 100%;
-           height: 20px;
-           background-color: rgba(255,255,255,0.5);
-           border-radius: 10px;
-           overflow: hidden;
-           margin-bottom: 30px;
-           box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-       }
+            width: 100%;
+            height: 18px;
+            background-color: rgba(255,255,255,0.6);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
         
         .loading-bar {
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6, #1abc9c);
             border-radius: 10px;
-            transition: width 0.3s ease;
+            transition: width 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loading-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         .loading-text {
             font-size: 1.2rem;
             color: #d35400;
             margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
         }
         
         .enter-btn {
-            padding: 12px 40px;
-            background-color: #e67e22;
+            padding: 16px 45px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
             color: white;
             border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
+            border-radius: 35px;
+            font-size: 1.3rem;
             cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4);
+            font-weight: bold;
+            min-height: 55px;
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .enter-btn:hover {
-            background-color: #d35400;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        .enter-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+        }
+        
+        .enter-btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 3px 8px rgba(211, 84, 0, 0.4);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+            
+            .ingredient {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+            
+            .loading-content {
+                padding: 20px 15px;
+            }
+            
+            .enter-btn {
+                padding: 14px 35px;
+                font-size: 1.2rem;
+                min-height: 50px;
+                min-width: 180px;
+            }
+            
+            .ingredients-container {
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .ingredient {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .ingredients-container {
+                gap: 8px;
+            }
+            
+            .loading-content {
+                padding: 18px 12px;
+            }
+        }
+        
+        /* 防止长按菜单 */
+        .loading-content, .enter-btn, .ingredient {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        /* 优化浮动动画效果 - 更流畅 */
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px); 
+            }
+            50% { 
+                transform: translateY(-20px); 
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 自定义画作背景 -->
+        <!-- 背景图案 -->
         <div class="background-art">
-            <!-- 请将下面的图片路径替换为您自己的背景图片 -->
-            <img src="assets/images/1.jpg" alt="海南清补凉背景画作"/>
+            <div class="pattern"></div>
         </div>
         
         <!-- 加载页面 -->
         <div id="loading-page">
             <div class="loading-content">
-                <h1 class="title">清补凉</h1>
+                <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
                     <!-- 请将下面的图片路径替换为您自己绘制的食材图片 -->
                     <div class="ingredient">
-                        <img src="assets/images/1.jpg" alt="红豆">
+                        <img src="assets/images/1.jpg" alt="红豆" class="ingredient-img">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/2.jpg" alt="绿豆">
+                        <img src="assets/images/2.jpg" alt="绿豆" class="ingredient-img">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/3.jpg" alt="薏米">
+                        <img src="assets/images/3.jpg" alt="薏米" class="ingredient-img">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/4.jpg" alt="西米">
+                        <img src="assets/images/4.jpg" alt="西米" class="ingredient-img">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/5.jpg" alt="花生">
-                    </div>
-                    <div class="ingredient">
-                        <img src="assets/images/1.jpg" alt="椰奶">
+                        <img src="assets/images/5.jpg" alt="花生" class="ingredient-img">
                     </div>
                 </div>
                 
@@ -193,9 +346,10 @@
                 </div>
                 
                 <div class="loading-text">加载中...</div>
-                <button class="enter-btn" id="enter-btn">进入海南清补凉</button>
+                <button class="enter-btn" id="enter-btn">品尝海南清补凉</button>
             </div>
         </div>
+    </div>
         
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -208,14 +362,14 @@
             // 模拟加载过程
             let progress = 0;
             const loadingInterval = setInterval(() => {
-                progress += Math.random() * 10;
+                progress += Math.random() * 12;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(loadingInterval);
                     
                     // 加载完成后的动画
                     setTimeout(() => {
-                        loadingText.textContent = "加载完成！";
+                        loadingText.textContent = "加载完成！准备品尝美味...";
                         enterBtn.style.opacity = "1";
                         enterBtn.style.transform = "translateY(0)";
                     }, 500);
@@ -244,22 +398,39 @@
                     ingredients[4].style.opacity = "1";
                     ingredients[4].style.transform = "translateY(0)";
                 }
-                if (progress > 80) {
-                    ingredients[5].style.opacity = "1";
-                    ingredients[5].style.transform = "translateY(0)";
-                }
                 
             }, 300);
             
             // 点击进入按钮
             enterBtn.addEventListener('click', function() {
+                // 添加点击反馈
+                this.style.transform = "scale(0.95)";
+                
                 loadingPage.style.opacity = "0";
                 loadingPage.style.pointerEvents = "none";
                 
                 setTimeout(() => {
-                    // 在淡出动画完成后跳转
                     window.location.href = './page/page01.html';
                 }, 800);
+            });
+            
+            // 防止双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // 添加触摸反馈
+            enterBtn.addEventListener('touchstart', function() {
+                this.style.transform = "scale(0.95)";
+            });
+            
+            enterBtn.addEventListener('touchend', function() {
+                this.style.transform = "scale(1)";
             });
         });
     </script>
