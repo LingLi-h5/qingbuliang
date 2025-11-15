@@ -2,14 +2,15 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清补凉食材互动展示</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -19,54 +20,59 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
+            touch-action: manipulation;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         .header h1 {
             color: #8B4513;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
 
         .header p {
             color: #654321;
-            font-size: 1.2rem;
-            max-width: 600px;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            max-width: 100%;
+            line-height: 1.5;
+            padding: 0 10px;
         }
 
         .container {
             display: flex;
-            width: 90%;
-            max-width: 1200px;
-            justify-content: space-between;
+            flex-direction: column;
+            width: 100%;
+            max-width: 500px;
             align-items: center;
             position: relative;
         }
 
         .bowl-container {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 100%;
+            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 20px;
         }
 
         .bowl {
-            width: 300px;
-            height: 150px;
+            width: 220px;
+            height: 110px;
             background: linear-gradient(to right, #f5f5dc, #e6e6c5);
             border-radius: 50% 50% 40% 40%;
             box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.2),
-                inset 0 -10px 20px rgba(0, 0, 0, 0.1);
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                inset 0 -8px 16px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 2;
             display: flex;
@@ -78,10 +84,10 @@
         .bowl::after {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
             border-radius: 50% 50% 40% 40%;
             background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
             z-index: 3;
@@ -97,29 +103,29 @@
 
         .ingredient {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             z-index: 10;
             border: 2px solid transparent;
         }
 
-        .ingredient:hover {
+        .ingredient:active {
             transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
         }
 
         /* 选中食材的高亮边框和放大效果 */
         .ingredient.selected {
             border: 3px solid #8B4513;
             transform: scale(1.15);
-            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
         }
 
         .ingredient img {
@@ -129,57 +135,63 @@
         }
 
         .info-card {
-            width: 350px;
+            width: 100%;
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             opacity: 0;
-            transform: translateX(50px);
+            transform: translateY(20px);
             transition: opacity 0.5s, transform 0.5s;
             position: relative;
             z-index: 5;
+            margin-bottom: 20px;
         }
 
         .info-card.active {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .info-card h2 {
             color: #8B4513;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
+            margin-bottom: 12px;
+            font-size: 1.5rem;
             border-bottom: 2px solid #f0c9a6;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            font-weight: 600;
         }
 
         .info-card h3 {
             color: #8B4513;
-            margin: 15px 0 10px;
-            font-size: 1.2rem;
+            margin: 12px 0 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .info-card p {
             color: #654321;
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
 
         .info-card ul {
-            padding-left: 20px;
+            padding-left: 18px;
             color: #654321;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .info-card li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .ingredient-in-bowl {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -204,7 +216,7 @@
                 opacity: 1;
             }
             50% {
-                transform: scale(1.5) translate(var(--tx), var(--ty));
+                transform: scale(1.3) translate(var(--tx), var(--ty));
                 opacity: 0.8;
             }
             100% {
@@ -218,14 +230,15 @@
         }
 
         .instructions {
-            margin-top: 40px;
+            margin-top: 20px;
             text-align: center;
             color: #654321;
-            font-size: 1.1rem;
-            max-width: 800px;
-            padding: 15px;
+            font-size: 0.9rem;
+            width: 100%;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
+            border-radius: 8px;
+            line-height: 1.5;
         }
 
         /* 默认状态提示 */
@@ -236,13 +249,14 @@
             transform: translate(-50%, -50%);
             text-align: center;
             color: #8B4513;
-            font-size: 1.2rem;
+            font-size: 1rem;
             z-index: 1;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: opacity 0.5s;
+            width: 80%;
         }
 
         .default-state.hidden {
@@ -250,35 +264,53 @@
             pointer-events: none;
         }
 
-        /* 食材特定样式 */
-        .mung-bean { background: linear-gradient(135deg, #90EE90, #7CFC00); top: 10%; left: 10%; }
-        .red-bean { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 20%; }
-        .jobstears { background: linear-gradient(135deg, #F5DEB3, #D2B48C); bottom: 20%; left: 15%; }
+        /* 食材特定样式 - 针对手机重新布局 */
+        .mung-bean { background: linear-gradient(135deg, #90EE90, #7CFC00); top: 10%; left: 5%; }
+        .red-bean { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 5%; }
+        .jobstears { background: linear-gradient(135deg, #F5DEB3, #D2B48C); bottom: 20%; left: 10%; }
         .macaroni { background: linear-gradient(135deg, #FFE4B5, #FFD700); bottom: 25%; right: 10%; }
-        .wintermelon { background: linear-gradient(135deg, #98FB98, #32CD32); top: 30%; left: 25%; }
+        .wintermelon { background: linear-gradient(135deg, #98FB98, #32CD32); top: 30%; left: 20%; }
         .red-date { background: linear-gradient(135deg, #8B0000, #A52A2A); top: 40%; right: 15%; }
-        .quail-egg { background: linear-gradient(135deg, #F5F5DC, #FFF8DC); bottom: 10%; right: 30%; }
+        .quail-egg { background: linear-gradient(135deg, #F5F5DC, #FFF8DC); bottom: 10%; right: 25%; }
 
-        /* 响应式设计 */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .info-card {
-                margin-top: 30px;
-                width: 100%;
-                max-width: 400px;
-            }
-            
+        /* 响应式设计 - 针对更小屏幕优化 */
+        @media (max-width: 380px) {
             .bowl-container {
-                width: 300px;
-                height: 300px;
+                height: 250px;
             }
             
             .bowl {
-                width: 220px;
-                height: 110px;
+                width: 200px;
+                height: 100px;
+            }
+            
+            .ingredient {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .info-card {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .ingredient {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .bowl {
+                width: 180px;
+                height: 90px;
             }
         }
     </style>
@@ -325,7 +357,7 @@
 
         <div class="info-card" id="info-card">
             <h2>选择一种食材</h2>
-            <p>点击左侧的食材图标，了解其营养功效和食用方法。</p>
+            <p>点击上方的食材图标，了解其营养功效和食用方法。</p>
         </div>
     </div>
 
