@@ -2,43 +2,695 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>清补凉产业链可视化</title>
-    <script src="../js/echarts.min.js"></script>
-     <link rel="stylesheet" href="../css/main.css">
-	 <link rel="stylesheet" href="../css/page6.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>苏东坡与清补凉 - 交互对话</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="../css/main.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            color: #5a3921;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #654321;
+            font-size: 0.95rem;
+            max-width: 100%;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .dialogue-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dialogue-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+            padding-right: 8px;
+        }
+
+        .dialogue-bubble {
+            padding: 12px 15px;
+            border-radius: 16px;
+            max-width: 85%;
+            text-align: left;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+            font-size: 0.95rem;
+        }
+
+        .character {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .sufang {
+            align-self: flex-start;
+            background: #e8f4f8;
+            border: 2px solid #4a90a4;
+        }
+
+        .sufang .character {
+            color: #2c6b7c;
+        }
+
+        .dongpo {
+            align-self: flex-end;
+            background: #fff0e0;
+            border: 2px solid #d4a574;
+        }
+
+        .dongpo .character {
+            color: #8B4513;
+        }
+
+        .villager {
+            align-self: flex-start;
+            background: #f0f8e8;
+            border: 2px solid #7a9c5e;
+        }
+
+        .villager .character {
+            color: #556b2f;
+        }
+
+        .choice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.5s ease;
+            min-height: 50px;
+        }
+
+        .choice-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.5);
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .scene-indicator {
+            color: #654321;
+            margin-bottom: 12px;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .thinking-indicator {
+            text-align: center;
+            padding: 12px;
+            color: #8B4513;
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .completion-message {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .restart-btn {
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
+            margin-top: 15px;
+            animation: fadeIn 0.8s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            margin: 15px auto 0;
+            min-height: 45px;
+        }
+
+        .restart-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.5);
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .dialogue-container {
+                padding: 15px;
+                min-height: 320px;
+            }
+            
+            .dialogue-bubble {
+                padding: 10px 12px;
+                max-width: 90%;
+                font-size: 0.9rem;
+            }
+            
+            .character {
+                font-size: 0.85rem;
+            }
+            
+            .choice-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                min-height: 45px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .dialogue-bubble {
+                max-width: 95%;
+                font-size: 0.85rem;
+            }
+            
+            .choice-btn {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .dialogue-container {
+                min-height: 250px;
+            }
+            
+            .dialogue-content {
+                max-height: 180px;
+            }
+            
+            .dialogue-bubble {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <h1>清补凉产业链可视化</h1>
-        <p>探索清补凉如何带动从原料种植、生产加工到品牌销售的全产业链发展</p>
-    </div>
-
     <div class="container">
-        <div class="chart-container half-width">
-            <h2 class="chart-title">各环节产值占比</h2>
-            <div id="pieChart" class="chart"></div>
+        <div class="header">
+            <h1>苏东坡与清补凉</h1>
+            <p>扮演苏东坡的书童"苏方"，体验这段美食奇缘</p>
         </div>
-
-        <div class="chart-container half-width">
-            <h2 class="chart-title">产业链就业人数分布</h2>
-            <div id="barChart" class="chart"></div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
         </div>
-
-        <div class="chart-container full-width">
-            <h2 class="chart-title">产业链年产值增长趋势</h2>
-            <div id="lineChart" class="chart"></div>
+        
+        <div class="scene-indicator" id="sceneIndicator">第一幕：初到岭南</div>
+        
+        <div class="dialogue-container">
+            <div class="dialogue-content" id="dialogueContent">
+                <!-- 对话内容将通过JavaScript动态添加 -->
+            </div>
+            
+            <div class="choice-container" id="choiceContainer">
+                <!-- 选择按钮将通过JavaScript动态添加 -->
+            </div>
+        </div>
+        
+        <div class="completion-message" id="completionMessage">
+            <h2 style="color: #8B4513; margin-bottom: 12px; font-size: 1.3rem;">对话完成！</h2>
+            <p style="color: #654321; line-height: 1.5; margin-bottom: 15px; font-size: 0.9rem;">
+                恭喜你完成了与苏东坡的对话体验！<br>
+                通过这次互动，你了解了清补凉的养生智慧<br>
+                以及苏东坡对这份岭南美食的赞叹。
+            </p>
+            <button class="restart-btn" id="restartBtn">
+                <i class="fas fa-redo"></i> 重新开始
+            </button>
         </div>
     </div>
-<!-- 页面跳转箭头 -->
-	<div class="page-nav">
-	    <a href="page06.html" class="nav-arrow nav-prev">
-	        <span class="arrow-icon">←</span>
-	    </a>
-	    <a href="00000000.html" class="nav-arrow nav-next">
-	        <span class="arrow-icon">→</span>
-	    </a>
-	</div>
-	<script src="../js/page6.js"></script>
+
+    <script>
+        // 缓存DOM元素
+        let dialogueContent, choiceContainer, progressBar, sceneIndicator;
+        let currentDialogueIndex = 0;
+
+        // 重新整理对话数据，确保所有路径完整
+        const dialogueData = [
+            // 第0步 - 开始
+            {
+                scene: "第一幕：初到岭南",
+                progress: 10,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "苏方啊，这岭南暑气实在难耐，连日烦热，食不知味，夜不能寐...你可有什么好法子？",
+                choices: [
+                    {
+                        text: "建议大人饮用冰镇酸梅汤",
+                        next: 1,
+                        response: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊..."
+                    },
+                    {
+                        text: "询问当地百姓有何消暑良方",
+                        next: 2,
+                        response: "此计甚好！速去打听当地有何消暑妙方。"
+                    }
+                ]
+            },
+            // 第1步 - 选择冰镇酸梅汤后的回应
+            {
+                scene: "第一幕：初到岭南",
+                progress: 20,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊...",
+                choices: [
+                    {
+                        text: "那我们去问问当地百姓吧",
+                        next: 2,
+                        response: "善！就依你所言。"
+                    }
+                ]
+            },
+            // 第2步 - 苏方打听消息
+            {
+                scene: "第二幕：百姓献方",
+                progress: 30,
+                speaker: "苏方",
+                type: "sufang",
+                message: "大人，我打听到当地百姓在暑热时常用一种叫'清补凉'的食饮，据说既能解暑又能补益。",
+                choices: [
+                    {
+                        text: "详细询问清补凉的配方",
+                        next: 3,
+                        response: "当地老农说，清补凉用绿豆、薏米、莲子等多种食材配制而成。"
+                    }
+                ]
+            },
+            // 第3步 - 苏东坡感兴趣
+            {
+                scene: "第二幕：百姓献方",
+                progress: 40,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "哦？竟有如此妙物？速请那位老农前来一叙！",
+                choices: [
+                    {
+                        text: "邀请老农前来介绍清补凉",
+                        next: 4,
+                        response: "老农已到，正在门外等候。"
+                    }
+                ]
+            },
+            // 第4步 - 老农介绍清补凉
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 50,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "先生，此乃我们岭南的'清补凉'。以绿豆清热，薏米祛湿，莲子安神，再配以百合、红枣、桂圆等，最后用椰汁调和。",
+                choices: [
+                    {
+                        text: "询问为何要如此搭配食材",
+                        next: 5,
+                        response: "这正是清补凉的智慧所在——清而不寒，补而不燥。"
+                    },
+                    {
+                        text: "请老农详细讲解每种食材的功效",
+                        next: 6,
+                        response: "容我细细道来每种食材的妙用..."
+                    }
+                ]
+            },
+            // 第5步 - 询问搭配原理
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 60,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "这正是清补凉的智慧所在——清而不寒，补而不燥。暑热需清，但不可过寒；体虚当补，但不可温燥。",
+                choices: [
+                    {
+                        text: "赞叹这份养生智慧",
+                        next: 7,
+                        response: "大人说得是，这正是老祖宗传下来的平衡之道。"
+                    }
+                ]
+            },
+            // 第6步 - 详细讲解食材
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 65,
+                speaker: "老农阿桂",
+                type: "villager",
+                message: "容我细细道来：绿豆清热解暑，薏米祛湿健脾，莲子养心安神，百合润肺止咳，红枣桂圆补血益气...各种食材相得益彰。",
+                choices: [
+                    {
+                        text: "请大人品尝清补凉",
+                        next: 8,
+                        response: "快请大人尝尝这清补凉的滋味如何。"
+                    }
+                ]
+            },
+            // 第7步 - 赞叹养生智慧
+            {
+                scene: "第三幕：清补凉的智慧",
+                progress: 70,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "妙哉！此物蕴含中医'扶正祛邪'之理，清补兼顾，实为养生上品！",
+                choices: [
+                    {
+                        text: "请大人品尝清补凉",
+                        next: 8,
+                        response: "快请大人尝尝这清补凉的滋味如何。"
+                    }
+                ]
+            },
+            // 第8步 - 品尝清补凉
+            {
+                scene: "第四幕：文人的赞叹",
+                progress: 80,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "（品尝后）妙哉！清凉甘润，暑气顿消。此物之妙，不仅在味，更在其理！",
+                choices: [
+                    {
+                        text: "询问大人有何感悟",
+                        next: 9,
+                        response: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！"
+                    }
+                ]
+            },
+            // 第9步 - 苏东坡的感悟
+            {
+                scene: "第四幕：文人的赞叹",
+                progress: 90,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！我在中原时，只知以冰镇之物解暑，却不知暑热伤人元气，一味寒凉，反伤脾胃。",
+                choices: [
+                    {
+                        text: "请大人为此物赋诗",
+                        next: 10,
+                        response: "待我细细品味，必当赋诗以记。"
+                    }
+                ]
+            },
+            // 第10步 - 赋诗
+            {
+                scene: "第五幕：赋诗传世",
+                progress: 95,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "（沉思片刻，挥毫写下）<br><br>'岭南暑气盛，清补凉意长。<br>绿豆消烦热，薏米祛湿强。<br>莲子安神志，百合润肺肠。<br>天地藏至味，民间有妙方。'",
+                choices: [
+                    {
+                        text: "赞叹大人的诗才",
+                        next: 11,
+                        response: "大人此诗将清补凉的妙处描绘得淋漓尽致！"
+                    }
+                ]
+            },
+            // 第11步 - 苏方赞叹诗才
+            {
+                scene: "第五幕：赋诗传世",
+                progress: 98,
+                speaker: "苏方",
+                type: "sufang",
+                message: "大人此诗将清补凉的妙处描绘得淋漓尽致！",
+                choices: [
+                    {
+                        text: "询问下一步安排",
+                        next: 12,
+                        response: "大人，我们接下来该如何？"
+                    }
+                ]
+            },
+            // 第12步 - 最终指示
+            {
+                scene: "第五幕：赋诗传世",
+                progress: 100,
+                speaker: "苏东坡",
+                type: "dongpo",
+                message: "苏方，速将配方和此诗一并记下，寄与子由，让他也知岭南有此养生至味。这清补凉不仅解暑，更蕴含了'中和之道'的哲理啊！",
+                choices: [
+                    {
+                        text: "完成对话",
+                        next: -1,
+                        response: "是，大人！我这就去办。"
+                    }
+                ]
+            }
+        ];
+
+        // 初始化对话
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化时缓存元素
+            dialogueContent = document.getElementById('dialogueContent');
+            choiceContainer = document.getElementById('choiceContainer');
+            progressBar = document.getElementById('progress');
+            sceneIndicator = document.getElementById('sceneIndicator');
+            
+            loadDialogue(currentDialogueIndex);
+            
+            // 重新开始按钮事件
+            document.getElementById('restartBtn').addEventListener('click', function() {
+                currentDialogueIndex = 0;
+                document.getElementById('completionMessage').style.display = 'none';
+                loadDialogue(currentDialogueIndex);
+            });
+
+            // 防止页面缩放
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            });
+
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+
+        // 加载对话函数
+        function loadDialogue(index) {
+            if (index < 0) {
+                // 显示完成消息
+                document.getElementById('completionMessage').style.display = 'block';
+                // 清空对话和选择区域
+                dialogueContent.innerHTML = '';
+                choiceContainer.innerHTML = '';
+                return;
+            }
+            
+            if (index >= dialogueData.length) {
+                console.error("无效的对话索引:", index);
+                return;
+            }
+            
+            const dialogue = dialogueData[index];
+            
+            progressBar.style.width = `${dialogue.progress}%`;
+            sceneIndicator.textContent = dialogue.scene;
+            
+            dialogueContent.innerHTML = '';
+            choiceContainer.innerHTML = '';
+            
+            const bubble = document.createElement('div');
+            bubble.className = `dialogue-bubble ${dialogue.type}`;
+            
+            let iconClass = "fas fa-user";
+            if (dialogue.type === "dongpo") iconClass = "fas fa-user-tie";
+            if (dialogue.type === "villager") iconClass = "fas fa-user-friends";
+            
+            bubble.innerHTML = `
+                <div class="character">
+                    <i class="${iconClass}"></i>${dialogue.speaker}
+                </div>
+                <div>${dialogue.message}</div>
+            `;
+            dialogueContent.appendChild(bubble);
+            
+            dialogue.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.innerHTML = `<i class="fas fa-comment"></i>${choice.text}`;
+                button.setAttribute('aria-label', choice.text);
+                
+                button.addEventListener('click', function() {
+                    const allButtons = choiceContainer.querySelectorAll('.choice-btn');
+                    allButtons.forEach(btn => {
+                        btn.disabled = true;
+                    });
+                    
+                    if (choice.response) {
+                        const userBubble = document.createElement('div');
+                        userBubble.className = 'dialogue-bubble sufang';
+                        userBubble.innerHTML = `
+                            <div class="character">
+                                <i class="fas fa-user"></i>苏方
+                            </div>
+                            <div>${choice.response}</div>
+                        `;
+                        dialogueContent.appendChild(userBubble);
+                    }
+                    
+                    const thinkingIndicator = document.createElement('div');
+                    thinkingIndicator.className = 'thinking-indicator';
+                    thinkingIndicator.innerHTML = '<i class="fas fa-spinner"></i> 思考中...';
+                    choiceContainer.appendChild(thinkingIndicator);
+                    
+                    dialogueContent.scrollTop = dialogueContent.scrollHeight;
+                    
+                    setTimeout(() => {
+                        currentDialogueIndex = choice.next;
+                        loadDialogue(currentDialogueIndex);
+                    }, 1500);
+                });
+                choiceContainer.appendChild(button);
+            });
+            
+            dialogueContent.scrollTop = dialogueContent.scrollHeight;
+        }
+    </script>
+	<!-- 页面跳转箭头 -->
+		<div class="page-nav">
+		    <a href="page06.html" class="nav-arrow nav-prev">
+		        <span class="arrow-icon">←</span>
+		    </a>
+		    <a href="00000000.html" class="nav-arrow nav-next">
+		        <span class="arrow-icon">→</span>
+		    </a>
+		</div>
 </body>
 </html>
