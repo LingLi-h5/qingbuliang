@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清补凉第一产业 - 乡村振兴就业分析</title>
     <script src="../js/echarts.min.js"></script>
-	<link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -24,6 +25,7 @@
             align-items: center;
             padding: 12px;
             touch-action: manipulation;
+            position: relative;
         }
 
         .container {
@@ -183,7 +185,184 @@
             font-size: 1.2rem;
         }
 
+        /* 浮动操作按钮样式 - 与page6完全一致 */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .fab-main {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            font-size: 26px;
+            position: relative;
+            z-index: 101;
+        }
+
+        .fab-main:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            opacity: 0;
+            transform: translateY(25px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .fab-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .fab-item {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            color: #8B4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .fab-item:hover {
+            transform: scale(1.15);
+            background: #f5e3d4;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
+        }
+
+        .fab-label {
+            position: absolute;
+            right: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            font-weight: 500;
+        }
+
+        .fab-item:hover .fab-label {
+            opacity: 1;
+        }
+
+        /* 页面指示器 */
+        .page-indicator {
+            position: fixed;
+            bottom: 25px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            z-index: 99;
+        }
+
+        .page-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(139, 69, 19, 0.4);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .page-dot.active {
+            background-color: #8B4513;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
+        }
+
         /* 移动端优化 */
+        @media (max-width: 768px) {
+            .fab-container {
+                bottom: 25px;
+                right: 25px;
+            }
+            
+            .fab-main {
+                width: 58px;
+                height: 58px;
+                font-size: 24px;
+            }
+            
+            .fab-item {
+                width: 60px;
+                height: 60px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+            
+            .header {
+                margin-bottom: 30px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .fab-container {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .fab-main {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            
+            .fab-item {
+                width: 55px;
+                height: 55px;
+                font-size: 13px;
+            }
+        }
+
         @media (max-width: 380px) {
             .header {
                 padding: 20px 15px;
@@ -264,7 +443,52 @@
         </div>
     </div>
 
+    <!-- 浮动操作按钮 - 与page6完全一致 -->
+    <div class="fab-container">
+        <button class="fab-main" id="fabMain">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="page0.html" class="fab-item" id="menuBtn">
+                菜单
+            </a>
+        </div>
+    </div>
+
+    <!-- 页面指示器 -->
+    <div class="page-indicator">
+        <div class="page-dot"></div>
+        <div class="page-dot"></div>
+        <div class="page-dot active"></div>
+        <div class="page-dot"></div>
+    </div>
+
     <script>
+        // 浮动操作按钮功能 - 与page6完全一致
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        
+        fabMain.addEventListener('click', function() {
+            fabMenu.classList.toggle('open');
+        });
+
+        // 点击页面其他地方关闭FAB菜单
+        document.addEventListener('click', function(e) {
+            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
+                fabMenu.classList.remove('open');
+            }
+        });
+
+        // 页面指示器交互
+        const pageDots = document.querySelectorAll('.page-dot');
+        pageDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                pageDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                // 这里可以添加页面跳转逻辑
+            });
+        });
+
         // 初始化ECharts实例
         const chartDom = document.getElementById('sunburst-chart');
         const myChart = echarts.init(chartDom, null, {
@@ -483,14 +707,5 @@
             lastTouchEnd = now;
         }, false);
     </script>
-	<!-- 页面跳转箭头 -->
-	<div class="page-nav">
-	    <a href="page03.html" class="nav-arrow nav-prev">
-	        <span class="arrow-icon">←</span>
-	    </a>
-	    <a href="page04.html" class="nav-arrow nav-next">
-	        <span class="arrow-icon">→</span>
-	    </a>
-	</div>
 </body>
 </html>
