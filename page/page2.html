@@ -2,14 +2,255 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 添加移动端触摸优化 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>清补凉在中国分布的可视化地图</title>
 	<link rel="stylesheet" href="../css/main.css">
-	<link rel="stylesheet" href="../css/page2.css">
-	<!-- 引入ECharts库（离线版本） -->
-	<script src="../js/echarts.min.js"></script>
-	<script src="../js/china.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            margin-top: 60px;
+            margin-bottom: 70px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            z-index: 10;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            padding: 0 10px;
+        }
+
+        .title h1 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .title p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            margin-right: 6px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 0.7rem;
+            white-space: nowrap;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .page-nav {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .nav-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFD26F 0%, #FFA585 100%);
+            color: white;
+            text-decoration: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 133, 0.3);
+            pointer-events: all;
+            backdrop-filter: blur(10px);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-arrow:active {
+            transform: translateY(-1px) scale(0.95);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .arrow-icon {
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        /* 横屏优化 */
+        @media (orientation: landscape) {
+            .title h1 {
+                font-size: 1.1rem;
+            }
+            
+            .title p {
+                font-size: 0.8rem;
+            }
+            
+            #map {
+                margin-top: 50px;
+                margin-bottom: 60px;
+            }
+            
+            .legend {
+                bottom: 15px;
+                padding: 6px 10px;
+                gap: 10px;
+            }
+            
+            .legend-text {
+                font-size: 0.65rem;
+            }
+            
+            .legend-color {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-width: 320px) {
+            .title h1 {
+                font-size: 1.1rem;
+            }
+            
+            .title p {
+                font-size: 0.8rem;
+            }
+            
+            .legend {
+                padding: 6px 10px;
+                gap: 8px;
+            }
+            
+            .legend-color {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+            }
+            
+            .legend-text {
+                font-size: 0.65rem;
+            }
+            
+            .page-nav {
+                padding: 0 12px;
+            }
+            
+            .nav-arrow {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .arrow-icon {
+                font-size: 20px;
+            }
+        }
+
+        /* 大屏幕优化 */
+        @media (min-width: 768px) and (min-height: 800px) {
+            .title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .title p {
+                font-size: 1rem;
+            }
+            
+            .legend {
+                padding: 10px 15px;
+                gap: 15px;
+            }
+            
+            .legend-text {
+                font-size: 0.8rem;
+            }
+            
+            .legend-color {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,24 +260,230 @@
         </div>
         <div id="map"></div>
         <div class="legend">
-            <div class="legend-item" data-type="high">
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #ff6b6b;"></div>
                 <div class="legend-text">高分布区域</div>
             </div>
-            <div class="legend-item" data-type="medium">
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #ffa726;"></div>
                 <div class="legend-text">中分布区域</div>
             </div>
-            <div class="legend-item" data-type="low">
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #4ecdc4;"></div>
                 <div class="legend-text">低分布区域</div>
             </div>
-            <div class="legend-item" data-type="none">
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #c7c7c7;"></div>
                 <div class="legend-text">无分布区域</div>
             </div>
         </div>
     </div>
+    
+    <!-- 页面跳转箭头 -->
+    <div class="page-nav">
+        <a href="page02.html" class="nav-arrow nav-prev">
+            <span class="arrow-icon">←</span>
+        </a>
+        <a href="page03.html" class="nav-arrow nav-next">
+            <span class="arrow-icon">→</span>
+        </a>
+    </div>
+
+    <!-- 引入ECharts库 -->
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/china.js"></script>
+
+    <script>
+        // 模拟清补凉在中国的分布数据
+        const qingbuliangData = [
+            {name: '海南', value: 95, type: 'high', description: '清补凉的发源地，街头巷尾随处可见'},
+            {name: '广东', value: 85, type: 'high', description: '深受欢迎的夏季甜品，各大糖水店均有售'},
+            {name: '广西', value: 80, type: 'high', description: '与海南类似，是当地传统甜品'},
+            {name: '福建', value: 70, type: 'medium', description: '主要在闽南地区流行'},
+            {name: '台湾', value: 65, type: 'medium', description: '受闽南文化影响，有一定市场'},
+            {name: '云南', value: 60, type: 'medium', description: '部分地区有售，尤其旅游区'},
+            {name: '贵州', value: 55, type: 'medium', description: '逐渐流行的地方特色甜品'},
+            {name: '湖南', value: 45, type: 'low', description: '主要在大城市的部分甜品店有售'},
+            {name: '湖北', value: 40, type: 'low', description: '少数甜品店引进的地方特色'},
+            {name: '四川', value: 35, type: 'low', description: '偶尔可见的特色甜品'},
+            {name: '江西', value: 30, type: 'low', description: '少数地方有售'},
+            {name: '浙江', value: 25, type: 'low', description: '主要在大城市的部分店铺'},
+            {name: '江苏', value: 20, type: 'low', description: '少数甜品店有售'},
+            {name: '上海', value: 15, type: 'low', description: '少数特色甜品店引进'},
+            {name: '北京', value: 10, type: 'low', description: '少数海南菜餐厅有售'},
+            {name: '天津', value: 8, type: 'low', description: '极少数店铺有售'},
+            {name: '河北', value: 5, type: 'none', description: '几乎无分布'},
+            {name: '河南', value: 5, type: 'none', description: '几乎无分布'},
+            {name: '山东', value: 5, type: 'none', description: '几乎无分布'},
+            {name: '山西', value: 3, type: 'none', description: '几乎无分布'},
+            {name: '陕西', value: 3, type: 'none', description: '几乎无分布'},
+            {name: '甘肃', value: 2, type: 'none', description: '几乎无分布'},
+            {name: '青海', value: 1, type: 'none', description: '几乎无分布'},
+            {name: '新疆', value: 1, type: 'none', description: '几乎无分布'},
+            {name: '西藏', value: 1, type: 'none', description: '几乎无分布'},
+            {name: '内蒙古', value: 2, type: 'none', description: '几乎无分布'},
+            {name: '黑龙江', value: 3, type: 'none', description: '几乎无分布'},
+            {name: '吉林', value: 3, type: 'none', description: '几乎无分布'},
+            {name: '辽宁', value: 4, type: 'none', description: '几乎无分布'},
+            {name: '重庆', value: 20, type: 'low', description: '少数甜品店有售'},
+            {name: '安徽', value: 15, type: 'low', description: '少数地方有售'},
+            {name: '香港', value: 50, type: 'medium', description: '部分糖水店有售'},
+            {name: '澳门', value: 45, type: 'medium', description: '部分甜品店有售'}
+        ];
+
+        // 初始化ECharts实例
+        const chartDom = document.getElementById('map');
+        const myChart = echarts.init(chartDom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+        // 配置项 - 针对移动端优化
+        const option = {
+            title: {
+                show: false
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    if (params.data) {
+                        return `<div style="font-size: 12px; line-height: 1.4;">
+                            <b style="font-size: 13px;">${params.name}</b><br/>
+                            <span style="color: #666;">普及度: ${params.data.value}%</span><br/>
+                            <span style="color: #888; font-size: 11px;">${params.data.description}</span>
+                        </div>`;
+                    }
+                    return `<b>${params.name}</b><br/>暂无数据`;
+                },
+                confine: true,
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: '#8B4513',
+                textStyle: {
+                    color: '#333',
+                    fontSize: 12
+                },
+                extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px;'
+            },
+            visualMap: {
+                type: 'piecewise',
+                pieces: [
+                    {min: 80, max: 100, label: '高分布区域', color: '#ff6b6b'},
+                    {min: 50, max: 79, label: '中分布区域', color: '#ffa726'},
+                    {min: 10, max: 49, label: '低分布区域', color: '#4ecdc4'},
+                    {min: 0, max: 9, label: '无分布区域', color: '#c7c7c7'}
+                ],
+                left: 'center',
+                bottom: '5%',
+                orient: 'horizontal',
+                textStyle: {
+                    color: '#333',
+                    fontSize: 10
+                },
+                itemWidth: 12,
+                itemHeight: 12,
+                itemGap: 5
+            },
+            series: [
+                {
+                    name: '清补凉分布',
+                    type: 'map',
+                    map: 'china',
+                    roam: true,
+                    scaleLimit: {
+                        min: 0.8,
+                        max: 8
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: 11,
+                            fontWeight: 'bold'
+                        },
+                        itemStyle: {
+                            areaColor: '#ffd700',
+                            borderColor: '#8B4513',
+                            borderWidth: 1
+                        }
+                    },
+                    itemStyle: {
+                        borderColor: '#fff',
+                        borderWidth: 0.5
+                    },
+                    data: qingbuliangData,
+                    nameMap: {
+                        '海南': '海南',
+                        '广东': '广东',
+                        '广西': '广西',
+                        '福建': '福建',
+                        '台湾': '台湾',
+                        '云南': '云南',
+                        '贵州': '贵州',
+                        '湖南': '湖南',
+                        '湖北': '湖北',
+                        '四川': '四川',
+                        '江西': '江西',
+                        '浙江': '浙江',
+                        '江苏': '江苏',
+                        '上海': '上海',
+                        '北京': '北京',
+                        '天津': '天津',
+                        '河北': '河北',
+                        '河南': '河南',
+                        '山东': '山东',
+                        '山西': '山西',
+                        '陕西': '陕西',
+                        '甘肃': '甘肃',
+                        '青海': '青海',
+                        '新疆': '新疆',
+                        '西藏': '西藏',
+                        '内蒙古': '内蒙古',
+                        '黑龙江': '黑龙江',
+                        '吉林': '吉林',
+                        '辽宁': '辽宁',
+                        '重庆': '重庆',
+                        '安徽': '安徽',
+                        '香港': '香港',
+                        '澳门': '澳门'
+                    }
+                }
+            ]
+        };
+
+        // 使用配置项和数据显示图表
+        myChart.setOption(option);
+
+        // 添加窗口大小变化时的响应式行为
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+
+        // 添加点击省份的交互
+        myChart.on('click', function(params) {
+            if (params.componentType === 'series' && params.data) {
+                const message = `${params.name}\n清补凉普及度: ${params.data.value}%\n${params.data.description}`;
+                alert(message);
+            }
+        });
+
+        // 移动端触摸优化 - 防止页面滚动
+        chartDom.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // 初始化完成后调整大小
+        setTimeout(() => {
+            myChart.resize();
+        }, 100);
+
+        // 页面可见性变化时重新调整大小
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                setTimeout(() => {
+                    myChart.resize();
+                }, 100);
+            }
+        });
+    </script>
 	<!-- 页面跳转箭头 -->
 	<div class="page-nav">
 	    <a href="page02.html" class="nav-arrow nav-prev">
@@ -46,6 +493,5 @@
 	        <span class="arrow-icon">→</span>
 	    </a>
 	</div>
-	<script src="../js/page2.js"></script>
 </body>
 </html>
