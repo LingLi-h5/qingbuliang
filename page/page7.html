@@ -2,181 +2,392 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D模型展示 - 360°旋转</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>沉浸式清补凉制作体验</title>
+	<link rel="stylesheet" href="../css/main.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
+            touch-action: manipulation;
         }
         
         .container {
-            max-width: 1200px;
             width: 100%;
-            text-align: center;
+            height: calc(100vh - 20px);
+            max-height: calc(100vh - 20px);
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
         header {
-            margin-bottom: 30px;
-            padding: 20px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #5a3e36;
+            text-align: center;
+            padding: 15px 10px;
+            border-bottom-left-radius: 40% 30%;
+            border-bottom-right-radius: 40% 30%;
+            flex-shrink: 0;
         }
         
         h1 {
-            color: #8B4513;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
         
         .subtitle {
-            color: #654321;
-            font-size: 1.2rem;
+            font-size: 0.8rem;
             opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.2;
         }
         
-        .model-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            border: 2px solid #8B4513;
-        }
-        
-        #model-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px 30px;
-            border-radius: 8px;
-            color: #8B4513;
-        }
-        
-        .error {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px 30px;
-            border-radius: 8px;
-            color: #8B0000;
-            text-align: center;
-            max-width: 80%;
-        }
-        
-        .controls {
+        .main-content {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+            padding: 10px;
         }
         
-        .control-btn {
-            background: linear-gradient(to right, #8B4513, #A0522D);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.4);
+        .progress-container {
+            margin: 10px 0;
+            flex-shrink: 0;
         }
         
-        .control-btn:hover {
-            background: linear-gradient(to right, #A0522D, #8B4513);
-            transform: translateY(-2px);
-        }
-        
-        .control-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 600px;
-            margin: 20px auto;
-            text-align: left;
-            color: #654321;
-        }
-        
-        .instructions h2 {
-            margin-bottom: 10px;
-            text-align: center;
-            color: #8B4513;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
+        .progress-bar {
+            height: 6px;
+            background-color: #ffd7c9;
+            border-radius: 3px;
+            overflow: hidden;
             margin-bottom: 8px;
         }
         
-        footer {
-            margin-top: 30px;
-            padding: 20px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            color: #654321;
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+            width: 0%;
+            transition: width 0.5s ease;
         }
         
-        @media (max-width: 768px) {
-            .model-container {
-                height: 400px;
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-top: 8px;
+        }
+        
+        .step {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            padding: 5px 2px;
+        }
+        
+        .step:active {
+            transform: translateY(-2px);
+        }
+        
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ffd7c9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 4px;
+            font-size: 0.8rem;
+            color: #5a3e36;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-icon {
+            background-color: #ff9a9e;
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 154, 158, 0.4);
+        }
+        
+        .step.completed .step-icon {
+            background-color: #a8d8b9;
+            color: white;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            font-size: 0.65rem;
+            color: #5a3e36;
+            line-height: 1.1;
+        }
+        
+        .step-desc {
+            font-size: 0.55rem;
+            color: #8c7369;
+            line-height: 1;
+        }
+        
+        .demo-area {
+            flex: 1;
+            background-color: #fff9f5;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+            margin-top: 8px;
+        }
+        
+        .gif-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            min-height: 0;
+            background: #fff;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-gif {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            object-fit: contain;
+            display: none;
+        }
+        
+        .step-gif.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .step-instruction {
+            font-size: 0.9rem;
+            color: #ff6b6b;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #5a3e36;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(255, 154, 158, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            flex: 1;
+            max-width: 120px;
+        }
+        
+        .action-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(255, 154, 158, 0.6);
+        }
+        
+        .action-btn:disabled {
+            background: #e0d3c7;
+            color: #a89a8e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #a8d8b9 0%, #c8e6c9 100%);
+            color: #2d5a3d;
+            box-shadow: 0 3px 8px rgba(168, 216, 185, 0.4);
+        }
+        
+        .complete-btn:active {
+            box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 280px;
+            width: 80%;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-content h2 {
+            color: #2d5a3d;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .modal-content p {
+            color: #5a3e36;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .modal-btn {
+            background: linear-gradient(135deg, #a8d8b9 0%, #c8e6c9 100%);
+            color: #2d5a3d;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(168, 216, 185, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .modal-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
+        }
+
+        /* 针对不同屏幕高度的微调 */
+        @media (max-height: 600px) {
+            header {
+                padding: 12px 8px;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .step-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+            
+            .step-title {
+                font-size: 0.6rem;
+            }
+            
+            .step-desc {
+                font-size: 0.5rem;
+            }
+            
+            .demo-area {
+                padding: 12px;
+            }
+            
+            .step-instruction {
+                font-size: 0.8rem;
+                margin-bottom: 10px;
+            }
+            
+            .action-btn {
+                padding: 10px 16px;
+                font-size: 0.8rem;
             }
         }
-        
-        @media (max-width: 480px) {
-            .model-container {
-                height: 300px;
+
+        @media (max-height: 500px) {
+            .main-content {
+                padding: 8px;
             }
             
-            .controls {
-                flex-direction: column;
-                align-items: center;
+            .step-instruction {
+                font-size: 0.75rem;
+                margin-bottom: 8px;
             }
             
-            .control-btn {
-                width: 80%;
+            .action-btn {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+            
+            .gif-container {
+                margin-bottom: 8px;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .steps {
+                grid-template-columns: repeat(8, 1fr);
+                gap: 3px;
+            }
+            
+            .step-icon {
+                width: 25px;
+                height: 25px;
+                font-size: 0.7rem;
+            }
+            
+            .step-title {
+                font-size: 0.55rem;
+            }
+            
+            .step-desc {
+                font-size: 0.45rem;
             }
         }
     </style>
@@ -184,222 +395,232 @@
 <body>
     <div class="container">
         <header>
-            <h1>3D模型交互展示</h1>
-            <p class="subtitle">使用鼠标拖拽即可360°旋转查看模型，支持缩放和平移操作</p>
+            <h1>沉浸式清补凉制作</h1>
+            <p class="subtitle">跟随步骤，亲手制作一碗地道的海南清补凉</p>
         </header>
         
-        <div class="model-container">
-            <div class="loading" id="loading">正在加载3D模型...</div>
-            <div class="error" id="error" style="display: none;"></div>
-            <canvas id="model-canvas"></canvas>
+        <div class="main-content">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-icon">1</div>
+                        <div class="step-title">准备基底</div>
+                        <div class="step-desc">椰奶</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-icon">2</div>
+                        <div class="step-title">添加红豆</div>
+                        <div class="step-desc">丰富口感</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-icon">3</div>
+                        <div class="step-title">加入绿豆</div>
+                        <div class="step-desc">清凉解暑</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-icon">4</div>
+                        <div class="step-title">放入薏米</div>
+                        <div class="step-desc">健康养生</div>
+                    </div>
+                    <div class="step" data-step="5">
+                        <div class="step-icon">5</div>
+                        <div class="step-title">添加西米</div>
+                        <div class="step-desc">Q弹口感</div>
+                    </div>
+                    <div class="step" data-step="6">
+                        <div class="step-icon">6</div>
+                        <div class="step-title">放入水果</div>
+                        <div class="step-desc">新鲜果味</div>
+                    </div>
+                    <div class="step" data-step="7">
+                        <div class="step-icon">7</div>
+                        <div class="step-title">加入配料</div>
+                        <div class="step-desc">椰果花生</div>
+                    </div>
+                    <div class="step" data-step="8">
+                        <div class="step-icon">8</div>
+                        <div class="step-title">最后点缀</div>
+                        <div class="step-desc">完成制作</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-area">
+                <div class="gif-container">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-1" alt="倒入椰奶">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-2" alt="加入红豆">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-3" alt="加入绿豆">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-4" alt="放入薏米">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-5" alt="添加西米">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-6" alt="放入水果">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-7" alt="加入配料">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-8" alt="最后点缀">
+                </div>
+                
+                <div class="step-instruction" id="step-instruction">
+                    点击"开始制作"按钮，准备椰奶基底
+                </div>
+                
+                <div class="button-group">
+                    <button class="action-btn" id="action-btn">开始制作</button>
+                    <button class="action-btn complete-btn" id="complete-btn" style="display: none;">完成</button>
+                </div>
+            </div>
         </div>
-        
-        <div class="controls">
-            <button class="control-btn" id="reset-btn">重置视角</button>
-            <button class="control-btn" id="auto-rotate-btn">自动旋转</button>
-            <button class="control-btn" id="wireframe-btn" disabled>线框模式</button>
-        </div>
-        
-        <div class="instructions">
-            <h2>操作指南</h2>
-            <ul>
-                <li><strong>旋转模型：</strong>按住鼠标左键并拖动</li>
-                <li><strong>平移视图：</strong>按住鼠标右键并拖动</li>
-                <li><strong>缩放模型：</strong>使用鼠标滚轮或触摸板</li>
-                <li><strong>重置视角：</strong>点击"重置视角"按钮</li>
-                <li><strong>自动旋转：</strong>点击"自动旋转"按钮切换模式</li>
-                <li><strong>线框模式：</strong>模型加载后可用</li>
-            </ul>
-        </div>
-        
-        <footer>
-            <p>基于Three.js构建的3D模型展示系统 | 支持GLTF、OBJ、FBX等主流3D格式</p>
-        </footer>
     </div>
 
-    <!-- 引入Three.js库 -->
-    <script src="../js/three.min.js"></script>
-    <script src="../js/OrbitControls.js"></script>
-    <script src="../js/GLTFLoader.js"></script>
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <h2>恭喜！制作完成！</h2>
+            <p>一碗地道的海南清补凉已完成，享受这夏日清凉吧！</p>
+            <button class="modal-btn" id="modal-close-btn">确定</button>
+        </div>
+    </div>
 
     <script>
-        // 主应用程序
         document.addEventListener('DOMContentLoaded', function() {
-            // 场景设置
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffecd2);
+            const steps = document.querySelectorAll('.step');
+            const actionBtn = document.getElementById('action-btn');
+            const completeBtn = document.getElementById('complete-btn');
+            const progressBar = document.getElementById('progress');
+            const stepInstruction = document.getElementById('step-instruction');
+            const gifs = document.querySelectorAll('.step-gif');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
             
-            // 相机设置
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-            
-            // 渲染器设置
-            const renderer = new THREE.WebGLRenderer({ 
-                canvas: document.getElementById('model-canvas'),
-                antialias: true 
-            });
-            renderer.setSize(document.querySelector('.model-container').clientWidth, 
-                            document.querySelector('.model-container').clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            
-            // 添加光源
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(10, 10, 5);
-            scene.add(directionalLight);
-            
-            // 添加轨道控制器 - 降低灵敏度
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.1;  // 从 0.05 增加到 0.1，降低灵敏度
-            controls.rotateSpeed = 0.5;    // 降低旋转速度
-            controls.zoomSpeed = 0.8;      // 降低缩放速度
-            controls.panSpeed = 0.8;       // 降低平移速度
-            
-            // 添加辅助网格
-            const gridHelper = new THREE.GridHelper(10, 10);
-            scene.add(gridHelper);
-            
-            // 存储加载的模型引用
-            let loadedModel = null;
-            let wireframeMode = false;
-            
-            // 加载GLTF模型
-            const loader = new THREE.GLTFLoader();
-            
-            // 尝试不同的文件路径
-            const modelPaths = [
-                '202215003649.glb',
-                './202215003649.glb',
-                'assets/202215003649.glb',
-                './assets/202215003649.glb',
-                'page/202215003649.glb',
-                './page/202215003649.glb'
+            const stepInstructions = [
+                "点击'开始制作'按钮，准备椰奶基底",
+                "将香甜的椰奶倒入碗中，形成清补凉的基底",
+                "加入软糯的红豆，丰富清补凉的口感",
+                "放入清凉解暑的绿豆，增加清爽感",
+                "加入健康养生的薏米，提升营养价值",
+                "撒入Q弹的西米，增添咀嚼乐趣",
+                "放入新鲜水果块，增加果香和色彩",
+                "加入椰果和花生，丰富层次感",
+                "最后撒上芝麻和葡萄干，完成清补凉制作"
             ];
             
-            let currentPathIndex = 0;
+            let currentStep = 0;
+            const totalSteps = 8;
             
-            function tryLoadModel() {
-                if (currentPathIndex >= modelPaths.length) {
-                    showError('无法找到模型文件。请检查文件路径和文件名是否正确。');
-                    return;
-                }
-                
-                const modelPath = modelPaths[currentPathIndex];
-                console.log('尝试加载模型:', modelPath);
-                
-                loader.load(
-                    modelPath,
-                    // 加载成功
-                    function(gltf) {
-                        console.log('模型加载成功:', gltf);
-                        
-                        // 移除之前的模型
-                        if (loadedModel) {
-                            scene.remove(loadedModel);
-                        }
-                        
-                        loadedModel = gltf.scene;
-                        scene.add(loadedModel);
-                        
-                        // 调整相机位置以适应模型
-                        const box = new THREE.Box3().setFromObject(loadedModel);
-                        const center = box.getCenter(new THREE.Vector3());
-                        const size = box.getSize(new THREE.Vector3());
-                        
-                        // 计算合适的相机距离
-                        const maxDim = Math.max(size.x, size.y, size.z);
-                        const fov = camera.fov * (Math.PI / 180);
-                        let cameraZ = Math.abs(maxDim / Math.sin(fov / 2));
-                        
-                        cameraZ *= 1.5; // 稍微远一点
-                        camera.position.z = cameraZ;
-                        camera.lookAt(center);
-                        
-                        controls.target.copy(center);
-                        controls.update();
-                        
-                        // 启用线框模式按钮
-                        document.getElementById('wireframe-btn').disabled = false;
-                        
-                        // 隐藏加载提示
-                        document.getElementById('loading').style.display = 'none';
-                    },
-                    // 加载进度
-                    function(xhr) {
-                        console.log((xhr.loaded / xhr.total * 100) + '% 已加载');
-                        document.getElementById('loading').textContent = 
-                            '正在加载3D模型... ' + Math.round(xhr.loaded / xhr.total * 100) + '%';
-                    },
-                    // 加载失败
-                    function(error) {
-                        console.error('加载失败:', error, '路径:', modelPath);
-                        currentPathIndex++;
-                        setTimeout(tryLoadModel, 100);
+            // 初始化
+            updateProgress();
+            updateStepInstruction();
+            updateGIF();
+            updateActionButton();
+            
+            // 步骤点击事件
+            steps.forEach(step => {
+                step.addEventListener('click', function() {
+                    const stepNum = parseInt(this.getAttribute('data-step'));
+                    if (stepNum <= currentStep + 1) {
+                        currentStep = stepNum - 1;
+                        updateProgress();
+                        updateStepInstruction();
+                        updateGIF();
+                        updateActionButton();
                     }
-                );
-            }
-            
-            // 显示错误信息
-            function showError(message) {
-                document.getElementById('loading').style.display = 'none';
-                const errorElement = document.getElementById('error');
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-                console.error(message);
-            }
-            
-            // 开始加载模型
-            tryLoadModel();
-            
-            // 控制按钮功能
-            document.getElementById('reset-btn').addEventListener('click', function() {
-                controls.reset();
+                });
             });
             
-            let autoRotate = false;
-            document.getElementById('auto-rotate-btn').addEventListener('click', function() {
-                autoRotate = !autoRotate;
-                controls.autoRotate = autoRotate;
-                this.textContent = autoRotate ? '停止旋转' : '自动旋转';
+            // 操作按钮点击事件
+            actionBtn.addEventListener('click', function() {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateProgress();
+                    updateStepInstruction();
+                    updateGIF();
+                    updateActionButton();
+                } else {
+                    // 如果是最后一步，重新开始
+                    currentStep = 0;
+                    updateProgress();
+                    updateStepInstruction();
+                    updateGIF();
+                    updateActionButton();
+                }
             });
             
-            document.getElementById('wireframe-btn').addEventListener('click', function() {
-                if (!loadedModel) return;
+            // 完成按钮点击事件
+            completeBtn.addEventListener('click', function() {
+                modalOverlay.style.display = 'flex';
+            });
+            
+            // 弹窗关闭按钮
+            modalCloseBtn.addEventListener('click', function() {
+                modalOverlay.style.display = 'none';
+            });
+            
+            // 点击弹窗背景也可以关闭
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
+                }
+            });
+            
+            // 更新进度条
+            function updateProgress() {
+                const progressPercentage = (currentStep / totalSteps) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
                 
-                wireframeMode = !wireframeMode;
-                toggleWireframe(loadedModel, wireframeMode);
-                this.textContent = wireframeMode ? '实体模式' : '线框模式';
-            });
-            
-            // 切换线框模式的函数
-            function toggleWireframe(object, wireframe) {
-                object.traverse(function(child) {
-                    if (child.isMesh) {
-                        child.material.wireframe = wireframe;
+                // 更新步骤状态
+                steps.forEach((step, index) => {
+                    const stepNum = index + 1;
+                    if (stepNum < currentStep + 1) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (stepNum === currentStep + 1) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
                     }
                 });
             }
             
-            // 窗口大小调整处理
-            window.addEventListener('resize', function() {
-                const container = document.querySelector('.model-container');
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-            
-            // 动画循环
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
+            // 更新步骤说明
+            function updateStepInstruction() {
+                stepInstruction.textContent = stepInstructions[currentStep];
             }
             
-            animate();
+            // 更新GIF显示
+            function updateGIF() {
+                gifs.forEach(gif => {
+                    gif.classList.remove('active');
+                });
+                
+                if (currentStep > 0 && currentStep <= totalSteps) {
+                    document.getElementById(`gif-${currentStep}`).classList.add('active');
+                }
+            }
+            
+            // 更新操作按钮
+            function updateActionButton() {
+                if (currentStep === 0) {
+                    actionBtn.textContent = '开始制作';
+                    completeBtn.style.display = 'none';
+                } else if (currentStep < totalSteps) {
+                    actionBtn.textContent = '下一步';
+                    completeBtn.style.display = 'none';
+                } else {
+                    actionBtn.textContent = '重新开始';
+                    completeBtn.style.display = 'block';
+                }
+            }
         });
     </script>
+	<!-- 页面跳转箭头 -->
+		<div class="page-nav">
+		    <a href="page6.html" class="nav-arrow nav-prev">
+		        <span class="arrow-icon">←</span>
+		    </a>
+		    <a href="page7.html" class="nav-arrow nav-next">
+		        <span class="arrow-icon">→</span>
+		    </a>
+		</div>
 </body>
 </html>
