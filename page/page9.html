@@ -2,14 +2,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>3D模型展示 - 移动端优化</title>
+	<link rel="stylesheet" href="../css/main.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -19,46 +25,50 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
+            touch-action: manipulation;
         }
         
         .container {
-            max-width: 1200px;
             width: 100%;
+            max-width: 100%;
             text-align: center;
         }
         
         header {
-            margin-bottom: 30px;
-            padding: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
         }
         
         h1 {
             color: #8B4513;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
         
         .subtitle {
             color: #654321;
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         
         .model-container {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 60vh;
+            min-height: 400px;
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             border: 2px solid #8B4513;
+            touch-action: none;
         }
         
         #model-canvas {
@@ -72,11 +82,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px 30px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
             border-radius: 8px;
             color: #8B4513;
+            z-index: 10;
+            backdrop-filter: blur(10px);
         }
         
         .error {
@@ -84,38 +96,45 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px 30px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
             border-radius: 8px;
             color: #8B0000;
             text-align: center;
-            max-width: 80%;
+            max-width: 90%;
+            z-index: 10;
+            backdrop-filter: blur(10px);
         }
         
         .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 400px;
         }
         
         .control-btn {
             background: linear-gradient(to right, #8B4513, #A0522D);
             border: none;
             color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 12px 16px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: 0.95rem;
             box-shadow: 0 3px 10px rgba(139, 69, 19, 0.4);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .control-btn:hover {
+        .control-btn:active {
             background: linear-gradient(to right, #A0522D, #8B4513);
-            transform: translateY(-2px);
+            transform: scale(0.98);
         }
         
         .control-btn:disabled {
@@ -125,18 +144,20 @@
         
         .instructions {
             background: rgba(255, 255, 255, 0.5);
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            max-width: 600px;
-            margin: 20px auto;
+            width: 100%;
+            margin: 15px 0;
             text-align: left;
             color: #654321;
+            backdrop-filter: blur(5px);
         }
         
         .instructions h2 {
             margin-bottom: 10px;
             text-align: center;
             color: #8B4513;
+            font-size: 1.2rem;
         }
         
         .instructions ul {
@@ -145,62 +166,86 @@
         
         .instructions li {
             margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
         
-        footer {
-            margin-top: 30px;
-            padding: 20px;
+        .mobile-warning {
+            display: block;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #8B4513;
             font-size: 0.9rem;
-            opacity: 0.8;
+            width: 100%;
+            backdrop-filter: blur(5px);
+        }
+        
+        .gesture-hints {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+        
+        .gesture-item {
+            text-align: center;
+            font-size: 0.8rem;
             color: #654321;
         }
         
-        @media (max-width: 768px) {
+        .gesture-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        /* 横屏优化 */
+        @media (orientation: landscape) and (max-height: 500px) {
             .model-container {
-                height: 400px;
+                height: 80vh;
+                min-height: 300px;
+            }
+            
+            header {
+                margin-bottom: 10px;
+                padding: 10px;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             
-            .mobile-warning {
-                display: block;
-                background: rgba(255, 255, 255, 0.7);
-                padding: 10px;
-                border-radius: 8px;
-                margin-bottom: 15px;
-                color: #8B4513;
+            .subtitle {
                 font-size: 0.9rem;
             }
         }
         
-        @media (max-width: 480px) {
-            .model-container {
-                height: 300px;
+        /* 超小屏幕优化 */
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 1.5rem;
             }
             
-            .controls {
-                flex-direction: column;
-                align-items: center;
+            .model-container {
+                height: 50vh;
+                min-height: 350px;
             }
             
             .control-btn {
-                width: 80%;
+                padding: 10px 14px;
+                font-size: 0.9rem;
             }
         }
         
-        .mobile-warning {
-            display: none;
-        }
-        
-        .debug-info {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #654321;
+        /* 大屏幕优化 */
+        @media (min-width: 768px) {
+            .controls {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 600px;
+            }
         }
     </style>
 </head>
@@ -208,15 +253,30 @@
     <div class="container">
         <header>
             <h1>3D模型交互展示</h1>
-            <p class="subtitle">使用鼠标拖拽即可360°旋转查看模型，支持缩放和平移操作</p>
+            <p class="subtitle">使用手指触摸即可360°旋转查看模型，支持缩放和平移操作</p>
         </header>
         
         <div class="mobile-warning">
-            提示：在移动设备上，请使用手指触摸屏幕来旋转、缩放和移动模型
+            💡 提示：使用手指触摸屏幕来旋转、缩放和移动模型
+        </div>
+        
+        <div class="gesture-hints">
+            <div class="gesture-item">
+                <div class="gesture-icon">👆</div>
+                <div>单指旋转</div>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-icon">🤏</div>
+                <div>双指缩放</div>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-icon">✌️</div>
+                <div>双指移动</div>
+            </div>
         </div>
         
         <div class="model-container">
-            <div class="loading" id="loading">正在检测设备兼容性...</div>
+            <div class="loading" id="loading">正在初始化3D环境...</div>
             <div class="error" id="error" style="display: none;"></div>
             <canvas id="model-canvas"></canvas>
         </div>
@@ -228,24 +288,17 @@
             <button class="control-btn" id="low-quality-btn">性能模式</button>
         </div>
         
-        <div class="debug-info" id="debug-info"></div>
-        
         <div class="instructions">
             <h2>操作指南</h2>
             <ul>
-                <li><strong>旋转模型：</strong>按住鼠标左键并拖动（移动端：单指拖动）</li>
-                <li><strong>平移视图：</strong>按住鼠标右键并拖动（移动端：双指拖动）</li>
-                <li><strong>缩放模型：</strong>使用鼠标滚轮或触摸板（移动端：双指捏合）</li>
+                <li><strong>旋转模型：</strong>单指在屏幕上拖动</li>
+                <li><strong>缩放模型：</strong>双指捏合或展开</li>
+                <li><strong>平移视图：</strong>双指同时拖动</li>
                 <li><strong>重置视角：</strong>点击"重置视角"按钮</li>
                 <li><strong>自动旋转：</strong>点击"自动旋转"按钮切换模式</li>
-                <li><strong>线框模式：</strong>模型加载后可用</li>
-                <li><strong>性能模式：</strong>在移动设备上提升性能</li>
+                <li><strong>性能模式：</strong>在性能较差的设备上提升流畅度</li>
             </ul>
         </div>
-        
-        <footer>
-            <p>基于Three.js构建的3D模型展示系统 | 支持GLTF、OBJ、FBX等主流3D格式</p>
-        </footer>
     </div>
 
     <!-- 引入本地Three.js库 -->
@@ -257,11 +310,7 @@
         // 主应用程序
         document.addEventListener('DOMContentLoaded', function() {
             // 更新加载状态
-            document.getElementById('loading').textContent = '正在初始化3D环境...';
-            
-            // 显示设备信息
-            const debugInfo = document.getElementById('debug-info');
-            debugInfo.textContent = `设备信息: ${navigator.userAgent}`;
+            document.getElementById('loading').textContent = '正在检测设备兼容性...';
             
             // 检测Three.js库是否加载成功
             if (typeof THREE === 'undefined') {
@@ -295,12 +344,13 @@
             // 渲染器设置 - 针对移动设备优化
             const renderer = new THREE.WebGLRenderer({ 
                 canvas: document.getElementById('model-canvas'),
-                antialias: !isMobile, // 移动设备上关闭抗锯齿提升性能
-                powerPreference: isMobile ? "low-power" : "high-performance"
+                antialias: false, // 移动设备上关闭抗锯齿提升性能
+                powerPreference: "low-power",
+                alpha: true
             });
             
             // 设置像素比 - 移动设备上限制像素比
-            const pixelRatio = isMobile ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio;
+            const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
             renderer.setPixelRatio(pixelRatio);
             renderer.setSize(container.clientWidth, container.clientHeight);
             
@@ -317,28 +367,17 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
             
-            // 根据设备类型调整控制灵敏度
-            if (isMobile) {
-                controls.rotateSpeed = 0.7;
-                controls.zoomSpeed = 0.8;
-                controls.panSpeed = 0.5;
-                
-                // 移动设备触摸控制设置
-                if (controls.touches) {
-                    controls.touches = {
-                        ONE: THREE.TOUCH.ROTATE,
-                        TWO: THREE.TOUCH.DOLLY_PAN
-                    };
-                }
-            } else {
-                controls.rotateSpeed = 0.5;
-                controls.zoomSpeed = 1.0;
-                controls.panSpeed = 0.8;
-            }
+            // 移动设备触摸控制设置
+            controls.rotateSpeed = 0.7;
+            controls.zoomSpeed = 0.8;
+            controls.panSpeed = 0.5;
             
-            // 添加辅助网格
-            const gridHelper = new THREE.GridHelper(10, 10);
-            scene.add(gridHelper);
+            if (controls.touches) {
+                controls.touches = {
+                    ONE: THREE.TOUCH.ROTATE,
+                    TWO: THREE.TOUCH.DOLLY_PAN
+                };
+            }
             
             // 存储加载的模型引用
             let loadedModel = null;
@@ -375,16 +414,11 @@
                 }
                 
                 const modelPath = modelPaths[currentPathIndex];
-                console.log('尝试加载模型:', modelPath);
-                debugInfo.textContent += ` | 尝试路径: ${modelPath}`;
                 
                 loader.load(
                     modelPath,
                     // 加载成功
                     function(gltf) {
-                        console.log('模型加载成功:', gltf);
-                        debugInfo.textContent += ` | 模型加载成功`;
-                        
                         // 移除之前的模型
                         if (loadedModel) {
                             scene.remove(loadedModel);
@@ -402,23 +436,18 @@
                         // 隐藏加载提示
                         document.getElementById('loading').style.display = 'none';
                         
-                        // 如果是移动设备，自动启用性能模式
-                        if (isMobile) {
-                            enableLowQualityMode();
-                            document.getElementById('low-quality-btn').textContent = '质量模式';
-                        }
+                        // 自动启用性能模式
+                        enableLowQualityMode();
+                        document.getElementById('low-quality-btn').textContent = '质量模式';
                     },
                     // 加载进度
                     function(xhr) {
                         const percent = Math.round(xhr.loaded / xhr.total * 100);
-                        console.log(percent + '% 已加载');
                         document.getElementById('loading').textContent = 
                             '正在加载3D模型... ' + percent + '%';
                     },
                     // 加载失败
                     function(error) {
-                        console.error('加载失败:', error, '路径:', modelPath);
-                        debugInfo.textContent += ` | 路径${currentPathIndex}失败`;
                         currentPathIndex++;
                         setTimeout(tryLoadModel, 100);
                     }
@@ -427,9 +456,6 @@
             
             // 创建替代模型（当找不到模型文件时）
             function createFallbackModel() {
-                console.log('创建替代模型');
-                debugInfo.textContent += ' | 使用替代模型';
-                
                 // 创建一个简单的几何体作为替代
                 const geometry = new THREE.SphereGeometry(1, 16, 16);
                 const material = new THREE.MeshStandardMaterial({ 
@@ -480,7 +506,6 @@
                 const errorElement = document.getElementById('error');
                 errorElement.textContent = message;
                 errorElement.style.display = 'block';
-                console.error(message);
             }
             
             // 检测WebGL支持
@@ -599,5 +624,14 @@
             animate();
         });
     </script>
+	<!-- 页面跳转箭头 -->
+			<div class="page-nav">
+			    <a href="page8.html" class="nav-arrow nav-prev">
+			        <span class="arrow-icon">←</span>
+			    </a>
+			    <a href="" class="nav-arrow nav-next">
+			        <span class="arrow-icon">→</span>
+			    </a>
+			</div>
 </body>
 </html>
