@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清补凉第一产业 - 乡村振兴就业分析</title>
-    <script src="../js/echarts.min.js"></script>
-    <link rel="stylesheet" href="../css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -31,7 +30,7 @@
         .container {
             width: 100%;
             max-width: 100%;
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             overflow: hidden;
@@ -40,13 +39,13 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #2c7744 0%, #5a9c76 100%);
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             color: white;
             padding: 25px 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            border-bottom: 1px solid rgba(44, 119, 68, 0.2);
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
         }
 
         .header::before {
@@ -93,21 +92,22 @@
             height: 380px;
             padding: 20px 15px;
             min-height: 380px;
+            background: transparent;
         }
 
         .info-panel {
             width: 100%;
             padding: 20px 15px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-top: 3px solid #2c7744;
+            background: linear-gradient(135deg, #f8f4e9 0%, #f0e6d2 100%);
+            border-top: 3px solid #D2691E;
         }
 
         .info-title {
             font-size: 1.3rem;
-            color: #2c7744;
+            color: #8B4513;
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #5a9c76;
+            border-bottom: 2px solid #CD853F;
             text-align: center;
             font-weight: 600;
         }
@@ -118,7 +118,7 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-            border-left: 4px solid #5a9c76;
+            border-left: 4px solid #CD853F;
             transition: all 0.3s ease;
         }
 
@@ -128,7 +128,7 @@
         }
 
         .detail-item h3 {
-            color: #2c7744;
+            color: #8B4513;
             font-size: 1.1rem;
             margin-bottom: 10px;
             display: flex;
@@ -139,7 +139,7 @@
 
         .income-bar {
             height: 10px;
-            background: #e9ecef;
+            background: #f5e8c8;
             border-radius: 5px;
             overflow: hidden;
             margin: 8px 0;
@@ -156,7 +156,7 @@
 
         .income-text {
             font-size: 0.9rem;
-            color: #495057;
+            color: #5a4a42;
             margin: 6px 0;
             display: flex;
             justify-content: space-between;
@@ -165,15 +165,15 @@
         }
 
         .highlight {
-            color: #f5222d;
+            color: #d46b08;
             font-weight: bold;
             font-size: 0.95rem;
         }
 
         .comparison {
-            color: #52c41a;
+            color: #d46b08;
             font-weight: bold;
-            background: rgba(82, 196, 26, 0.1);
+            background: rgba(212, 107, 8, 0.1);
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 0.8rem;
@@ -185,7 +185,7 @@
             font-size: 1.2rem;
         }
 
-        /* 浮动操作按钮样式 - 与page6完全一致 */
+        /* 浮动操作按钮样式 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -443,7 +443,7 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 - 与page6完全一致 -->
+    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -464,7 +464,7 @@
     </div>
 
     <script>
-        // 浮动操作按钮功能 - 与page6完全一致
+        // 浮动操作按钮功能
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
@@ -500,7 +500,7 @@
         const agricultureData = {
             name: '第一产业',
             itemStyle: {
-                color: '#2c7744'
+                color: '#8B4513'
             },
             children: [
                 {
@@ -510,7 +510,8 @@
                     localRate: '95%',
                     detail: '主要负责椰子种植和采收，采用生态种植技术，工作地点主要在海南、广东等热带乡村地区。',
                     comparison: '较传统种植收入提升45%',
-                    icon: '🥥'
+                    icon: '🥥',
+                    itemStyle: { color: '#CD853F' }
                 },
                 {
                     name: '豆类种植',
@@ -519,7 +520,8 @@
                     localRate: '92%',
                     detail: '种植红豆、绿豆等核心原料，采用"公司+合作社+农户"模式，统一技术标准和收购。',
                     comparison: '较传统种植收入提升55%',
-                    icon: '🫘'
+                    icon: '🫘',
+                    itemStyle: { color: '#D2691E' }
                 },
                 {
                     name: '杂粮种植',
@@ -528,7 +530,8 @@
                     localRate: '90%',
                     detail: '种植薏米、西米等特色杂粮，产品附加值高，带动山区农民增收致富。',
                     comparison: '较传统种植收入提升60%',
-                    icon: '🌾'
+                    icon: '🌾',
+                    itemStyle: { color: '#B8860B' }
                 },
                 {
                     name: '水果种植',
@@ -537,19 +540,21 @@
                     localRate: '88%',
                     detail: '种植西瓜、菠萝、芒果等搭配水果，实现四季轮作，提高土地利用率。',
                     comparison: '较传统种植收入提升65%',
-                    icon: '🍉'
+                    icon: '🍉',
+                    itemStyle: { color: '#DA8A67' }
                 }
             ]
         };
 
         // 配置项 - 针对移动端优化
         const option = {
+            backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
                     if (params.data.value) {
                         return `
-                            <div style="font-weight: bold; color: #2c7744; margin-bottom: 6px; font-size: 14px;">
+                            <div style="font-weight: bold; color: #8B4513; margin-bottom: 6px; font-size: 14px;">
                                 ${params.data.icon || '🌱'} ${params.name}
                             </div>
                             <div style="font-size: 12px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
@@ -557,7 +562,7 @@
                             <div style="font-size: 12px;">🏠 本地就业率: ${params.data.localRate}</div>
                         `;
                     }
-                    return `<div style="font-weight: bold; font-size: 14px; color: #2c7744;">${params.name}</div>`;
+                    return `<div style="font-weight: bold; font-size: 14px; color: #8B4513;">${params.name}</div>`;
                 },
                 confine: true,
                 textStyle: {
@@ -674,7 +679,7 @@
                             ${params.data.children.map(child => `
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem;">
                                     <span>${child.icon} ${child.name}</span>
-                                    <span style="color: #2c7744; font-weight: bold;">${child.value}人</span>
+                                    <span style="color: #8B4513; font-weight: bold;">${child.value}人</span>
                                 </div>
                             `).join('')}
                         </div>
