@@ -276,14 +276,6 @@
             font-size: 0.9rem;
         }
 
-        .score-display {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            padding: 12px;
-            border-radius: 8px;
-            margin: 12px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
         .restart-btn {
             background: linear-gradient(to right, #8B4513, #A0522D);
             color: white;
@@ -622,10 +614,6 @@
         <div class="completion-message" id="completionMessage">
             <h2>恭喜你！你已经掌握了清补凉的养生密码！</h2>
             <p>你已成功帮助所有食材找到它们的功效，现在你已经是清补凉养生小达人了！</p>
-            <div class="score-display">
-                <h3>你的得分: <span id="finalScore">0</span></h3>
-                <p>用时: <span id="finalTime">0</span>秒</p>
-            </div>
             <button class="restart-btn" id="restartBtn">再玩一次</button>
         </div>
     </div>
@@ -676,7 +664,6 @@
             dot.addEventListener('click', () => {
                 pageDots.forEach(d => d.classList.remove('active'));
                 dot.classList.add('active');
-                // 这里可以添加页面跳转逻辑
             });
         });
 
@@ -784,8 +771,6 @@
         const gameInfo = document.getElementById('gameInfo');
         const timerElement = document.getElementById('timer');
         const scoreElement = document.getElementById('score');
-        const finalScoreElement = document.getElementById('finalScore');
-        const finalTimeElement = document.getElementById('finalTime');
         const restartBtn = document.getElementById('restartBtn');
 
         // 初始化游戏
@@ -977,28 +962,11 @@
             }, 1000);
         }
 
-        // 计算最终得分
-        function calculateScore() {
-            const endTime = new Date();
-            const timeTaken = Math.floor((endTime - startTime) / 1000);
-            const baseScore = 1000;
-            const timeBonus = Math.max(0, 300 - timeTaken) * 2;
-            const perfectBonus = matchedPairs === totalPairs ? 500 : 0;
-            
-            return {
-                finalScore: baseScore + timeBonus + perfectBonus + score,
-                timeTaken: timeTaken
-            };
-        }
-
         // 完成游戏
         function finishGame() {
             clearInterval(timerInterval);
             
-            const result = calculateScore();
-            finalScoreElement.textContent = result.finalScore;
-            finalTimeElement.textContent = result.timeTaken;
-            
+            // 直接显示完成消息，不显示得分
             setTimeout(() => {
                 completionMessage.style.display = 'block';
             }, 1000);

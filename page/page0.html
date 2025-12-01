@@ -73,6 +73,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
             position: relative;
+            cursor: pointer;
         }
 
         .card:active {
@@ -117,6 +118,11 @@
             color: white;
         }
 
+        .card:nth-child(4) .card-icon {
+            background: linear-gradient(135deg, #CD853F, #F4A460);
+            color: white;
+        }
+
         .card-text {
             flex: 1;
             text-align: left;
@@ -158,6 +164,91 @@
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
+        /* 分享弹窗样式 */
+        .share-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .share-modal {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 30px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalIn 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .share-header {
+            margin-bottom: 20px;
+        }
+
+        .share-header h3 {
+            color: #8B4513;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .share-header p {
+            color: #654321;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.1);
+        }
+
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 1px solid rgba(139, 69, 19, 0.1);
+        }
+
+        .share-instruction {
+            color: #654321;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+
+        .close-share {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .close-share:active {
+            transform: scale(0.95);
+            background: #654321;
+        }
+
         /* 动画 */
         @keyframes fadeInDown {
             from {
@@ -181,9 +272,21 @@
             }
         }
 
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
         .card:nth-child(1) { animation: fadeInUp 0.8s ease 0.1s both; }
         .card:nth-child(2) { animation: fadeInUp 0.8s ease 0.2s both; }
         .card:nth-child(3) { animation: fadeInUp 0.8s ease 0.3s both; }
+        .card:nth-child(4) { animation: fadeInUp 0.8s ease 0.4s both; }
 
         /* 横屏优化 */
         @media (orientation: landscape) and (max-height: 500px) {
@@ -236,6 +339,15 @@
             .card-text p {
                 font-size: 0.8rem;
             }
+            
+            .share-modal {
+                max-width: 300px;
+            }
+            
+            .qr-image {
+                width: 150px;
+                height: 150px;
+            }
         }
 
         /* 超小屏幕优化 */
@@ -261,6 +373,11 @@
             
             .card-text h3 {
                 font-size: 1.2rem;
+            }
+            
+            .qr-image {
+                width: 180px;
+                height: 180px;
             }
         }
 
@@ -294,6 +411,15 @@
             
             .card-text p {
                 font-size: 1rem;
+            }
+            
+            .share-modal {
+                max-width: 400px;
+            }
+            
+            .qr-image {
+                width: 250px;
+                height: 250px;
             }
         }
 
@@ -365,10 +491,45 @@
                     </div>
                 </div>
             </a>
+            
+            <!-- 新增分享卡片 -->
+            <div class="card" id="shareCard">
+                <div class="card-hover"></div>
+                <div class="card-content">
+                    <div class="card-icon">📱</div>
+                    <div class="card-text">
+                        <h3>分享探索</h3>
+                        <p>分享清补凉文化给朋友</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="footer">
             <p>自由探索 · 随时返回</p>
+        </div>
+    </div>
+
+    <!-- 分享弹窗 -->
+    <div class="share-overlay" id="shareOverlay">
+        <div class="share-modal">
+            <div class="share-header">
+                <h3>分享清补凉文化</h3>
+                <p>扫码分享给朋友</p>
+            </div>
+            
+            <div class="qr-container">
+                <!-- 这里替换成你自己的二维码图片路径 -->
+                <img src="../assets/images/清补凉链接.png" alt="分享二维码" class="qr-image" id="qrImage">
+            </div>
+            
+            <p class="share-instruction">
+                使用手机扫描二维码，即可分享清补凉文化探索之旅
+            </p>
+            
+            <button class="close-share" id="closeShare">
+                关闭分享
+            </button>
         </div>
     </div>
 
@@ -391,6 +552,43 @@
             document.body.addEventListener('touchmove', function(e) {
                 e.preventDefault();
             }, { passive: false });
+
+            // 分享功能
+            const shareCard = document.getElementById('shareCard');
+            const shareOverlay = document.getElementById('shareOverlay');
+            const closeShare = document.getElementById('closeShare');
+            const qrImage = document.getElementById('qrImage');
+
+            // 打开分享弹窗
+            shareCard.addEventListener('click', function() {
+                shareOverlay.style.display = 'flex';
+                // 防止背景滚动
+                document.body.style.overflow = 'hidden';
+            });
+
+            // 关闭分享弹窗
+            closeShare.addEventListener('click', function() {
+                shareOverlay.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+
+            // 点击遮罩层关闭
+            shareOverlay.addEventListener('click', function(e) {
+                if (e.target === shareOverlay) {
+                    shareOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // 二维码图片加载失败处理
+            qrImage.addEventListener('error', function() {
+                this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f0f0f0"/><text x="100" y="100" font-family="Arial" font-size="14" fill="%23666" text-anchor="middle" dy=".3em">请上传二维码图片</text></svg>';
+                
+                // 显示提示信息
+                const instruction = document.querySelector('.share-instruction');
+                instruction.innerHTML = '请在代码中替换二维码图片路径<br>修改 src="your-qr-code-image.jpg" 为您的图片路径';
+                instruction.style.color = '#ff6b6b';
+            });
         });
     </script>
 </body>
