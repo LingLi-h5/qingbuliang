@@ -15,37 +15,49 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
         body {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow-x: hidden;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
-            touch-action: manipulation;
-            position: relative;
+            justify-content: center;
+            padding: 8px;
+            touch-action: none;
         }
 
         .container {
             width: 100%;
-            max-width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            height: calc(100vh - 20px);
+            max-height: calc(100vh - 20px);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             overflow: hidden;
             backdrop-filter: blur(10px);
-            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 15px 12px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
             border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .header::before {
@@ -66,8 +78,8 @@
         }
 
         .header h1 {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             position: relative;
             font-weight: 600;
@@ -75,51 +87,55 @@
         }
 
         .header .subtitle {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             opacity: 0.95;
             position: relative;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .content {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: auto;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .chart-container {
-            width: 100%;
-            height: 380px;
-            padding: 20px 15px;
-            min-height: 380px;
-            background: transparent;
+            flex: 1.5;
+            min-height: 0;
+            padding: 15px 12px;
+            position: relative;
         }
 
         .info-panel {
-            width: 100%;
-            padding: 20px 15px;
+            flex-shrink: 0;
+            padding: 12px 12px 15px;
             background: linear-gradient(135deg, #f8f4e9 0%, #f0e6d2 100%);
             border-top: 3px solid #D2691E;
+            max-height: 40vh;
         }
 
         .info-title {
-            font-size: 1.3rem;
+            font-size: 1rem;
             color: #8B4513;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #CD853F;
             text-align: center;
             font-weight: 600;
         }
 
         .detail-item {
-            margin-bottom: 16px;
-            padding: 16px;
+            margin-bottom: 10px;
+            padding: 12px;
             background: white;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
             border-left: 4px solid #CD853F;
             transition: all 0.3s ease;
+            overflow-y: auto;
+            max-height: 30vh;
         }
 
         .detail-item:active {
@@ -129,20 +145,20 @@
 
         .detail-item h3 {
             color: #8B4513;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-weight: 600;
         }
 
         .income-bar {
-            height: 10px;
+            height: 8px;
             background: #f5e8c8;
             border-radius: 5px;
             overflow: hidden;
-            margin: 8px 0;
+            margin: 6px 0;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
@@ -155,47 +171,47 @@
         }
 
         .income-text {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #5a4a42;
-            margin: 6px 0;
+            margin: 5px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .highlight {
             color: #d46b08;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .comparison {
             color: #d46b08;
             font-weight: bold;
             background: rgba(212, 107, 8, 0.1);
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 12px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .icon {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         /* 浮动操作按钮样式 */
         .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 15px;
+            right: 15px;
             z-index: 100;
         }
 
         .fab-main {
-            width: 64px;
-            height: 64px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
@@ -206,7 +222,7 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border: none;
-            font-size: 26px;
+            font-size: 20px;
             position: relative;
             z-index: 101;
         }
@@ -218,11 +234,11 @@
 
         .fab-menu {
             position: absolute;
-            bottom: 75px;
+            bottom: 60px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 15px;
             opacity: 0;
             transform: translateY(25px) scale(0.9);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -236,8 +252,8 @@
         }
 
         .fab-item {
-            width: 70px;
-            height: 70px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: white;
             color: #8B4513;
@@ -248,7 +264,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
             position: relative;
             text-align: center;
@@ -263,12 +279,12 @@
 
         .fab-label {
             position: absolute;
-            right: 80px;
+            right: 65px;
             background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -283,23 +299,22 @@
         /* 页面指示器 */
         .page-indicator {
             position: fixed;
-            bottom: 25px;
+            bottom: 10px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             z-index: 99;
         }
 
         .page-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: rgba(139, 69, 19, 0.4);
             transition: all 0.4s ease;
-            cursor: pointer;
         }
 
         .page-dot.active {
@@ -308,116 +323,152 @@
             box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            .fab-container {
-                bottom: 25px;
-                right: 25px;
-            }
-            
-            .fab-main {
-                width: 58px;
-                height: 58px;
-                font-size: 24px;
-            }
-            
-            .fab-item {
-                width: 60px;
-                height: 60px;
-                font-size: 14px;
-            }
+        /* 交互提示 */
+        .interaction-hint {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            animation: pulse 2s infinite;
+            z-index: 10;
+            text-align: center;
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 15px 10px;
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* 所有屏幕都保持垂直布局 */
+        @media (orientation: landscape) {
+            .container {
+                height: calc(100vh - 15px);
             }
             
             .header {
-                margin-bottom: 30px;
+                padding: 12px;
+                min-height: 60px;
             }
             
             .header h1 {
-                font-size: 1.8rem;
+                font-size: 1.1rem;
             }
             
             .header .subtitle {
-                font-size: 1rem;
-            }
-            
-            .fab-container {
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .fab-main {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-            }
-            
-            .fab-item {
-                width: 55px;
-                height: 55px;
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .header {
-                padding: 20px 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.4rem;
-            }
-            
-            .header .subtitle {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             
             .chart-container {
-                height: 350px;
-                padding: 15px 12px;
+                flex: 1.3;
+                padding: 12px;
             }
             
             .info-panel {
-                padding: 15px 12px;
-            }
-            
-            .info-title {
-                font-size: 1.2rem;
-                margin-bottom: 15px;
+                max-height: 35vh;
+                padding: 12px;
             }
             
             .detail-item {
-                padding: 14px;
-                margin-bottom: 12px;
+                max-height: 28vh;
+            }
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-height: 600px) {
+            .header {
+                padding: 10px 8px;
+                min-height: 55px;
             }
             
-            .detail-item h3 {
+            .header h1 {
                 font-size: 1rem;
+                margin-bottom: 4px;
             }
             
-            .income-text {
-                font-size: 0.85rem;
+            .header .subtitle {
+                font-size: 0.75rem;
+            }
+            
+            .chart-container {
+                padding: 10px 8px;
+            }
+            
+            .info-panel {
+                padding: 10px 8px 12px;
+                max-height: 35vh;
+            }
+            
+            .info-title {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+            
+            .detail-item {
+                padding: 10px;
+                margin-bottom: 8px;
+                max-height: 25vh;
             }
         }
 
-        @media (max-width: 320px) {
-            .chart-container {
-                height: 320px;
-            }
-        }
-
-        /* 横屏优化 */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .chart-container {
-                height: 280px;
+        @media (max-height: 500px) {
+            .container {
+                height: calc(100vh - 10px);
             }
             
             .header {
-                padding: 15px;
+                min-height: 50px;
+                padding: 8px;
+            }
+            
+            .header h1 {
+                font-size: 0.9rem;
+            }
+            
+            .header .subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .chart-container {
+                flex: 1.2;
+            }
+            
+            .info-panel {
+                max-height: 30vh;
+            }
+            
+            .detail-item {
+                max-height: 22vh;
+            }
+        }
+
+        @media (max-height: 400px) {
+            .header {
+                min-height: 45px;
+                padding: 6px;
+            }
+            
+            .header h1 {
+                font-size: 0.85rem;
+                margin-bottom: 3px;
+            }
+            
+            .header .subtitle {
+                font-size: 0.65rem;
+            }
+            
+            .info-panel {
+                padding: 8px 6px 10px;
+                max-height: 28vh;
+            }
+            
+            .detail-item {
+                padding: 8px;
+                max-height: 20vh;
             }
         }
     </style>
@@ -430,13 +481,15 @@
         </div>
 
         <div class="content">
-            <div id="sunburst-chart" class="chart-container"></div>
+            <div id="sunburst-chart" class="chart-container">
+                <div class="interaction-hint">点击图表查看详情</div>
+            </div>
             <div class="info-panel">
                 <div class="info-title">📊 农业就业详情</div>
                 <div id="detail-content">
                     <div class="detail-item">
                         <h3><span class="icon">👆</span>互动指南</h3>
-                        <p style="font-size: 0.9rem; line-height: 1.5; color: #666;">点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。</p>
+                        <p style="font-size: 0.8rem; line-height: 1.4; color: #666;">点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。</p>
                     </div>
                 </div>
             </div>
@@ -451,6 +504,7 @@
         <div class="fab-menu" id="fabMenu">
             <a href="page0.html" class="fab-item" id="menuBtn">
                 菜单
+                <span class="fab-label">返回菜单</span>
             </a>
         </div>
     </div>
@@ -468,7 +522,8 @@
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
-        fabMain.addEventListener('click', function() {
+        fabMain.addEventListener('click', function(e) {
+            e.stopPropagation();
             fabMenu.classList.toggle('open');
         });
 
@@ -479,21 +534,12 @@
             }
         });
 
-        // 页面指示器交互
-        const pageDots = document.querySelectorAll('.page-dot');
-        pageDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                pageDots.forEach(d => d.classList.remove('active'));
-                dot.classList.add('active');
-                // 这里可以添加页面跳转逻辑
-            });
-        });
-
         // 初始化ECharts实例
         const chartDom = document.getElementById('sunburst-chart');
         const myChart = echarts.init(chartDom, null, {
             renderer: 'canvas',
-            useDirtyRect: false
+            useDirtyRect: false,
+            devicePixelRatio: window.devicePixelRatio
         });
         
         // 只保留第一产业的数据
@@ -554,25 +600,25 @@
                 formatter: function (params) {
                     if (params.data.value) {
                         return `
-                            <div style="font-weight: bold; color: #8B4513; margin-bottom: 6px; font-size: 14px;">
+                            <div style="font-weight: bold; color: #8B4513; margin-bottom: 5px; font-size: 12px;">
                                 ${params.data.icon || '🌱'} ${params.name}
                             </div>
-                            <div style="font-size: 12px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
-                            <div style="font-size: 12px;">💰 月均收入: ${params.data.income}元</div>
-                            <div style="font-size: 12px;">🏠 本地就业率: ${params.data.localRate}</div>
+                            <div style="font-size: 11px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
+                            <div style="font-size: 11px;">💰 月均收入: ${params.data.income}元</div>
+                            <div style="font-size: 11px;">🏠 本地就业率: ${params.data.localRate}</div>
                         `;
                     }
-                    return `<div style="font-weight: bold; font-size: 14px; color: #8B4513;">${params.name}</div>`;
+                    return `<div style="font-weight: bold; font-size: 12px; color: #8B4513;">${params.name}</div>`;
                 },
                 confine: true,
                 textStyle: {
-                    fontSize: 12
+                    fontSize: 11
                 }
             },
             series: {
                 type: 'sunburst',
                 data: [agricultureData],
-                radius: ['15%', '85%'],
+                radius: ['15%', '80%'],
                 itemStyle: {
                     borderWidth: 2,
                     borderColor: 'white',
@@ -582,10 +628,13 @@
                 label: {
                     rotate: 'radial',
                     color: '#333',
-                    fontSize: 11,
+                    fontSize: 10,
                     fontWeight: 'bold',
                     textBorderColor: 'white',
-                    textBorderWidth: 1
+                    textBorderWidth: 1,
+                    show: true,
+                    overflow: 'truncate',
+                    width: 60
                 },
                 emphasis: {
                     focus: 'ancestor',
@@ -594,7 +643,7 @@
                         shadowColor: 'rgba(0, 0, 0, 0.3)'
                     },
                     label: {
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 'bold'
                     }
                 },
@@ -608,17 +657,17 @@
                         },
                         label: {
                             rotate: 'tangential',
-                            fontSize: 14,
+                            fontSize: 12,
                             color: 'white',
                             fontWeight: 'bold'
                         }
                     },
                     {
                         r0: '40%',
-                        r: '85%',
+                        r: '80%',
                         label: {
                             align: 'right',
-                            fontSize: 11
+                            fontSize: 10
                         }
                     }
                 ]
@@ -655,7 +704,7 @@
                             <span>收入提升:</span>
                             <span class="comparison">${params.data.comparison}</span>
                         </div>
-                        <p style="margin-top: 12px; font-size: 0.85rem; color: #666; line-height: 1.5;">${params.data.detail}</p>
+                        <p style="margin-top: 8px; font-size: 0.75rem; color: #666; line-height: 1.4;">${params.data.detail}</p>
                     </div>
                 `;
             } else if (params.data.children) {
@@ -674,10 +723,10 @@
                             <span>平均月收入:</span>
                             <span class="highlight">${avgIncome}元</span>
                         </div>
-                        <div class="income-text" style="margin-top: 12px; font-weight: bold; font-size: 0.9rem;">主要农业岗位:</div>
-                        <div style="margin-top: 8px;">
+                        <div class="income-text" style="margin-top: 8px; font-weight: bold; font-size: 0.8rem;">主要农业岗位:</div>
+                        <div style="margin-top: 6px;">
                             ${params.data.children.map(child => `
-                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.75rem;">
                                     <span>${child.icon} ${child.name}</span>
                                     <span style="color: #8B4513; font-weight: bold;">${child.value}人</span>
                                 </div>
@@ -691,9 +740,17 @@
         // 设置配置项并渲染图表
         myChart.setOption(option);
 
+        // 自适应调整图表大小
+        function resizeChart() {
+            myChart.resize();
+        }
+
+        // 初始化时调整大小
+        setTimeout(resizeChart, 100);
+        
         // 响应窗口大小变化
         window.addEventListener('resize', function() {
-            myChart.resize();
+            resizeChart();
         });
 
         // 防止页面缩放
@@ -701,7 +758,7 @@
             if (e.touches.length > 1) {
                 e.preventDefault();
             }
-        });
+        }, { passive: false });
 
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(e) {
