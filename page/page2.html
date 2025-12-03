@@ -397,7 +397,7 @@
             }
         });
 
-        // 模拟清补凉在中国的分布数据
+        // 清补凉在中国的分布数据
         const qingbuliangData = [
             {name: '海南', value: 95, type: 'high', description: '清补凉的发源地，街头巷尾随处可见'},
             {name: '广东', value: 85, type: 'high', description: '深受欢迎的夏季甜品，各大糖水店均有售'},
@@ -406,13 +406,17 @@
             {name: '台湾', value: 65, type: 'medium', description: '受闽南文化影响，有一定市场'},
             {name: '云南', value: 60, type: 'medium', description: '部分地区有售，尤其旅游区'},
             {name: '贵州', value: 55, type: 'medium', description: '逐渐流行的地方特色甜品'},
+            {name: '香港', value: 50, type: 'medium', description: '部分糖水店有售'},
+            {name: '澳门', value: 45, type: 'medium', description: '部分甜品店有售'},
             {name: '湖南', value: 45, type: 'low', description: '主要在大城市的部分甜品店有售'},
             {name: '湖北', value: 40, type: 'low', description: '少数甜品店引进的地方特色'},
             {name: '四川', value: 35, type: 'low', description: '偶尔可见的特色甜品'},
             {name: '江西', value: 30, type: 'low', description: '少数地方有售'},
             {name: '浙江', value: 25, type: 'low', description: '主要在大城市的部分店铺'},
             {name: '江苏', value: 20, type: 'low', description: '少数甜品店有售'},
+            {name: '重庆', value: 20, type: 'low', description: '少数甜品店有售'},
             {name: '上海', value: 15, type: 'low', description: '少数特色甜品店引进'},
+            {name: '安徽', value: 15, type: 'low', description: '少数地方有售'},
             {name: '北京', value: 10, type: 'low', description: '少数海南菜餐厅有售'},
             {name: '天津', value: 8, type: 'low', description: '极少数店铺有售'},
             {name: '河北', value: 5, type: 'none', description: '几乎无分布'},
@@ -428,10 +432,7 @@
             {name: '黑龙江', value: 3, type: 'none', description: '几乎无分布'},
             {name: '吉林', value: 3, type: 'none', description: '几乎无分布'},
             {name: '辽宁', value: 4, type: 'none', description: '几乎无分布'},
-            {name: '重庆', value: 20, type: 'low', description: '少数甜品店有售'},
-            {name: '安徽', value: 15, type: 'low', description: '少数地方有售'},
-            {name: '香港', value: 50, type: 'medium', description: '部分糖水店有售'},
-            {name: '澳门', value: 45, type: 'medium', description: '部分甜品店有售'}
+            {name: '宁夏', value: 2, type: 'none', description: '几乎无分布'}
         ];
 
         // 初始化ECharts实例
@@ -468,7 +469,7 @@
                 extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px;'
             },
             visualMap: {
-                show: false, // 隐藏ECharts自带的图例
+                show: false,
                 type: 'piecewise',
                 pieces: [
                     {min: 80, max: 100, label: '高分布区域', color: '#ff6b6b'},
@@ -537,7 +538,8 @@
                         '重庆': '重庆',
                         '安徽': '安徽',
                         '香港': '香港',
-                        '澳门': '澳门'
+                        '澳门': '澳门',
+                        '宁夏': '宁夏'
                     }
                 }
             ]
@@ -551,13 +553,7 @@
             myChart.resize();
         });
 
-        // 添加点击省份的交互
-        myChart.on('click', function(params) {
-            if (params.componentType === 'series' && params.data) {
-                const message = `${params.name}\n清补凉普及度: ${params.data.value}%\n${params.data.description}`;
-                alert(message);
-            }
-        });
+        // 移除了点击省份的弹窗代码
 
         // 移动端触摸优化 - 防止页面滚动
         chartDom.addEventListener('touchmove', function(e) {
@@ -584,7 +580,6 @@
             dot.addEventListener('click', () => {
                 pageDots.forEach(d => d.classList.remove('active'));
                 dot.classList.add('active');
-                // 这里可以添加页面跳转逻辑
             });
         });
     </script>
