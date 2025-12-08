@@ -14,16 +14,48 @@
         }
         
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background-color: #fdf6e3; /* 备用背景色，防止图片加载失败时显示 */
             overflow: hidden;
             height: 100vh;
             touch-action: manipulation;
+        }
+        
+        /* 新的背景图容器 - 全屏背景 */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background-color: #fdf6e3; /* 与备用背景色一致 */
+        }
+        
+        /* 全屏背景图片样式 */
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 关键：覆盖整个容器，可能会裁剪图片 */
+            display: block;
+        }
+        
+        /* 添加半透明遮罩层，确保文字可读性 */
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.25) 0%, rgba(252, 182, 159, 0.25) 100%);
+            z-index: 1;
         }
         
         .container {
             width: 100%;
             height: 100vh;
             position: relative;
+            z-index: 2;
         }
         
         #loading-page {
@@ -36,43 +68,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            background: linear-gradient(135deg, rgba(255, 236, 210, 0.9) 0%, rgba(252, 182, 159, 0.9) 100%);
             transition: opacity 0.8s ease;
             z-index: 10;
-        }
-        
-        .background-art {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .background-art::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 236, 210, 0.7) 0%, rgba(252, 182, 159, 0.7) 100%);
-            z-index: 2;
-        }
-        
-        .background-art .pattern {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
-                radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
-                radial-gradient(circle at 60% 10%, rgba(255, 255, 255, 0.3) 2px, transparent 2px);
-            background-size: 100px 100px;
-            z-index: 1;
         }
         
         .loading-content {
@@ -81,14 +78,15 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.88); /* 降低透明度，更好显示背景 */
             padding: 25px 20px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
             z-index: 15;
             position: relative;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px); /* 增加毛玻璃效果 */
+            animation: float 5s ease-in-out infinite;
         }
         
         .title {
@@ -131,7 +129,7 @@
             align-items: center;
             font-size: 1.8rem;
             color: white;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
@@ -151,7 +149,6 @@
             border-radius: 50%;
         }
         
-        /* 食材图片样式 */
         .ingredient-img {
             width: 100%;
             height: 100%;
@@ -163,12 +160,13 @@
         .loading-bar-container {
             width: 100%;
             height: 18px;
-            background-color: rgba(255,255,255,0.6);
+            background-color: rgba(255,255,255,0.8);
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             position: relative;
+            border: 1px solid rgba(0,0,0,0.1);
         }
         
         .loading-bar {
@@ -203,6 +201,7 @@
             margin-bottom: 20px;
             text-align: center;
             font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         
         .enter-btn {
@@ -216,7 +215,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
-            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4);
+            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.5);
             font-weight: bold;
             min-height: 55px;
             min-width: 200px;
@@ -234,12 +233,25 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
         }
         
+        .enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.6);
+        }
+        
         .enter-btn:active {
             transform: scale(0.96);
             box-shadow: 0 3px 8px rgba(211, 84, 0, 0.4);
         }
         
         /* 响应式设计 */
+        @media (max-width: 768px) {
+            /* 平板和手机上调整内容区域大小 */
+            .loading-content {
+                max-width: 90%;
+                padding: 20px 15px;
+            }
+        }
+        
         @media (max-width: 480px) {
             .title {
                 font-size: 2.2rem;
@@ -254,6 +266,7 @@
             
             .loading-content {
                 padding: 20px 15px;
+                backdrop-filter: blur(5px); /* 手机上减少模糊效果，提高性能 */
             }
             
             .enter-btn {
@@ -297,46 +310,50 @@
             -webkit-touch-callout: none;
         }
         
-        /* 添加一些动画效果 */
+        /* 浮动动画 */
         @keyframes float {
             0% { transform: translateY(0); }
             50% { transform: translateY(-30px); }
             100% { transform: translateY(0); }
         }
         
-        .floating {
-            animation: float 5s ease-in-out infinite;
+        /* 提高可访问性 */
+        .enter-btn:focus {
+            outline: 3px solid rgba(230, 126, 34, 0.5);
+            outline-offset: 3px;
         }
     </style>
 </head>
 <body>
+    <!-- 新增的背景图容器 - 全屏背景 -->
+    <div class="background-container">
+        <!-- 请将下面的图片路径替换为您自己的手绘图片 -->
+        <img src="assets/images/主题.png" alt="海南清补凉手绘背景" class="background-image">
+        <div class="background-overlay"></div>
+    </div>
+    
     <div class="container">
-        <!-- 背景图案 -->
-        <div class="background-art">
-            <div class="pattern"></div>
-        </div>
-        
         <!-- 加载页面 -->
         <div id="loading-page">
-            <div class="loading-content floating">
+            <div class="loading-content">
                 <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
                     <!-- 请将下面的图片路径替换为您自己绘制的食材图片 -->
                     <div class="ingredient">
-                        <img src="assets/images/1.jpg" alt="红豆" class="ingredient-img">
+                        <img src="assets/images/1.jpg" alt="红豆" class="ingredient-img" loading="lazy">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/2.jpg" alt="绿豆" class="ingredient-img">
+                        <img src="assets/images/2.jpg" alt="绿豆" class="ingredient-img" loading="lazy">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/3.jpg" alt="薏米" class="ingredient-img">
+                        <img src="assets/images/3.jpg" alt="薏米" class="ingredient-img" loading="lazy">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/4.jpg" alt="西米" class="ingredient-img">
+                        <img src="assets/images/4.jpg" alt="西米" class="ingredient-img" loading="lazy">
                     </div>
                     <div class="ingredient">
-                        <img src="assets/images/5.jpg" alt="花生" class="ingredient-img">
+                        <img src="assets/images/5.jpg" alt="花生" class="ingredient-img" loading="lazy">
                     </div>
                 </div>
                 
@@ -345,92 +362,119 @@
                 </div>
                 
                 <div class="loading-text">加载中...</div>
-                <button class="enter-btn" id="enter-btn">品尝海南清补凉</button>
+                <button class="enter-btn" id="enter-btn" aria-label="进入海南清补凉介绍页面">品尝海南清补凉</button>
             </div>
         </div>
     </div>
-        
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loadingPage = document.getElementById('loading-page');
-            const enterBtn = document.getElementById('enter-btn');
-            const loadingBar = document.querySelector('.loading-bar');
-            const loadingText = document.querySelector('.loading-text');
-            const ingredients = document.querySelectorAll('.ingredient');
+            // 先预加载背景图片，避免闪烁
+            const bgImage = new Image();
+            bgImage.src = 'assets/images/主题.png'; // 修改为正确的路径
             
-            // 模拟加载过程
-            let progress = 0;
-            const loadingInterval = setInterval(() => {
-                progress += Math.random() * 12;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
+            bgImage.onload = function() {
+                console.log('背景图片加载成功');
+                // 背景图片加载完成后，开始主加载流程
+                startMainLoading();
+            };
+            
+            bgImage.onerror = function() {
+                console.warn('背景图片加载失败，使用备用背景');
+                // 显示警告信息（可选）
+                const warningMsg = document.createElement('div');
+                warningMsg.style.cssText = 'position:fixed; top:10px; left:10px; background:rgba(255,0,0,0.1); color:#c00; padding:5px; border-radius:3px; font-size:12px; z-index:100;';
+                warningMsg.textContent = '背景图片加载失败，路径: assets/images/主题.png';
+                document.body.appendChild(warningMsg);
+                
+                // 即使背景加载失败，也继续执行
+                startMainLoading();
+            };
+            
+            function startMainLoading() {
+                const loadingPage = document.getElementById('loading-page');
+                const enterBtn = document.getElementById('enter-btn');
+                const loadingBar = document.querySelector('.loading-bar');
+                const loadingText = document.querySelector('.loading-text');
+                const ingredients = document.querySelectorAll('.ingredient');
+                
+                // 模拟加载过程
+                let progress = 0;
+                const loadingInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(loadingInterval);
+                        
+                        // 加载完成后的动画
+                        setTimeout(() => {
+                            loadingText.textContent = "加载完成！准备品尝美味...";
+                            enterBtn.style.opacity = "1";
+                            enterBtn.style.transform = "translateY(0)";
+                            enterBtn.focus();
+                        }, 500);
+                    }
                     
-                    // 加载完成后的动画
+                    loadingBar.style.width = progress + "%";
+                    
+                    // 食材图标随进度显示
+                    ingredients.forEach((ingredient, index) => {
+                        if (progress >= 20 * (index + 1)) {
+                            ingredient.style.opacity = "1";
+                            ingredient.style.transform = "translateY(0)";
+                        }
+                    });
+                }, 200);
+                
+                // 点击进入按钮
+                enterBtn.addEventListener('click', function() {
+                    // 添加点击效果
+                    this.style.transform = "scale(0.95)";
+                    
+                    loadingPage.style.opacity = "0";
+                    loadingPage.style.pointerEvents = "none";
+                    
                     setTimeout(() => {
-                        loadingText.textContent = "加载完成！准备品尝美味...";
-                        enterBtn.style.opacity = "1";
-                        enterBtn.style.transform = "translateY(0)";
-                    }, 500);
-                }
+                        window.location.href = './page/page01.html';
+                    }, 800);
+                });
                 
-                loadingBar.style.width = progress + "%";
+                // 键盘支持：按回车键也可以触发按钮
+                enterBtn.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
                 
-                // 食材图标随进度显示
-                if (progress > 15) {
-                    ingredients[0].style.opacity = "1";
-                    ingredients[0].style.transform = "translateY(0)";
-                }
-                if (progress > 25) {
-                    ingredients[1].style.opacity = "1";
-                    ingredients[1].style.transform = "translateY(0)";
-                }
-                if (progress > 35) {
-                    ingredients[2].style.opacity = "1";
-                    ingredients[2].style.transform = "translateY(0)";
-                }
-                if (progress > 50) {
-                    ingredients[3].style.opacity = "1";
-                    ingredients[3].style.transform = "translateY(0)";
-                }
-                if (progress > 65) {
-                    ingredients[4].style.opacity = "1";
-                    ingredients[4].style.transform = "translateY(0)";
-                }
+                // 防止双击缩放
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', function (event) {
+                    const now = (new Date()).getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
                 
-            }, 300);
-            
-            // 点击进入按钮
-            enterBtn.addEventListener('click', function() {
-                // 添加点击反馈
-                this.style.transform = "scale(0.95)";
+                // 添加触摸反馈
+                enterBtn.addEventListener('touchstart', function() {
+                    this.style.transform = "scale(0.95)";
+                });
                 
-                loadingPage.style.opacity = "0";
-                loadingPage.style.pointerEvents = "none";
+                enterBtn.addEventListener('touchend', function() {
+                    this.style.transform = "scale(1)";
+                });
                 
-                setTimeout(() => {
-                    window.location.href = './page/page01.html';
-                }, 800);
-            });
-            
-            // 防止双击缩放
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', function (event) {
-                const now = (new Date()).getTime();
-                if (now - lastTouchEnd <= 300) {
-                    event.preventDefault();
-                }
-                lastTouchEnd = now;
-            }, false);
-            
-            // 添加触摸反馈
-            enterBtn.addEventListener('touchstart', function() {
-                this.style.transform = "scale(0.95)";
-            });
-            
-            enterBtn.addEventListener('touchend', function() {
-                this.style.transform = "scale(1)";
-            });
+                // 添加鼠标悬停效果
+                enterBtn.addEventListener('mouseenter', function() {
+                    this.style.transform = "translateY(-2px)";
+                });
+                
+                enterBtn.addEventListener('mouseleave', function() {
+                    this.style.transform = "translateY(0)";
+                });
+            }
         });
     </script>
 </body>

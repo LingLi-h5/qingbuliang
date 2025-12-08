@@ -8,6 +8,7 @@
     <title>清补凉在中国分布的可视化地图</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -49,6 +50,33 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            background: linear-gradient(to bottom, #f8f4e8, #fffaf0);
+        }
+
+        /* 地图背景 - 使用CSS背景图片 */
+        #map::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../assets/images/主题.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ECharts容器样式 */
+        #map > div:first-child {
+            position: relative;
+            z-index: 1;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         .title {
@@ -113,7 +141,7 @@
             color: #333;
         }
 
-        /* 浮动操作按钮样式 - 与page1完全一致 */
+        /* 浮动操作按钮样式 - 精简版 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -139,7 +167,7 @@
             z-index: 101;
         }
 
-        .fab-main:hover {
+        .fab-main.active {
             transform: scale(1.1) rotate(90deg);
             box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
         }
@@ -186,26 +214,6 @@
         .fab-item:hover {
             transform: scale(1.15);
             background: #f5e3d4;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
-        }
-
-        .fab-label {
-            position: absolute;
-            right: 80px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            font-weight: 500;
-        }
-
-        .fab-item:hover .fab-label {
-            opacity: 1;
         }
 
         /* 页面指示器 */
@@ -236,93 +244,42 @@
             box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
-        /* 响应式设计 - 与page1完全一致 */
+        /* 合并的响应式设计 */
         @media (max-width: 768px) {
-            .fab-container {
-                bottom: 25px;
-                right: 25px;
-            }
-            
-            .fab-main {
-                width: 58px;
-                height: 58px;
-                font-size: 24px;
-            }
-            
-            .fab-item {
-                width: 60px;
-                height: 60px;
-                font-size: 14px;
-            }
+            .fab-container { bottom: 25px; right: 25px; }
+            .fab-main { width: 58px; height: 58px; font-size: 24px; }
+            .fab-item { width: 60px; height: 60px; font-size: 14px; }
+            .title h1 { font-size: 1.2rem; }
+            .custom-legend { bottom: 12%; }
         }
 
         @media (max-width: 480px) {
-            .fab-container {
-                bottom: 20px;
-                right: 20px;
+            .fab-container { bottom: 20px; right: 20px; }
+            .fab-main { width: 52px; height: 52px; font-size: 22px; }
+            .fab-item { width: 55px; height: 55px; font-size: 13px; }
+            .title h1 { font-size: 1.1rem; }
+            .title p { font-size: 0.8rem; }
+            .custom-legend { 
+                padding: 10px 12px; 
+                gap: 8px 12px; 
+                bottom: 10%;
             }
-            
-            .fab-main {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-            }
-            
-            .fab-item {
-                width: 55px;
-                height: 55px;
-                font-size: 13px;
-            }
+            .legend-text { font-size: 11px; }
+            .legend-color { width: 14px; height: 14px; }
         }
 
-        /* 超小屏幕优化 */
-        @media (max-width: 320px) {
-            .title h1 {
-                font-size: 1.1rem;
-            }
-            
-            .title p {
-                font-size: 0.8rem;
-            }
-            
-            .custom-legend {
-                padding: 10px 12px;
-                gap: 8px 12px;
-            }
-            
-            .legend-text {
-                font-size: 11px;
-            }
-            
-            .legend-color {
-                width: 14px;
-                height: 14px;
-            }
-        }
-
-        /* 大屏幕优化 */
         @media (min-width: 768px) and (min-height: 800px) {
-            .title h1 {
-                font-size: 1.5rem;
-            }
-            
-            .title p {
-                font-size: 1rem;
-            }
-            
-            .custom-legend {
-                padding: 15px 20px;
-                gap: 15px 25px;
-            }
-            
-            .legend-text {
-                font-size: 14px;
-            }
-            
-            .legend-color {
-                width: 18px;
-                height: 18px;
-            }
+            .title h1 { font-size: 1.5rem; }
+            .title p { font-size: 1rem; }
+            .custom-legend { padding: 15px 20px; gap: 15px 25px; }
+            .legend-text { font-size: 14px; }
+            .legend-color { width: 18px; height: 18px; }
+        }
+
+        /* 调试样式 - 如果背景不显示，启用此样式 */
+        .debug-bg {
+            background-color: #ff0000 !important;
+            opacity: 0.3 !important;
         }
     </style>
 </head>
@@ -355,26 +312,22 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 - 与page1完全一致 -->
+    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">
-                菜单
-            </a>
-            <a href="page3.html" class="fab-item">
-                下页
-            </a>
+            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page3.html" class="fab-item">下页</a>
         </div>
     </div>
 
     <!-- 页面指示器 -->
     <div class="page-indicator">
-        <div class="page-dot active"></div>
-        <div class="page-dot"></div>
-        <div class="page-dot"></div>
+        <div class="page-dot active" data-index="0"></div>
+        <div class="page-dot" data-index="1"></div>
+        <div class="page-dot" data-index="2"></div>
     </div>
 
     <!-- 引入ECharts库 -->
@@ -382,95 +335,91 @@
     <script src="../js/china.js"></script>
 
     <script>
-        // 浮动操作按钮功能 - 与page1完全一致
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        
-        fabMain.addEventListener('click', function() {
-            fabMenu.classList.toggle('open');
-        });
-
-        // 点击页面其他地方关闭FAB菜单
-        document.addEventListener('click', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
-
-        // 清补凉在中国的分布数据
+        // 简化后的清补凉分布数据
         const qingbuliangData = [
-            {name: '海南', value: 95, type: 'high', description: '清补凉的发源地，街头巷尾随处可见'},
-            {name: '广东', value: 85, type: 'high', description: '深受欢迎的夏季甜品，各大糖水店均有售'},
-            {name: '广西', value: 80, type: 'high', description: '与海南类似，是当地传统甜品'},
-            {name: '福建', value: 70, type: 'medium', description: '主要在闽南地区流行'},
-            {name: '台湾', value: 65, type: 'medium', description: '受闽南文化影响，有一定市场'},
-            {name: '云南', value: 60, type: 'medium', description: '部分地区有售，尤其旅游区'},
-            {name: '贵州', value: 55, type: 'medium', description: '逐渐流行的地方特色甜品'},
-            {name: '香港', value: 50, type: 'medium', description: '部分糖水店有售'},
-            {name: '澳门', value: 45, type: 'medium', description: '部分甜品店有售'},
-            {name: '湖南', value: 45, type: 'low', description: '主要在大城市的部分甜品店有售'},
-            {name: '湖北', value: 40, type: 'low', description: '少数甜品店引进的地方特色'},
-            {name: '四川', value: 35, type: 'low', description: '偶尔可见的特色甜品'},
-            {name: '江西', value: 30, type: 'low', description: '少数地方有售'},
-            {name: '浙江', value: 25, type: 'low', description: '主要在大城市的部分店铺'},
-            {name: '江苏', value: 20, type: 'low', description: '少数甜品店有售'},
-            {name: '重庆', value: 20, type: 'low', description: '少数甜品店有售'},
-            {name: '上海', value: 15, type: 'low', description: '少数特色甜品店引进'},
-            {name: '安徽', value: 15, type: 'low', description: '少数地方有售'},
-            {name: '北京', value: 10, type: 'low', description: '少数海南菜餐厅有售'},
-            {name: '天津', value: 8, type: 'low', description: '极少数店铺有售'},
-            {name: '河北', value: 5, type: 'none', description: '几乎无分布'},
-            {name: '河南', value: 5, type: 'none', description: '几乎无分布'},
-            {name: '山东', value: 5, type: 'none', description: '几乎无分布'},
-            {name: '山西', value: 3, type: 'none', description: '几乎无分布'},
-            {name: '陕西', value: 3, type: 'none', description: '几乎无分布'},
-            {name: '甘肃', value: 2, type: 'none', description: '几乎无分布'},
-            {name: '青海', value: 1, type: 'none', description: '几乎无分布'},
-            {name: '新疆', value: 1, type: 'none', description: '几乎无分布'},
-            {name: '西藏', value: 1, type: 'none', description: '几乎无分布'},
-            {name: '内蒙古', value: 2, type: 'none', description: '几乎无分布'},
-            {name: '黑龙江', value: 3, type: 'none', description: '几乎无分布'},
-            {name: '吉林', value: 3, type: 'none', description: '几乎无分布'},
-            {name: '辽宁', value: 4, type: 'none', description: '几乎无分布'},
-            {name: '宁夏', value: 2, type: 'none', description: '几乎无分布'}
+            {name: '海南', value: 95, description: '清补凉的发源地，街头巷尾随处可见'},
+            {name: '广东', value: 85, description: '深受欢迎的夏季甜品，各大糖水店均有售'},
+            {name: '广西', value: 80, description: '与海南类似，是当地传统甜品'},
+            {name: '福建', value: 70, description: '主要在闽南地区流行'},
+            {name: '台湾', value: 65, description: '受闽南文化影响，有一定市场'},
+            {name: '云南', value: 60, description: '部分地区有售，尤其旅游区'},
+            {name: '贵州', value: 55, description: '逐渐流行的地方特色甜品'},
+            {name: '香港', value: 50, description: '部分糖水店有售'},
+            {name: '澳门', value: 45, description: '部分甜品店有售'},
+            {name: '湖南', value: 45, description: '主要在大城市的部分甜品店有售'},
+            {name: '湖北', value: 40, description: '少数甜品店引进的地方特色'},
+            {name: '四川', value: 35, description: '偶尔可见的特色甜品'},
+            {name: '江西', value: 30, description: '少数地方有售'},
+            {name: '浙江', value: 25, description: '主要在大城市的部分店铺'},
+            {name: '江苏', value: 20, description: '少数甜品店有售'},
+            {name: '重庆', value: 20, description: '少数甜品店有售'},
+            {name: '上海', value: 15, description: '少数特色甜品店引进'},
+            {name: '安徽', value: 15, description: '少数地方有售'},
+            {name: '北京', value: 10, description: '少数海南菜餐厅有售'},
+            {name: '天津', value: 8, description: '极少数店铺有售'},
+            {name: '河北', value: 5, description: '几乎无分布'},
+            {name: '河南', value: 5, description: '几乎无分布'},
+            {name: '山东', value: 5, description: '几乎无分布'},
+            {name: '山西', value: 3, description: '几乎无分布'},
+            {name: '陕西', value: 3, description: '几乎无分布'},
+            {name: '甘肃', value: 2, description: '几乎无分布'},
+            {name: '青海', value: 1, description: '几乎无分布'},
+            {name: '新疆', value: 1, description: '几乎无分布'},
+            {name: '西藏', value: 1, description: '几乎无分布'},
+            {name: '内蒙古', value: 2, description: '几乎无分布'},
+            {name: '黑龙江', value: 3, description: '几乎无分布'},
+            {name: '吉林', value: 3, description: '几乎无分布'},
+            {name: '辽宁', value: 4, description: '几乎无分布'},
+            {name: '宁夏', value: 2, description: '几乎无分布'}
         ];
 
-        // 初始化ECharts实例
-        const chartDom = document.getElementById('map');
-        const myChart = echarts.init(chartDom, null, {
-            renderer: 'canvas',
-            useDirtyRect: false
-        });
+        // 检查背景图片是否可用
+        function checkBackgroundImage() {
+            const mapElement = document.getElementById('map');
+            const computedStyle = window.getComputedStyle(mapElement, '::before');
+            
+            // 创建测试图片
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('背景图片加载成功:', this.src);
+                // 图片加载成功，确保透明度正确
+                mapElement.classList.remove('debug-bg');
+            };
+            testImg.onerror = function() {
+                console.error('背景图片加载失败，使用备用背景');
+                // 使用CSS渐变作为备用背景
+                mapElement.style.background = 'linear-gradient(to bottom, #f8f4e8, #fffaf0)';
+                mapElement.classList.add('debug-bg');
+            };
+            
+            // 获取背景图片URL
+            const bgImageUrl = computedStyle.backgroundImage.slice(5, -2);
+            testImg.src = bgImageUrl;
+        }
 
-        // 配置项 - 针对移动端优化
+        // 初始化ECharts
+        const myChart = echarts.init(document.getElementById('map'));
+
+        // 配置项 - 调整为透明背景
         const option = {
-            title: {
-                show: false
-            },
+            backgroundColor: 'transparent', // 设置背景为透明
             tooltip: {
                 trigger: 'item',
-                formatter: function(params) {
-                    if (params.data) {
-                        return `<div style="font-size: 12px; line-height: 1.4;">
-                            <b style="font-size: 13px;">${params.name}</b><br/>
-                            <span style="color: #666;">普及度: ${params.data.value}%</span><br/>
-                            <span style="color: #888; font-size: 11px;">${params.data.description}</span>
-                        </div>`;
-                    }
-                    return `<b>${params.name}</b><br/>暂无数据`;
-                },
-                confine: true,
+                formatter: ({data, name}) => data ? 
+                    `<div style="font-size:12px;line-height:1.4">
+                        <b style="font-size:13px">${name}</b><br/>
+                        <span style="color:#666">普及度: ${data.value}%</span><br/>
+                        <span style="color:#888;font-size:11px">${data.description}</span>
+                    </div>` : 
+                    `<b>${name}</b><br/>暂无数据`,
                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
                 borderColor: '#8B4513',
-                textStyle: {
-                    color: '#333',
-                    fontSize: 12
-                },
-                extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px;'
+                textStyle: { color: '#333', fontSize: 12 },
+                extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px;',
+                confine: true
             },
             visualMap: {
                 show: false,
-                type: 'piecewise',
                 pieces: [
                     {min: 80, max: 100, label: '高分布区域', color: '#ff6b6b'},
                     {min: 50, max: 79, label: '中分布区域', color: '#ffa726'},
@@ -478,109 +427,113 @@
                     {min: 0, max: 9, label: '无分布区域', color: '#c7c7c7'}
                 ]
             },
-            series: [
-                {
-                    name: '清补凉分布',
-                    type: 'map',
-                    map: 'china',
-                    roam: true,
-                    scaleLimit: {
-                        min: 0.8,
-                        max: 8
+            series: [{
+                type: 'map',
+                map: 'china',
+                roam: true,
+                scaleLimit: { min: 0.8, max: 8 },
+                emphasis: {
+                    label: { 
+                        show: true, 
+                        fontSize: 11, 
+                        fontWeight: 'bold',
+                        color: '#8B4513'
                     },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            fontSize: 11,
-                            fontWeight: 'bold'
-                        },
-                        itemStyle: {
-                            areaColor: '#ffd700',
-                            borderColor: '#8B4513',
-                            borderWidth: 1
-                        }
-                    },
-                    itemStyle: {
-                        borderColor: '#fff',
-                        borderWidth: 0.5
-                    },
-                    data: qingbuliangData,
-                    nameMap: {
-                        '海南': '海南',
-                        '广东': '广东',
-                        '广西': '广西',
-                        '福建': '福建',
-                        '台湾': '台湾',
-                        '云南': '云南',
-                        '贵州': '贵州',
-                        '湖南': '湖南',
-                        '湖北': '湖北',
-                        '四川': '四川',
-                        '江西': '江西',
-                        '浙江': '浙江',
-                        '江苏': '江苏',
-                        '上海': '上海',
-                        '北京': '北京',
-                        '天津': '天津',
-                        '河北': '河北',
-                        '河南': '河南',
-                        '山东': '山东',
-                        '山西': '山西',
-                        '陕西': '陕西',
-                        '甘肃': '甘肃',
-                        '青海': '青海',
-                        '新疆': '新疆',
-                        '西藏': '西藏',
-                        '内蒙古': '内蒙古',
-                        '黑龙江': '黑龙江',
-                        '吉林': '吉林',
-                        '辽宁': '辽宁',
-                        '重庆': '重庆',
-                        '安徽': '安徽',
-                        '香港': '香港',
-                        '澳门': '澳门',
-                        '宁夏': '宁夏'
+                    itemStyle: { 
+                        areaColor: 'rgba(255, 215, 0, 0.7)', // 半透明高亮
+                        borderColor: '#8B4513', 
+                        borderWidth: 1.5,
+                        shadowColor: 'rgba(139, 69, 19, 0.5)',
+                        shadowBlur: 10
                     }
-                }
-            ]
+                },
+                itemStyle: { 
+                    borderColor: '#fff', 
+                    borderWidth: 0.5,
+                    areaColor: 'rgba(255, 255, 255, 0.2)', // 更透明，让背景更明显
+                    shadowColor: 'rgba(0, 0, 0, 0.05)',
+                    shadowBlur: 2
+                },
+                label: {
+                    show: false,
+                    color: '#333',
+                    fontSize: 9
+                },
+                data: qingbuliangData
+            }]
         };
 
-        // 使用配置项和数据显示图表
+        // 设置ECharts选项
         myChart.setOption(option);
 
-        // 添加窗口大小变化时的响应式行为
-        window.addEventListener('resize', function() {
-            myChart.resize();
-        });
-
-        // 移除了点击省份的弹窗代码
-
-        // 移动端触摸优化 - 防止页面滚动
-        chartDom.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
-
-        // 初始化完成后调整大小
+        // 确保ECharts容器正确设置
         setTimeout(() => {
-            myChart.resize();
+            const canvas = myChart.getDom().querySelector('canvas');
+            if (canvas) {
+                canvas.style.backgroundColor = 'transparent';
+            }
         }, 100);
 
-        // 页面可见性变化时重新调整大小
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                setTimeout(() => {
-                    myChart.resize();
-                }, 100);
-            }
+        // 事件处理
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        
+        // FAB菜单切换
+        fabMain.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabMenu.classList.toggle('open');
+            fabMain.classList.toggle('active');
         });
 
-        // 页面指示器交互
-        const pageDots = document.querySelectorAll('.page-dot');
-        pageDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                pageDots.forEach(d => d.classList.remove('active'));
-                dot.classList.add('active');
+        // 点击外部关闭菜单
+        document.addEventListener('click', () => {
+            fabMenu.classList.remove('open');
+            fabMain.classList.remove('active');
+        });
+
+        // 页面指示器
+        document.querySelectorAll('.page-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                document.querySelectorAll('.page-dot').forEach(d => d.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 这里可以添加页面切换逻辑
+                console.log('切换到页面:', index);
             });
+        });
+
+        // 响应式调整
+        const resizeChart = () => {
+            myChart.resize();
+            // 重新检查背景
+            checkBackgroundImage();
+        };
+        
+        window.addEventListener('resize', resizeChart);
+        document.addEventListener('visibilitychange', () => !document.hidden && setTimeout(resizeChart, 100));
+        
+        // 初始化调整
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                resizeChart();
+                checkBackgroundImage();
+            }, 300);
+        });
+
+        // 调试模式：如果按D键，显示调试信息
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'd' || e.key === 'D') {
+                console.log('=== 调试信息 ===');
+                console.log('地图元素:', document.getElementById('map'));
+                console.log('计算样式:', window.getComputedStyle(document.getElementById('map'), '::before'));
+                console.log('ECharts实例:', myChart);
+                console.log('背景图片URL:', window.getComputedStyle(document.getElementById('map'), '::before').backgroundImage);
+                
+                // 临时提高背景透明度以便查看
+                const mapEl = document.getElementById('map');
+                mapEl.style.setProperty('--bg-opacity', '0.5', 'important');
+            }
         });
     </script>
 </body>

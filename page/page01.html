@@ -4,10 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>历史改革信息可视化</title>
-	<link rel="stylesheet" href="../css/main.css">
-	 <link rel="stylesheet" href="../css/page01.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/page01.css">
+    <style>
+        /* 全屏背景图样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        /* 背景图容器 */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 全屏背景图片 */
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 关键：完全覆盖容器，可能裁剪图片边缘 */
+            display: block;
+        }
+        
+        /* 添加遮罩层提高文字可读性 */
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 236, 210, 0.15) 0%, 
+                rgba(252, 182, 159, 0.15) 100%);
+            z-index: 1;
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        /* 标题样式 */
+        .title {
+            color: #fff;
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+        
+        /* 进入提示 */
+        .enter-prompt {
+            color: #fff;
+            font-size: 2.5rem;
+            padding: 20px 50px;
+            background-color: rgba(230, 126, 34, 0.85);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out 0.5s both;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 鼠标悬停效果 */
+        .enter-prompt:hover {
+            transform: translateY(-5px) scale(1.05);
+            background-color: rgba(211, 84, 0, 0.95);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* 点击效果 */
+        .enter-prompt:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        /* 微光效果 */
+        .enter-prompt::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s;
+        }
+        
+        .enter-prompt:hover::after {
+            left: 100%;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+                margin-bottom: 30px;
+            }
+            
+            .enter-prompt {
+                font-size: 2rem;
+                padding: 18px 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.5rem;
+                margin-bottom: 25px;
+            }
+            
+            .enter-prompt {
+                font-size: 1.8rem;
+                padding: 15px 35px;
+            }
+        }
+        
+        /* 防止长按菜单 */
+        .enter-prompt {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .enter-prompt:hover {
+                transform: none;
+            }
+            
+            .enter-prompt:active {
+                transform: scale(0.95);
+                background-color: rgba(211, 84, 0, 0.95);
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- 全屏背景图容器 -->
+    <div class="background-container">
+        <!-- 请将下面的图片路径替换为您自己的背景图片 -->
+        <img src="../assets/images/进入页面.png" alt="清补凉背景图" class="background-image">
+        <div class="background-overlay"></div>
+    </div>
+    
     <div class="container">
         <h1 class="title">清补凉主题页</h1>
         <div class="enter-prompt" id="enterPrompt">点击进入</div>
@@ -16,6 +207,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const enterPrompt = document.getElementById('enterPrompt');
+            const bgImage = document.querySelector('.background-image');
+            
+            // 预加载背景图片
+            const bgImg = new Image();
+            bgImg.onload = function() {
+                console.log('背景图片加载成功');
+                // 可以在这里添加图片加载成功的回调
+            };
+            bgImg.onerror = function() {
+                console.error('背景图片加载失败，请检查路径:', bgImage.src);
+                // 加载失败时使用备用背景
+                document.body.style.backgroundColor = '#fdf6e3';
+            };
+            bgImg.src = bgImage.src;
             
             // 鼠标悬停效果
             enterPrompt.addEventListener('mouseover', function() {
@@ -28,11 +233,48 @@
                 this.style.transform = 'scale(0.95)';
                 this.style.opacity = '0.7';
                 
-                // 页面跳转 - 修改这里
+                // 添加页面淡出效果
+                document.querySelector('.container').style.opacity = '0';
+                document.querySelector('.container').style.transition = 'opacity 0.3s ease';
+                
+                // 页面跳转
                 setTimeout(function() {
                     window.location.href = 'page0.html';
                 }, 300);
             });
+            
+            // 触摸设备点击效果
+            enterPrompt.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+                this.style.opacity = '0.7';
+            });
+            
+            enterPrompt.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+                this.style.opacity = '1';
+            });
+            
+            // 键盘支持
+            enterPrompt.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+            
+            // 使元素可聚焦（为了键盘可访问性）
+            enterPrompt.setAttribute('tabindex', '0');
+            enterPrompt.setAttribute('role', 'button');
+            
+            // 防止双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
         });
     </script>
 </body>

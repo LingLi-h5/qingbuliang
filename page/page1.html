@@ -6,6 +6,33 @@
     <title>清补凉文化溯源</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS变量定义保持不变 */
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #D2691E;
+            --light-brown: #CD853F;
+            --cream: #DEB887;
+            --light-cream: #F5DEB3;
+            --dark-text: #5a3921;
+            --medium-text: #654321;
+            --background-start: #ffecd2;
+            --background-end: #fcb69f;
+            --white: #fff;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --shadow-dark: rgba(0, 0, 0, 0.25);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --radius-circle: 50%;
+            
+            --transition-fast: all 0.3s ease;
+            --transition-medium: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: all 0.5s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,33 +42,75 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: 
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 245, 235, 0.25)),
+                url("../assets/images/主题.png") center/cover no-repeat fixed;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 15px;
-            color: #5a3921;
+            color: var(--dark-text);
             position: relative;
         }
 
+        /* 添加背景遮罩层增强可读性，调整为更透明 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(
+                    circle at 20% 80%,
+                    rgba(255, 236, 210, 0.15) 0%,
+                    rgba(255, 236, 210, 0.08) 30%,
+                    transparent 70%
+                ),
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(252, 182, 159, 0.1) 0%,
+                    rgba(252, 182, 159, 0.04) 30%,
+                    transparent 70%
+                );
+            z-index: -1;
+        }
+
+        /* 工具类 */
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 头部样式 */
         .header {
             text-align: center;
             margin-bottom: 40px;
             width: 100%;
             max-width: 800px;
             padding: 0 10px;
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
-            color: #8B4513;
+            color: var(--primary-brown);
             font-size: 2.4rem;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px var(--shadow-light);
             font-weight: 700;
             position: relative;
             display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .header h1::after {
@@ -52,29 +121,39 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background: linear-gradient(to right, #8B4513, #D2691E);
+            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
             border-radius: 2px;
         }
 
         .header p {
-            color: #654321;
+            color: var(--medium-text);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.7;
             opacity: 0.9;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        /* 时间轴容器 */
         .timeline-container {
             width: 100%;
             max-width: 900px;
             margin: 0 auto 40px;
             position: relative;
             padding: 25px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            z-index: 1;
         }
 
         .timeline {
@@ -98,12 +177,13 @@
             left: 25px;
             right: 25px;
             height: 4px;
-            background: linear-gradient(to right, #8B4513, #D2691E, #CD853F);
+            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
             border-radius: 2px;
             z-index: 1;
             box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
         }
 
+        /* 时间轴节点 */
         .timeline-node {
             flex: 0 0 auto;
             width: 150px;
@@ -111,36 +191,43 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: var(--transition-medium);
             padding: 15px 10px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             position: relative;
             z-index: 2;
         }
 
         .timeline-node:hover {
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .timeline-node:active {
             transform: scale(0.95);
         }
 
+        .timeline-node.active {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
         .node-icon {
             width: 80px;
             height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #fff, #f9f9f9);
+            border-radius: var(--radius-circle);
+            background: linear-gradient(135deg, var(--white), #f9f9f9);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 20px var(--shadow-medium);
             position: relative;
             z-index: 2;
-            border: 3px solid #D2691E;
-            transition: all 0.4s ease;
+            border: 3px solid var(--secondary-brown);
+            transition: var(--transition-medium);
             overflow: hidden;
         }
 
@@ -151,8 +238,8 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F);
-            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown), var(--light-brown));
+            border-radius: var(--radius-circle);
             z-index: -1;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -167,25 +254,44 @@
             opacity: 1;
         }
 
+        .node-icon-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .qinhan { background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown)); color: white; }
+        .tang { background: linear-gradient(135deg, var(--light-brown), var(--secondary-brown)); color: white; }
+        .ming { background: linear-gradient(135deg, var(--secondary-brown), var(--light-brown)); color: white; }
+        .minguo { background: linear-gradient(135deg, var(--light-brown), var(--cream)); color: white; }
+        .modern { background: linear-gradient(135deg, var(--cream), var(--light-cream)); color: var(--primary-brown); }
+
         .node-year {
             font-weight: 700;
-            color: #8B4513;
+            color: var(--primary-brown);
             font-size: 1.2rem;
             margin-bottom: 8px;
             text-align: center;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .node-title {
-            color: #654321;
+            color: var(--medium-text);
             text-align: center;
             font-size: 0.95rem;
             line-height: 1.4;
             font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
+        /* 滚动提示 */
         .scroll-hint {
             text-align: center;
-            color: #8B4513;
+            color: var(--primary-brown);
             margin-top: 15px;
             font-size: 0.9rem;
             display: flex;
@@ -193,6 +299,14 @@
             justify-content: center;
             gap: 10px;
             opacity: 0.8;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 15px auto;
+            width: fit-content;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .scroll-hint i {
@@ -201,11 +315,11 @@
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-            40% {transform: translateX(-5px);}
-            60% {transform: translateX(-3px);}
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-4px); }
         }
 
+        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -222,10 +336,10 @@
         }
 
         .modal-content {
-            background-color: #fff;
+            background-color: var(--white);
             width: 100%;
             max-width: 550px;
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             animation: slideUp 0.5s ease;
@@ -234,7 +348,7 @@
         }
 
         .modal-header {
-            background: linear-gradient(to right, #8B4513, #D2691E);
+            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown));
             color: white;
             padding: 25px;
             display: flex;
@@ -250,7 +364,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(to right, #CD853F, #DEB887);
+            background: linear-gradient(to right, var(--light-brown), var(--cream));
         }
 
         .modal-header h2 {
@@ -269,8 +383,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
+            border-radius: var(--radius-circle);
+            transition: var(--transition-fast);
         }
 
         .close-btn:hover {
@@ -297,9 +411,9 @@
 
         .modal-map {
             width: 100%;
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px var(--shadow-light);
             background: #f9f5f0;
             padding: 20px;
             text-align: center;
@@ -309,14 +423,14 @@
             width: 100%;
             height: 200px;
             background: linear-gradient(135deg, #f5e3d4 0%, #e9d0b8 100%);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #8B4513;
+            color: var(--primary-brown);
             overflow: hidden;
-            border: 2px dashed #D2691E;
+            border: 2px dashed var(--secondary-brown);
         }
 
         .map-caption {
@@ -327,6 +441,7 @@
             font-size: 0.95rem;
         }
 
+        /* 食材标签 */
         .ingredients {
             display: flex;
             flex-wrap: wrap;
@@ -340,10 +455,10 @@
             padding: 10px 16px;
             border-radius: 25px;
             font-size: 0.9rem;
-            color: #8B4513;
+            color: var(--primary-brown);
             font-weight: 500;
             box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
-            transition: all 0.3s ease;
+            transition: var(--transition-fast);
         }
 
         .ingredient:hover {
@@ -351,6 +466,7 @@
             box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
         }
 
+        /* 动画 */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -367,7 +483,7 @@
             }
         }
 
-        /* 浮动操作按钮样式 */
+        /* 浮动操作按钮 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -378,15 +494,15 @@
         .fab-main {
             width: 64px;
             height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
+            border-radius: var(--radius-circle);
+            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: var(--transition-medium);
             border: none;
             font-size: 26px;
             position: relative;
@@ -407,7 +523,7 @@
             gap: 18px;
             opacity: 0;
             transform: translateY(25px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: var(--transition-medium);
             pointer-events: none;
         }
 
@@ -420,15 +536,15 @@
         .fab-item {
             width: 70px;
             height: 70px;
-            border-radius: 50%;
-            background: white;
-            color: #8B4513;
+            border-radius: var(--radius-circle);
+            background: var(--white);
+            color: var(--primary-brown);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 18px var(--shadow-dark);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-fast);
             text-decoration: none;
             font-size: 16px;
             font-weight: 600;
@@ -478,22 +594,24 @@
         .page-dot {
             width: 10px;
             height: 10px;
-            border-radius: 50%;
-            background-color: rgba(139, 69, 19, 0.4);
-            transition: all 0.4s ease;
+            border-radius: var(--radius-circle);
+            background-color: rgba(139, 69, 19, 0.6);
+            transition: var(--transition-medium);
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .page-dot.active {
-            background-color: #8B4513;
+            background-color: var(--primary-brown);
             transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
+            box-shadow: 0 0 10px rgba(139, 69, 19, 0.7);
         }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
+                padding: 12px 20px;
             }
             
             .timeline {
@@ -539,10 +657,12 @@
             
             .header h1 {
                 font-size: 1.8rem;
+                padding: 10px 15px;
             }
             
             .header p {
                 font-size: 1rem;
+                padding: 12px 15px;
             }
             
             .timeline {
@@ -566,27 +686,20 @@
             .node-title {
                 font-size: 0.85rem;
             }
-            
-            .fab-container {
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .fab-main {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-            }
-            
-            .fab-item {
-                width: 55px;
-                height: 55px;
-                font-size: 13px;
+        }
+
+        /* 优化背景图片显示 - 修正移动设备的图片路径 */
+        @media (max-width: 768px) {
+            body {
+                background: 
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 245, 235, 0.25)),
+                    url("../assets/images/主题.png") center/cover no-repeat fixed;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 页面内容保持不变 -->
     <div class="header">
         <h1>清补凉文化溯源</h1>
         <p>清补凉，源自岭南地区的传统糖水，历经千年演变，融合多元文化，成为海南最具代表性的夏日甜品。</p>
@@ -597,7 +710,7 @@
         <div class="timeline">
             <div class="timeline-node" data-year="秦汉时期" data-title="药食同源起源">
                 <div class="node-icon">
-                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #8B4513, #D2691E);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:bold;">秦汉</div>
+                    <div class="node-icon-content qinhan">秦汉</div>
                 </div>
                 <div class="node-year">秦汉时期</div>
                 <div class="node-title">药食同源起源</div>
@@ -605,7 +718,7 @@
 
             <div class="timeline-node" data-year="唐宋时期" data-title="中原文化传入">
                 <div class="node-icon">
-                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #CD853F, #D2691E);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:bold;">唐宋</div>
+                    <div class="node-icon-content tang">唐宋</div>
                 </div>
                 <div class="node-year">唐宋时期</div>
                 <div class="node-title">中原文化传入</div>
@@ -613,7 +726,7 @@
 
             <div class="timeline-node" data-year="明清时期" data-title="岭南特色形成">
                 <div class="node-icon">
-                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #D2691E, #CD853F);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:bold;">明清</div>
+                    <div class="node-icon-content ming">明清</div>
                 </div>
                 <div class="node-year">明清时期</div>
                 <div class="node-title">岭南特色形成</div>
@@ -621,7 +734,7 @@
 
             <div class="timeline-node" data-year="民国时期" data-title="海南本土化">
                 <div class="node-icon">
-                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #CD853F, #DEB887);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:bold;">民国</div>
+                    <div class="node-icon-content minguo">民国</div>
                 </div>
                 <div class="node-year">民国时期</div>
                 <div class="node-title">海南本土化</div>
@@ -629,7 +742,7 @@
 
             <div class="timeline-node" data-year="现代" data-title="文化传承与创新">
                 <div class="node-icon">
-                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #DEB887, #F5DEB3);display:flex;align-items:center;justify-content:center;color:#8B4513;font-size:14px;font-weight:bold;">现代</div>
+                    <div class="node-icon-content modern">现代</div>
                 </div>
                 <div class="node-year">现代</div>
                 <div class="node-title">文化传承与创新</div>
@@ -654,7 +767,9 @@
                 </div>
                 <div class="modal-map">
                     <div class="map-placeholder">
-                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #f5e3d4, #e9d0b8);display:flex;align-items:center;justify-content:center;color:#8B4513;font-size:16px;font-weight:bold;">历史地图展示</div>
+                        <div class="flex-center" style="width:100%;height:100%;color:var(--primary-brown);font-size:16px;font-weight:bold;">
+                            历史地图展示
+                        </div>
                     </div>
                     <div class="map-caption" id="modalMapCaption">点击时间轴节点查看不同时期的传播路径</div>
                 </div>
@@ -685,30 +800,7 @@
     </div>
 
     <script>
-        // 获取DOM元素
-        const timelineNodes = document.querySelectorAll('.timeline-node');
-        const modal = document.getElementById('historyModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalText = document.getElementById('modalText');
-        const modalMapCaption = document.getElementById('modalMapCaption');
-        const closeBtn = document.querySelector('.close-btn');
-
-        // 浮动操作按钮功能
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        
-        fabMain.addEventListener('click', function() {
-            fabMenu.classList.toggle('open');
-        });
-
-        // 点击页面其他地方关闭FAB菜单
-        document.addEventListener('click', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
-
-        // 历史数据
+        // 历史数据 - 这个对象必须存在
         const historyData = {
             "秦汉时期": {
                 title: "药食同源起源",
@@ -782,54 +874,86 @@
             }
         };
 
-        // 为每个时间轴节点添加点击事件
-        timelineNodes.forEach((node) => {
-            node.addEventListener('click', () => {
-                const year = node.getAttribute('data-year');
-                const data = historyData[year];
+        // DOM元素
+        const modal = document.getElementById('historyModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalText = document.getElementById('modalText');
+        const modalMapCaption = document.getElementById('modalMapCaption');
+        const closeBtn = document.querySelector('.close-btn');
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        const timeline = document.querySelector('.timeline');
+        const pageDots = document.querySelectorAll('.page-dot');
+        let activeNode = document.querySelector('.timeline-node:first-child');
+
+        // 浮动操作按钮功能
+        fabMain.addEventListener('click', function() {
+            fabMenu.classList.toggle('open');
+        });
+
+        // 点击页面其他地方关闭FAB菜单
+        document.addEventListener('click', function(e) {
+            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
+                fabMenu.classList.remove('open');
+            }
+        });
+
+        // 使用事件委托处理时间轴节点点击
+        timeline.addEventListener('click', (e) => {
+            const node = e.target.closest('.timeline-node');
+            if (!node) return;
+
+            const year = node.dataset.year;
+            console.log('点击的年份:', year); // 调试用
+            const data = historyData[year];
+            
+            if (data) {
+                console.log('找到的数据:', data); // 调试用
                 
-                if (data) {
-                    modalTitle.textContent = `${year} - ${data.title}`;
-                    modalText.innerHTML = data.content;
-                    modalMapCaption.textContent = data.mapCaption;
-                    
-                    // 更新活动节点样式
-                    timelineNodes.forEach(n => n.classList.remove('active'));
-                    node.classList.add('active');
-                    
-                    modal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                }
-            });
+                // 更新模态框内容
+                modalTitle.textContent = `${year} - ${data.title}`;
+                modalText.innerHTML = data.content;
+                modalMapCaption.textContent = data.mapCaption;
+                
+                // 更新活动节点样式
+                if (activeNode) activeNode.classList.remove('active');
+                node.classList.add('active');
+                activeNode = node;
+                
+                // 显示模态框
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('没有找到对应年份的数据:', year);
+            }
         });
 
         // 关闭模态框
-        closeBtn.addEventListener('click', () => {
+        closeBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => e.target === modal && closeModal());
+
+        function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-        });
+        }
 
-        // 点击模态框外部关闭
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
+        // 页面指示器交互
+        pageDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const pages = ['page1.html', 'page2.html', 'page3.html'];
+                pageDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                
+                // 模拟页面跳转（实际应用中应使用实际跳转）
+                console.log(`跳转到页面: ${pages[index] || 'page1.html'}`);
+                // window.location.href = pages[index] || 'page1.html';
+            });
         });
 
         // 初始激活第一个节点
         document.addEventListener('DOMContentLoaded', function() {
-            timelineNodes[0].classList.add('active');
-        });
-
-        // 页面指示器交互
-        const pageDots = document.querySelectorAll('.page-dot');
-        pageDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                pageDots.forEach(d => d.classList.remove('active'));
-                dot.classList.add('active');
-                // 这里可以添加页面跳转逻辑
-            });
+            activeNode.classList.add('active');
+            console.log('页面加载完成，历史数据:', historyData); // 调试用
         });
     </script>
 </body>
