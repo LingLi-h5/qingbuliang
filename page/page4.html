@@ -16,7 +16,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.9) 0%, rgba(252, 182, 159, 0.9) 100%);
+            background-image: url('../assets/images/进入页面.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -24,12 +30,32 @@
             align-items: center;
             padding: 15px;
             touch-action: manipulation;
+            position: relative;
+        }
+
+        /* 添加半透明遮罩层，确保内容可读性 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: -1;
+            backdrop-filter: blur(2px);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+            border: 1px solid rgba(139, 69, 19, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .header h1 {
@@ -45,7 +71,6 @@
             font-size: 0.95rem;
             max-width: 100%;
             line-height: 1.5;
-            padding: 0 10px;
         }
 
         .container {
@@ -55,6 +80,7 @@
             max-width: 500px;
             align-items: center;
             position: relative;
+            z-index: 1;
         }
 
         .bowl-container {
@@ -62,37 +88,37 @@
             width: 100%;
             height: 280px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
-        .bowl {
-            width: 220px;
-            height: 110px;
-            background: linear-gradient(to right, #f5f5dc, #e6e6c5);
-            border-radius: 50% 50% 40% 40%;
-            box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.15),
-                inset 0 -8px 16px rgba(0, 0, 0, 0.1);
+        /* 碗的容器 */
+        .bowl-wrapper {
             position: relative;
-            z-index: 2;
+            width: 220px;
+            height: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 2;
             overflow: hidden;
         }
 
-        .bowl::after {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
-            border-radius: 50% 50% 40% 40%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-            z-index: 3;
+        /* 你的碗图片 */
+        .custom-bowl {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 5px 15px rgba(139, 69, 19, 0.2));
         }
 
         .ingredients-container {
@@ -103,51 +129,89 @@
             left: 0;
         }
 
+        /* 修改食材容器样式 - 与卡片样式一致 */
         .ingredient {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 65px;
+            height: 65px;
+            border-radius: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
             z-index: 10;
-            border: 2px solid transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
         }
 
         .ingredient:active {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            transform: scale(0.95);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
         }
 
-        /* 选中食材的高亮边框和放大效果 */
+        /* 选中食材的高亮效果 */
         .ingredient.selected {
             border: 3px solid #8B4513;
-            transform: scale(1.15);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(139, 69, 19, 0.4);
         }
 
         .ingredient img {
-            width: 80%;
-            height: 80%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
+            border-radius: 15px;
+        }
+
+        /* 碗中的食材 */
+        .ingredient-in-bowl {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.3s;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: white;
+        }
+
+        .ingredient-in-bowl.active {
+            opacity: 1;
+        }
+
+        .ingredient-in-bowl img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            border-radius: 15px;
         }
 
         .info-card {
             width: 100%;
-            background: white;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s, transform 0.5s;
             position: relative;
             z-index: 5;
             margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .info-card.active {
@@ -190,28 +254,6 @@
             line-height: 1.5;
         }
 
-        .ingredient-in-bowl {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 4;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .ingredient-in-bowl.active {
-            opacity: 1;
-        }
-
-        .ingredient-in-bowl img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
         @keyframes flyToBowl {
             0% {
                 transform: scale(1);
@@ -238,44 +280,58 @@
             font-size: 0.9rem;
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
             line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
-        /* 默认状态提示 */
-        .default-state {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: #8B4513;
-            font-size: 1rem;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.5s;
-            width: 80%;
+        /* 食材特定样式 - 改为渐变背景 */
+        .mung-bean { 
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            top: 10%; 
+            left: 5%; 
+        }
+        .red-bean { 
+            background: linear-gradient(135deg, #DC143C, #B22222);
+            top: 15%; 
+            right: 5%; 
+        }
+        .jobstears { 
+            background: linear-gradient(135deg, #A0522D, #CD853F);
+            bottom: 20%; 
+            left: 10%; 
+        }
+        .macaroni { 
+            background: linear-gradient(135deg, #D2691E, #CD853F);
+            bottom: 25%; 
+            right: 10%; 
+        }
+        .wintermelon { 
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            top: 30%; 
+            left: 20%; 
+        }
+        .red-date { 
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
+            top: 40%; 
+            right: 15%; 
+        }
+        .quail-egg { 
+            background: linear-gradient(135deg, #A0522D, #DEB887);
+            bottom: 10%; 
+            right: 25%; 
         }
 
-        .default-state.hidden {
-            opacity: 0;
-            pointer-events: none;
+        /* 悬浮效果 */
+        .ingredient:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(139, 69, 19, 0.3);
         }
 
-        /* 食材特定样式 - 针对手机重新布局 */
-        .mung-bean { background: linear-gradient(135deg, #90EE90, #7CFC00); top: 10%; left: 5%; }
-        .red-bean { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 5%; }
-        .jobstears { background: linear-gradient(135deg, #F5DEB3, #D2B48C); bottom: 20%; left: 10%; }
-        .macaroni { background: linear-gradient(135deg, #FFE4B5, #FFD700); bottom: 25%; right: 10%; }
-        .wintermelon { background: linear-gradient(135deg, #98FB98, #32CD32); top: 30%; left: 20%; }
-        .red-date { background: linear-gradient(135deg, #8B0000, #A52A2A); top: 40%; right: 15%; }
-        .quail-egg { background: linear-gradient(135deg, #F5F5DC, #FFF8DC); bottom: 10%; right: 25%; }
-
-        /* 浮动操作按钮样式 - 与page1完全一致 */
+        /* 浮动操作按钮样式 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -329,7 +385,7 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             color: #8B4513;
             display: flex;
             align-items: center;
@@ -343,11 +399,13 @@
             position: relative;
             text-align: center;
             padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .fab-item:hover {
             transform: scale(1.15);
-            background: #f5e3d4;
+            background: rgba(245, 227, 212, 0.9);
             box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
         }
 
@@ -390,6 +448,7 @@
             background-color: rgba(139, 69, 19, 0.4);
             transition: all 0.4s ease;
             cursor: pointer;
+            backdrop-filter: blur(5px);
         }
 
         .page-dot.active {
@@ -416,15 +475,28 @@
                 height: 60px;
                 font-size: 14px;
             }
+            
+            .ingredient {
+                width: 60px;
+                height: 60px;
+                border-radius: 18px;
+            }
+            
+            .ingredient-in-bowl {
+                width: 60px;
+                height: 60px;
+                border-radius: 18px;
+            }
         }
 
         @media (max-width: 480px) {
             body {
                 padding: 15px 10px;
+                background-attachment: scroll;
             }
             
             .header {
-                margin-bottom: 30px;
+                margin-bottom: 15px;
             }
             
             .header h1 {
@@ -433,6 +505,28 @@
             
             .header p {
                 font-size: 1rem;
+            }
+            
+            .bowl-container {
+                height: 260px;
+                padding: 10px;
+            }
+            
+            .bowl-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .ingredient {
+                width: 55px;
+                height: 55px;
+                border-radius: 16px;
+            }
+            
+            .ingredient-in-bowl {
+                width: 55px;
+                height: 55px;
+                border-radius: 16px;
             }
             
             .fab-container {
@@ -453,20 +547,26 @@
             }
         }
 
-        /* 针对更小屏幕优化 */
         @media (max-width: 380px) {
             .bowl-container {
-                height: 250px;
+                height: 240px;
             }
             
-            .bowl {
-                width: 200px;
-                height: 100px;
+            .bowl-wrapper {
+                width: 180px;
+                height: 180px;
             }
             
             .ingredient {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
+                border-radius: 14px;
+            }
+            
+            .ingredient-in-bowl {
+                width: 50px;
+                height: 50px;
+                border-radius: 14px;
             }
             
             .header h1 {
@@ -484,13 +584,51 @@
 
         @media (max-width: 340px) {
             .ingredient {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 45px;
+                border-radius: 12px;
             }
             
-            .bowl {
-                width: 180px;
-                height: 90px;
+            .bowl-wrapper {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .ingredient-in-bowl {
+                width: 45px;
+                height: 45px;
+                border-radius: 12px;
+            }
+        }
+
+        /* 横屏优化 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                max-width: 100%;
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            .bowl-container {
+                width: 50%;
+                height: 200px;
+                margin-bottom: 0;
+            }
+            
+            .info-card {
+                width: 50%;
+                margin-bottom: 0;
+            }
+        }
+
+        /* 背景图片加载失败时的回退样式 */
+        @media (max-width: 600px) {
+            body {
+                background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             }
         }
     </style>
@@ -503,13 +641,10 @@
 
     <div class="container">
         <div class="bowl-container">
-            <!-- 默认状态提示 -->
-            <div class="default-state" id="defaultState">
-                <p>👆 点击任意食材开始探索</p>
+            <div class="bowl-wrapper" id="bowlWrapper">
+                <img src="../assets/images/主题.png" alt="清补凉碗" class="custom-bowl">
             </div>
-            <div class="bowl" id="bowl">
-                <!-- 碗中食材将通过JS动态添加 -->
-            </div>
+            
             <div class="ingredients-container">
                 <div class="ingredient mung-bean" data-id="mung-bean">
                     <img src="../assets/images/1.jpg" alt="绿豆">
@@ -542,10 +677,10 @@
     </div>
 
     <div class="instructions">
-        <p>提示：点击任意食材图标，它会飞入碗中并显示详细信息。再次点击其他食材可以更换。</p>
+        <p>👆 点击任意食材开始探索</p>
     </div>
 
-    <!-- 浮动操作按钮 - 与page1完全一致 -->
+    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -569,7 +704,7 @@
     </div>
 
     <script>
-        // 浮动操作按钮功能 - 与page1完全一致
+        // 浮动操作按钮功能
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
@@ -597,8 +732,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const ingredients = document.querySelectorAll('.ingredient');
             const infoCard = document.getElementById('info-card');
-            const bowl = document.getElementById('bowl');
-            const defaultState = document.getElementById('defaultState');
+            const bowlWrapper = document.getElementById('bowlWrapper');
             
             // 食材信息数据
             const ingredientData = {
@@ -703,9 +837,6 @@
                     
                     // 执行飞入动画
                     flyToBowl(this, ingredientId);
-                    
-                    // 隐藏默认状态提示
-                    defaultState.classList.add('hidden');
                 });
             });
 
@@ -733,8 +864,8 @@
                 // 添加当前选中状态
                 element.classList.add('selected');
                 
-                // 计算飞行动画路径
-                const bowlRect = bowl.getBoundingClientRect();
+                // 获取碗容器的位置
+                const bowlRect = bowlWrapper.getBoundingClientRect();
                 const ingredientRect = element.getBoundingClientRect();
                 
                 // 计算从食材位置到碗中心的偏移量
@@ -751,7 +882,7 @@
                 // 动画结束后，在碗中显示食材
                 setTimeout(() => {
                     // 移除碗中已有的食材
-                    const existingIngredient = bowl.querySelector('.ingredient-in-bowl');
+                    const existingIngredient = bowlWrapper.querySelector('.ingredient-in-bowl');
                     if (existingIngredient) {
                         existingIngredient.remove();
                     }
@@ -760,7 +891,9 @@
                     const ingredientInBowl = document.createElement('div');
                     ingredientInBowl.className = `ingredient-in-bowl active`;
                     ingredientInBowl.innerHTML = `<img src="${element.querySelector('img').src}" alt="${ingredientData[ingredientId].name}">`;
-                    bowl.appendChild(ingredientInBowl);
+                    
+                    // 将食材添加到碗容器中
+                    bowlWrapper.appendChild(ingredientInBowl);
                     
                     // 重置外部食材状态
                     element.classList.remove('flying');
@@ -768,6 +901,16 @@
                     element.style.removeProperty('--ty');
                 }, 1000);
             }
+
+            // 预加载背景图片
+            const bgImg = new Image();
+            bgImg.onload = () => console.log('背景图片加载完成');
+            bgImg.onerror = () => {
+                console.log('背景图片加载失败，使用纯色背景');
+                document.body.style.backgroundImage = 'none';
+                document.body.style.background = 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)';
+            };
+            bgImg.src = '../assets/images/主题.png';
         });
     </script>
 </body>

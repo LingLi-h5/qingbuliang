@@ -7,6 +7,30 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #D2691E;
+            --light-brown: #CD853F;
+            --text-dark: #5a4a42;
+            --text-light: #666;
+            --background-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --card-gradient: linear-gradient(135deg, #f8f4e9 0%, #f0e6d2 100%);
+            --header-gradient: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            --income-gradient: linear-gradient(90deg, #ffd666 0%, #ffa940 100%);
+            
+            --header-font-size: 1.2rem;
+            --subtitle-font-size: 0.85rem;
+            --info-title-size: 1rem;
+            --detail-font-size: 0.8rem;
+            --small-font-size: 0.75rem;
+            
+            --container-padding: 8px;
+            --header-padding: 15px 12px;
+            --chart-padding: 15px 12px;
+            --info-padding: 12px 12px 15px;
+            --detail-padding: 12px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -23,74 +47,68 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: var(--background-gradient);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px;
-            touch-action: none;
+            padding: var(--container-padding);
+            touch-action: manipulation;
         }
 
         .container {
             width: 100%;
-            height: calc(100vh - 20px);
-            max-height: calc(100vh - 20px);
+            height: calc(100vh - 16px);
             background: rgba(255, 255, 255, 0.98);
             border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
         }
 
         .header {
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            background: var(--header-gradient);
             color: white;
-            padding: 15px 12px;
+            padding: var(--header-padding);
             text-align: center;
             position: relative;
-            overflow: hidden;
             flex-shrink: 0;
             border-bottom: 1px solid rgba(139, 69, 19, 0.2);
             min-height: 70px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            overflow: hidden;
         }
 
-        .header::before {
+        .header::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 15px 15px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(180deg); }
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 2%, transparent 10%);
+            pointer-events: none;
         }
 
         .header h1 {
-            font-size: 1.2rem;
+            font-size: var(--header-font-size);
             margin-bottom: 6px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
             position: relative;
             font-weight: 600;
             line-height: 1.3;
+            z-index: 1;
         }
 
         .header .subtitle {
-            font-size: 0.85rem;
+            font-size: var(--subtitle-font-size);
             opacity: 0.95;
             position: relative;
             line-height: 1.3;
+            z-index: 1;
         }
 
         .content {
@@ -104,47 +122,75 @@
         .chart-container {
             flex: 1.5;
             min-height: 0;
-            padding: 15px 12px;
+            padding: var(--chart-padding);
             position: relative;
+            overflow: hidden;
+        }
+
+        /* 图片背景容器 */
+        .chart-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            opacity: 0.15; /* 调整透明度 */
+        }
+
+        .chart-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: sepia(0.3) brightness(1.1);
+        }
+
+        #sunburst-chart {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
         }
 
         .info-panel {
             flex-shrink: 0;
-            padding: 12px 12px 15px;
-            background: linear-gradient(135deg, #f8f4e9 0%, #f0e6d2 100%);
-            border-top: 3px solid #D2691E;
+            padding: var(--info-padding);
+            background: var(--card-gradient);
+            border-top: 3px solid var(--secondary-brown);
             max-height: 40vh;
         }
 
         .info-title {
-            font-size: 1rem;
-            color: #8B4513;
+            font-size: var(--info-title-size);
+            color: var(--primary-brown);
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 2px solid #CD853F;
+            border-bottom: 2px solid var(--light-brown);
             text-align: center;
             font-weight: 600;
         }
 
         .detail-item {
             margin-bottom: 10px;
-            padding: 12px;
+            padding: var(--detail-padding);
             background: white;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-            border-left: 4px solid #CD853F;
-            transition: all 0.3s ease;
+            border-left: 4px solid var(--light-brown);
+            transition: transform 0.2s ease;
             overflow-y: auto;
             max-height: 30vh;
         }
 
         .detail-item:active {
             transform: translateX(3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .detail-item h3 {
-            color: #8B4513;
+            color: var(--primary-brown);
             font-size: 0.95rem;
             margin-bottom: 8px;
             display: flex;
@@ -159,20 +205,18 @@
             border-radius: 5px;
             overflow: hidden;
             margin: 6px 0;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .income-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ffd666 0%, #ffa940 100%);
+            background: var(--income-gradient);
             border-radius: 5px;
-            transition: width 1s ease-in-out;
-            box-shadow: 0 1px 4px rgba(255, 168, 64, 0.3);
+            transition: width 0.8s ease-out;
         }
 
         .income-text {
             font-size: 0.8rem;
-            color: #5a4a42;
+            color: var(--text-dark);
             margin: 5px 0;
             display: flex;
             justify-content: space-between;
@@ -190,18 +234,12 @@
             color: #d46b08;
             font-weight: bold;
             background: rgba(212, 107, 8, 0.1);
-            padding: 3px 6px;
+            padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.75rem;
-            text-align: center;
-            line-height: 1.2;
         }
 
-        .icon {
-            font-size: 1rem;
-        }
-
-        /* 浮动操作按钮样式 */
+        /* 浮动操作按钮 */
         .fab-container {
             position: fixed;
             bottom: 15px;
@@ -213,23 +251,23 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
+            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             border: none;
             font-size: 20px;
             position: relative;
             z-index: 101;
         }
 
-        .fab-main:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        .fab-main:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.3);
         }
 
         .fab-menu {
@@ -238,16 +276,16 @@
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             opacity: 0;
-            transform: translateY(25px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
             pointer-events: none;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: all;
         }
 
@@ -256,13 +294,13 @@
             height: 56px;
             border-radius: 50%;
             background: white;
-            color: #8B4513;
+            color: var(--primary-brown);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
@@ -271,16 +309,15 @@
             padding: 5px;
         }
 
-        .fab-item:hover {
-            transform: scale(1.15);
+        .fab-item:active {
+            transform: scale(0.95);
             background: #f5e3d4;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
         }
 
         .fab-label {
             position: absolute;
             right: 65px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             color: white;
             padding: 6px 12px;
             border-radius: 6px;
@@ -289,38 +326,10 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            font-weight: 500;
         }
 
         .fab-item:hover .fab-label {
             opacity: 1;
-        }
-
-        /* 页面指示器 */
-        .page-indicator {
-            position: fixed;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            z-index: 99;
-        }
-
-        .page-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(139, 69, 19, 0.4);
-            transition: all 0.4s ease;
-        }
-
-        .page-dot.active {
-            background-color: #8B4513;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
         /* 交互提示 */
@@ -337,6 +346,7 @@
             animation: pulse 2s infinite;
             z-index: 10;
             text-align: center;
+            pointer-events: none;
         }
 
         @keyframes pulse {
@@ -344,97 +354,78 @@
             50% { opacity: 1; }
         }
 
-        /* 所有屏幕都保持垂直布局 */
+        /* 响应式调整 */
         @media (orientation: landscape) {
+            :root {
+                --header-font-size: 1.1rem;
+                --subtitle-font-size: 0.8rem;
+                --header-padding: 12px;
+                --chart-padding: 12px;
+                --info-padding: 12px;
+            }
+            
             .container {
                 height: calc(100vh - 15px);
             }
             
+            .info-panel {
+                max-height: 35vh;
+            }
+        }
+
+        @media (max-height: 700px) {
+            :root {
+                --header-font-size: 1.1rem;
+                --subtitle-font-size: 0.8rem;
+                --header-padding: 12px 10px;
+                --detail-padding: 10px;
+            }
+            
             .header {
-                padding: 12px;
+                min-height: 65px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --header-font-size: 1rem;
+                --subtitle-font-size: 0.75rem;
+                --header-padding: 10px 8px;
+                --chart-padding: 10px 8px;
+                --info-padding: 10px 8px 12px;
+                --info-title-size: 0.95rem;
+            }
+            
+            .header {
                 min-height: 60px;
-            }
-            
-            .header h1 {
-                font-size: 1.1rem;
-            }
-            
-            .header .subtitle {
-                font-size: 0.8rem;
-            }
-            
-            .chart-container {
-                flex: 1.3;
-                padding: 12px;
             }
             
             .info-panel {
                 max-height: 35vh;
-                padding: 12px;
             }
             
             .detail-item {
+                margin-bottom: 8px;
                 max-height: 28vh;
             }
         }
 
-        /* 超小屏幕优化 */
-        @media (max-height: 600px) {
-            .header {
-                padding: 10px 8px;
-                min-height: 55px;
-            }
-            
-            .header h1 {
-                font-size: 1rem;
-                margin-bottom: 4px;
-            }
-            
-            .header .subtitle {
-                font-size: 0.75rem;
-            }
-            
-            .chart-container {
-                padding: 10px 8px;
-            }
-            
-            .info-panel {
-                padding: 10px 8px 12px;
-                max-height: 35vh;
-            }
-            
-            .info-title {
-                font-size: 0.9rem;
-                margin-bottom: 8px;
-            }
-            
-            .detail-item {
-                padding: 10px;
-                margin-bottom: 8px;
-                max-height: 25vh;
-            }
-        }
-
         @media (max-height: 500px) {
+            :root {
+                --header-font-size: 0.9rem;
+                --subtitle-font-size: 0.7rem;
+                --header-padding: 8px;
+                --chart-padding: 8px;
+                --info-padding: 8px;
+                --detail-font-size: 0.75rem;
+            }
+            
             .container {
-                height: calc(100vh - 10px);
+                height: calc(100vh - 12px);
             }
             
             .header {
-                min-height: 50px;
-                padding: 8px;
-            }
-            
-            .header h1 {
-                font-size: 0.9rem;
-            }
-            
-            .header .subtitle {
-                font-size: 0.7rem;
-            }
-            
-            .chart-container {
-                flex: 1.2;
+                min-height: 55px;
             }
             
             .info-panel {
@@ -442,33 +433,8 @@
             }
             
             .detail-item {
-                max-height: 22vh;
-            }
-        }
-
-        @media (max-height: 400px) {
-            .header {
-                min-height: 45px;
-                padding: 6px;
-            }
-            
-            .header h1 {
-                font-size: 0.85rem;
-                margin-bottom: 3px;
-            }
-            
-            .header .subtitle {
-                font-size: 0.65rem;
-            }
-            
-            .info-panel {
-                padding: 8px 6px 10px;
-                max-height: 28vh;
-            }
-            
-            .detail-item {
                 padding: 8px;
-                max-height: 20vh;
+                max-height: 25vh;
             }
         }
     </style>
@@ -481,15 +447,25 @@
         </div>
 
         <div class="content">
-            <div id="sunburst-chart" class="chart-container">
+            <div class="chart-container">
+                <!-- 图片背景容器 -->
+                <div class="chart-background" id="chartBackground">
+                    <!-- 在这里替换成你的图片URL -->
+                    <img src="../assets/images/主题.png" alt="农业背景" id="backgroundImage">
+                </div>
+                
+                <!-- ECharts图表 -->
+                <div id="sunburst-chart"></div>
                 <div class="interaction-hint">点击图表查看详情</div>
             </div>
             <div class="info-panel">
                 <div class="info-title">📊 农业就业详情</div>
                 <div id="detail-content">
                     <div class="detail-item">
-                        <h3><span class="icon">👆</span>互动指南</h3>
-                        <p style="font-size: 0.8rem; line-height: 1.4; color: #666;">点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。</p>
+                        <h3><span>👆</span>互动指南</h3>
+                        <p style="font-size: var(--detail-font-size); line-height: 1.4; color: var(--text-light);">
+                            点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。
+                        </p>
                     </div>
                 </div>
             </div>
@@ -498,7 +474,7 @@
 
     <!-- 浮动操作按钮 -->
     <div class="fab-container">
-        <button class="fab-main" id="fabMain">
+        <button class="fab-main" id="fabMain" aria-label="菜单">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
@@ -509,40 +485,16 @@
         </div>
     </div>
 
-    <!-- 页面指示器 -->
-    <div class="page-indicator">
-        <div class="page-dot"></div>
-        <div class="page-dot"></div>
-        <div class="page-dot active"></div>
-        <div class="page-dot"></div>
-    </div>
-
     <script>
-        // 浮动操作按钮功能
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        
-        fabMain.addEventListener('click', function(e) {
-            e.stopPropagation();
-            fabMenu.classList.toggle('open');
-        });
-
-        // 点击页面其他地方关闭FAB菜单
-        document.addEventListener('click', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
-
         // 初始化ECharts实例
         const chartDom = document.getElementById('sunburst-chart');
         const myChart = echarts.init(chartDom, null, {
             renderer: 'canvas',
             useDirtyRect: false,
-            devicePixelRatio: window.devicePixelRatio
+            devicePixelRatio: Math.min(window.devicePixelRatio, 2)
         });
         
-        // 只保留第一产业的数据
+        // 农业数据
         const agricultureData = {
             name: '第一产业',
             itemStyle: {
@@ -592,28 +544,25 @@
             ]
         };
 
-        // 配置项 - 针对移动端优化
+        // 图表配置
         const option = {
             backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'item',
-                formatter: function (params) {
-                    if (params.data.value) {
-                        return `
-                            <div style="font-weight: bold; color: #8B4513; margin-bottom: 5px; font-size: 12px;">
-                                ${params.data.icon || '🌱'} ${params.name}
-                            </div>
-                            <div style="font-size: 11px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
-                            <div style="font-size: 11px;">💰 月均收入: ${params.data.income}元</div>
-                            <div style="font-size: 11px;">🏠 本地就业率: ${params.data.localRate}</div>
-                        `;
-                    }
-                    return `<div style="font-weight: bold; font-size: 12px; color: #8B4513;">${params.name}</div>`;
+                formatter: (params) => {
+                    if (!params.data.value) return `<div style="font-weight: bold; font-size: 12px; color: #8B4513;">${params.name}</div>`;
+                    
+                    return `
+                        <div style="font-weight: bold; color: #8B4513; margin-bottom: 5px; font-size: 12px;">
+                            ${params.data.icon || '🌱'} ${params.name}
+                        </div>
+                        <div style="font-size: 11px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
+                        <div style="font-size: 11px;">💰 月均收入: ${params.data.income}元</div>
+                        <div style="font-size: 11px;">🏠 本地就业率: ${params.data.localRate}</div>
+                    `;
                 },
                 confine: true,
-                textStyle: {
-                    fontSize: 11
-                }
+                textStyle: { fontSize: 11 }
             },
             series: {
                 type: 'sunburst',
@@ -622,8 +571,7 @@
                 itemStyle: {
                     borderWidth: 2,
                     borderColor: 'white',
-                    shadowBlur: 5,
-                    shadowColor: 'rgba(0, 0, 0, 0.15)'
+                    opacity: 0.9
                 },
                 label: {
                     rotate: 'radial',
@@ -631,20 +579,16 @@
                     fontSize: 10,
                     fontWeight: 'bold',
                     textBorderColor: 'white',
-                    textBorderWidth: 1,
-                    show: true,
+                    textBorderWidth: 2,
                     overflow: 'truncate',
                     width: 60
                 },
                 emphasis: {
                     focus: 'ancestor',
                     itemStyle: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.3)'
-                    },
-                    label: {
-                        fontSize: 11,
-                        fontWeight: 'bold'
+                        shadowBlur: 8,
+                        shadowColor: 'rgba(0, 0, 0, 0.2)',
+                        opacity: 1
                     }
                 },
                 levels: [
@@ -652,9 +596,7 @@
                     {
                         r0: '15%',
                         r: '40%',
-                        itemStyle: {
-                            borderWidth: 3
-                        },
+                        itemStyle: { borderWidth: 3 },
                         label: {
                             rotate: 'tangential',
                             fontSize: 12,
@@ -665,26 +607,22 @@
                     {
                         r0: '40%',
                         r: '80%',
-                        label: {
-                            align: 'right',
-                            fontSize: 10
-                        }
+                        label: { align: 'right', fontSize: 10 }
                     }
                 ]
             }
         };
 
-        // 点击事件处理
-        myChart.on('click', function (params) {
+        // 图表点击事件
+        myChart.on('click', function(params) {
             const detailContent = document.getElementById('detail-content');
             
             if (params.data.value) {
-                // 显示具体职业的详细信息
                 const incomePercent = Math.min(100, (params.data.income / 6000) * 100);
                 
                 detailContent.innerHTML = `
                     <div class="detail-item">
-                        <h3><span class="icon">${params.data.icon}</span>${params.name}</h3>
+                        <h3><span>${params.data.icon}</span>${params.name}</h3>
                         <div class="income-text">
                             <span>就业人数:</span>
                             <span class="highlight">${params.data.value.toLocaleString()}人</span>
@@ -704,17 +642,18 @@
                             <span>收入提升:</span>
                             <span class="comparison">${params.data.comparison}</span>
                         </div>
-                        <p style="margin-top: 8px; font-size: 0.75rem; color: #666; line-height: 1.4;">${params.data.detail}</p>
+                        <p style="margin-top: 8px; font-size: var(--small-font-size); color: var(--text-light); line-height: 1.4;">
+                            ${params.data.detail}
+                        </p>
                     </div>
                 `;
             } else if (params.data.children) {
-                // 显示第一产业的汇总信息
                 const totalEmployment = params.data.children.reduce((sum, child) => sum + child.value, 0);
                 const avgIncome = Math.round(params.data.children.reduce((sum, child) => sum + child.income * child.value, 0) / totalEmployment);
                 
                 detailContent.innerHTML = `
                     <div class="detail-item">
-                        <h3><span class="icon">🌱</span>第一产业就业概况</h3>
+                        <h3><span>🌱</span>第一产业就业概况</h3>
                         <div class="income-text">
                             <span>总就业人数:</span>
                             <span class="highlight">${totalEmployment.toLocaleString()}人</span>
@@ -726,7 +665,7 @@
                         <div class="income-text" style="margin-top: 8px; font-weight: bold; font-size: 0.8rem;">主要农业岗位:</div>
                         <div style="margin-top: 6px;">
                             ${params.data.children.map(child => `
-                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: var(--small-font-size);">
                                     <span>${child.icon} ${child.name}</span>
                                     <span style="color: #8B4513; font-weight: bold;">${child.value}人</span>
                                 </div>
@@ -737,37 +676,74 @@
             }
         });
 
-        // 设置配置项并渲染图表
+        // 应用配置
         myChart.setOption(option);
 
-        // 自适应调整图表大小
+        // 浮动操作按钮功能
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        
+        fabMain.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fabMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
+                fabMenu.classList.remove('open');
+            }
+        });
+
+        // 响应式调整
         function resizeChart() {
             myChart.resize();
         }
 
-        // 初始化时调整大小
-        setTimeout(resizeChart, 100);
-        
-        // 响应窗口大小变化
-        window.addEventListener('resize', function() {
-            resizeChart();
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化图表大小
+            setTimeout(resizeChart, 100);
+            window.addEventListener('resize', resizeChart);
+            
+            // 防缩放处理
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTouchEnd < 300) e.preventDefault();
+                lastTouchEnd = now;
+            }, { passive: false });
+            
+            // 加载自定义背景图片
+            loadCustomBackground();
         });
 
-        // 防止页面缩放
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(e) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
+        // 加载自定义背景图片函数
+        function loadCustomBackground() {
+            // 在这里设置你的图片URL
+            const customImageUrl = "../assets/images/主题.png";
+            
+            // 你也可以使用本地图片，将图片放在同一目录下，使用相对路径：
+            // const customImageUrl = './my-background.jpg';
+            
+            const backgroundImage = document.getElementById('backgroundImage');
+            
+            // 创建一个新的图片对象来预加载
+            const img = new Image();
+            
+            img.onload = function() {
+                // 图片加载成功后设置到页面
+                backgroundImage.src = customImageUrl;
+                console.log('背景图片加载成功');
+            };
+            
+            img.onerror = function() {
+                console.warn('自定义背景图片加载失败，使用默认图片');
+                // 可以在这里设置一个备用图片URL
+                backgroundImage.src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80';
+            };
+            
+            img.src = customImageUrl;
+        }
     </script>
 </body>
 </html>
