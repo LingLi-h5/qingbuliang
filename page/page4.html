@@ -16,13 +16,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, rgba(255, 236, 210, 0.9) 0%, rgba(252, 182, 159, 0.9) 100%);
-            background-image: url('../assets/images/进入页面.png');
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.7) 0%, rgba(252, 182, 159, 0.7) 100%);
+            background-image: url('../assets/images/主题.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-blend-mode: overlay;
+            background-attachment: scroll; /* 修改为scroll，提高移动端兼容性 */
+            background-blend-mode: normal; /* 修改为normal，确保图片清晰可见 */
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -41,7 +41,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1); /* 降低透明度，提高背景图片可见度 */
             z-index: -1;
             backdrop-filter: blur(2px);
         }
@@ -625,12 +625,8 @@
             }
         }
 
-        /* 背景图片加载失败时的回退样式 */
-        @media (max-width: 600px) {
-            body {
-                background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            }
-        }
+        /* 移除原有的小屏幕背景重置，改为图片加载失败时的处理 */
+        /* 背景图片加载失败时的回退样式通过JS处理，不再通过CSS媒体查询 */
     </style>
 </head>
 <body>
@@ -910,7 +906,7 @@
                 document.body.style.backgroundImage = 'none';
                 document.body.style.background = 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)';
             };
-            bgImg.src = '../assets/images/主题.png';
+            bgImg.src = '../assets/images/进入页面.png';
         });
     </script>
 </body>

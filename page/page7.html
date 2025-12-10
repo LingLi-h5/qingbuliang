@@ -38,7 +38,7 @@
         }
         
         header {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             color: #5a3e36;
             text-align: center;
             padding: 15px 10px;
@@ -60,22 +60,34 @@
             line-height: 1.2;
         }
         
+        /* 主内容区 - 保留原有背景设置 */
         .main-content {
             display: flex;
             flex-direction: column;
             flex: 1;
             overflow: hidden;
             padding: 10px;
+            background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+                        url('../assets/images/主题.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 12px;
         }
         
+        /* 步骤条容器 - 保持不变 */
         .progress-container {
             margin: 10px 0;
             flex-shrink: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .progress-bar {
             height: 6px;
-            background-color: #ffd7c9;
+            background-color: rgba(255, 236, 210, 0.7);
             border-radius: 3px;
             overflow: hidden;
             margin-bottom: 8px;
@@ -83,7 +95,7 @@
         
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             width: 0%;
             transition: width 0.5s ease;
         }
@@ -109,7 +121,7 @@
         .step-icon {
             width: 30px;
             height: 30px;
-            background-color: #ffd7c9;
+            background-color: rgba(255, 236, 210, 0.8);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -122,8 +134,8 @@
         }
         
         .step.active .step-icon {
-            background-color: #ff9a9e;
-            color: white;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #5a3e36;
             box-shadow: 0 2px 8px rgba(255, 154, 158, 0.4);
         }
         
@@ -145,18 +157,21 @@
             line-height: 1;
         }
         
+        /* 演示区域 - 关键修改：移除半透明遮罩、边框和内阴影 */
         .demo-area {
             flex: 1;
-            background-color: #fff9f5;
+            background-color: transparent; /* 移除半透明背景 */
             border-radius: 12px;
             padding: 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+            box-shadow: none; /* 移除内阴影 */
             margin-top: 8px;
+            border: none; /* 移除边框 */
         }
         
+        /* 展示框 - 保留白色框框：白色背景、圆角、阴影都保留 */
         .gif-container {
             flex: 1;
             display: flex;
@@ -164,19 +179,20 @@
             justify-content: center;
             margin-bottom: 10px;
             min-height: 0;
-            background: #fff;
+            background-color: rgba(255, 255, 255, 0.8); /* 保留白色背景框 */
             border-radius: 10px;
-            padding: 5px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); /* 保留框的阴影 */
+            overflow: hidden;
         }
         
+        /* GIF样式 - 保持不变 */
         .step-gif {
             width: 100%;
             height: 100%;
-            max-width: 100%;
-            max-height: 100%;
             border-radius: 8px;
-            object-fit: contain;
+            object-fit: cover;
+            object-position: center;
             display: none;
         }
         
@@ -190,14 +206,19 @@
             to { opacity: 1; transform: scale(1); }
         }
         
+        /* 步骤说明 - 保留白色背景，确保文字清晰 */
         .step-instruction {
             font-size: 0.9rem;
-            color: #ff6b6b;
+            color: #d2697a;
             font-weight: bold;
             text-align: center;
             line-height: 1.3;
             margin-bottom: 12px;
             flex-shrink: 0;
+            background-color: rgba(255, 255, 255, 0.8); /* 保留白色背景 */
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .button-group {
@@ -208,23 +229,24 @@
         }
         
         .action-btn {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             color: #5a3e36;
             border: none;
             padding: 12px 20px;
             font-size: 0.9rem;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(255, 154, 158, 0.4);
+            box-shadow: 0 3px 8px rgba(252, 182, 159, 0.4);
             transition: all 0.3s ease;
             font-weight: bold;
             flex: 1;
             max-width: 120px;
+            border: 1px solid rgba(255, 236, 210, 0.5);
         }
         
         .action-btn:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(255, 154, 158, 0.6);
+            box-shadow: 0 2px 5px rgba(252, 182, 159, 0.6);
         }
         
         .action-btn:disabled {
@@ -245,7 +267,7 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 弹窗样式 */
+        /* 弹窗样式 - 保持不变 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -306,7 +328,7 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 浮动操作按钮样式 - 与page1完全一致 */
+        /* 浮动操作按钮样式 - 保持不变 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -401,7 +423,7 @@
             opacity: 1;
         }
 
-        /* 页面指示器 */
+        /* 页面指示器 - 保持不变 */
         .page-indicator {
             position: fixed;
             bottom: 25px;
@@ -429,7 +451,7 @@
             box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
-        /* 响应式设计 - 与page1完全一致 */
+        /* 响应式设计 - 保持不变 */
         @media (max-width: 768px) {
             .fab-container {
                 bottom: 25px;
@@ -468,7 +490,6 @@
             }
         }
 
-        /* 针对不同屏幕高度的微调 */
         @media (max-height: 600px) {
             header {
                 padding: 12px 8px;
@@ -531,7 +552,6 @@
             }
         }
 
-        /* 横屏优化 */
         @media (orientation: landscape) and (max-height: 500px) {
             .steps {
                 grid-template-columns: repeat(8, 1fr);
@@ -634,7 +654,6 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 - 与page1完全一致 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -649,14 +668,12 @@
         </div>
     </div>
 
-    <!-- 页面指示器 -->
     <div class="page-indicator">
         <div class="page-dot active"></div>
         <div class="page-dot"></div>
         <div class="page-dot"></div>
     </div>
 
-    <!-- 弹窗 -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
             <h2>恭喜！制作完成！</h2>
@@ -691,13 +708,11 @@
             let currentStep = 0;
             const totalSteps = 8;
             
-            // 初始化
             updateProgress();
             updateStepInstruction();
             updateGIF();
             updateActionButton();
             
-            // 步骤点击事件
             steps.forEach(step => {
                 step.addEventListener('click', function() {
                     const stepNum = parseInt(this.getAttribute('data-step'));
@@ -711,7 +726,6 @@
                 });
             });
             
-            // 操作按钮点击事件
             actionBtn.addEventListener('click', function() {
                 if (currentStep < totalSteps) {
                     currentStep++;
@@ -720,7 +734,6 @@
                     updateGIF();
                     updateActionButton();
                 } else {
-                    // 如果是最后一步，重新开始
                     currentStep = 0;
                     updateProgress();
                     updateStepInstruction();
@@ -729,24 +742,20 @@
                 }
             });
             
-            // 完成按钮点击事件
             completeBtn.addEventListener('click', function() {
                 modalOverlay.style.display = 'flex';
             });
             
-            // 弹窗关闭按钮
             modalCloseBtn.addEventListener('click', function() {
                 modalOverlay.style.display = 'none';
             });
             
-            // 点击弹窗背景也可以关闭
             modalOverlay.addEventListener('click', function(e) {
                 if (e.target === modalOverlay) {
                     modalOverlay.style.display = 'none';
                 }
             });
 
-            // 浮动操作按钮功能 - 与page1完全一致
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
@@ -754,29 +763,24 @@
                 fabMenu.classList.toggle('open');
             });
 
-            // 点击页面其他地方关闭FAB菜单
             document.addEventListener('click', function(e) {
                 if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                     fabMenu.classList.remove('open');
                 }
             });
 
-            // 页面指示器交互
             const pageDots = document.querySelectorAll('.page-dot');
             pageDots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
                     pageDots.forEach(d => d.classList.remove('active'));
                     dot.classList.add('active');
-                    // 这里可以添加页面跳转逻辑
                 });
             });
             
-            // 更新进度条
             function updateProgress() {
                 const progressPercentage = (currentStep / totalSteps) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
                 
-                // 更新步骤状态
                 steps.forEach((step, index) => {
                     const stepNum = index + 1;
                     if (stepNum < currentStep + 1) {
@@ -791,12 +795,10 @@
                 });
             }
             
-            // 更新步骤说明
             function updateStepInstruction() {
                 stepInstruction.textContent = stepInstructions[currentStep];
             }
             
-            // 更新GIF显示
             function updateGIF() {
                 gifs.forEach(gif => {
                     gif.classList.remove('active');
@@ -807,7 +809,6 @@
                 }
             }
             
-            // 更新操作按钮
             function updateActionButton() {
                 if (currentStep === 0) {
                     actionBtn.textContent = '开始制作';

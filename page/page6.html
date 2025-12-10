@@ -15,7 +15,12 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            /* 页面背景图片 */
+            background-image: url('../assets/images/主题.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -24,6 +29,19 @@
             padding: 15px;
             color: #5a3921;
             touch-action: manipulation;
+            position: relative;
+        }
+
+        /* 页面背景遮罩 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.75);
+            z-index: -1;
         }
 
         .container {
@@ -56,8 +74,17 @@
             line-height: 1.5;
         }
 
+        /* 重点修改：对话外层容器 - 降低背景透明度，让背景图更明显 */
         .dialogue-container {
-            background: rgba(255, 255, 255, 0.95);
+            /* 添加容器背景图片 */
+            background-image: url('../assets/images/进入页面.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* 降低背景色透明度（从0.85改为0.65），让背景图更明显 */
+            background-color: rgba(255, 255, 255, 0.65);
+            background-blend-mode: overlay;
+            /* 其他原有样式 */
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
@@ -256,7 +283,7 @@
             box-shadow: 0 4px 12px rgba(139, 69, 19, 0.5);
         }
 
-        /* 浮动操作按钮样式 - 与page1完全一致 */
+        /* 浮动操作按钮样式 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -422,7 +449,6 @@
             }
         }
 
-        /* 超小屏幕优化 */
         @media (max-width: 380px) {
             .header h1 {
                 font-size: 1.4rem;
@@ -519,7 +545,7 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 - 与page1完全一致 -->
+    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -543,9 +569,8 @@
         let dialogueContent, choiceContainer, progressBar, sceneIndicator;
         let currentDialogueIndex = 0;
 
-        // 重新整理对话数据，确保所有路径完整
+        // 对话数据
         const dialogueData = [
-            // 第0步 - 开始
             {
                 scene: "第一幕：初到岭南",
                 progress: 10,
@@ -565,7 +590,6 @@
                     }
                 ]
             },
-            // 第1步 - 选择冰镇酸梅汤后的回应
             {
                 scene: "第一幕：初到岭南",
                 progress: 20,
@@ -580,7 +604,6 @@
                     }
                 ]
             },
-            // 第2步 - 苏方打听消息
             {
                 scene: "第二幕：百姓献方",
                 progress: 30,
@@ -595,7 +618,6 @@
                     }
                 ]
             },
-            // 第3步 - 苏东坡感兴趣
             {
                 scene: "第二幕：百姓献方",
                 progress: 40,
@@ -610,7 +632,6 @@
                     }
                 ]
             },
-            // 第4步 - 老农介绍清补凉
             {
                 scene: "第三幕：清补凉的智慧",
                 progress: 50,
@@ -630,7 +651,6 @@
                     }
                 ]
             },
-            // 第5步 - 询问搭配原理
             {
                 scene: "第三幕：清补凉的智慧",
                 progress: 60,
@@ -645,7 +665,6 @@
                     }
                 ]
             },
-            // 第6步 - 详细讲解食材
             {
                 scene: "第三幕：清补凉的智慧",
                 progress: 65,
@@ -660,7 +679,6 @@
                     }
                 ]
             },
-            // 第7步 - 赞叹养生智慧
             {
                 scene: "第三幕：清补凉的智慧",
                 progress: 70,
@@ -675,7 +693,6 @@
                     }
                 ]
             },
-            // 第8步 - 品尝清补凉
             {
                 scene: "第四幕：文人的赞叹",
                 progress: 80,
@@ -690,7 +707,6 @@
                     }
                 ]
             },
-            // 第9步 - 苏东坡的感悟
             {
                 scene: "第四幕：文人的赞叹",
                 progress: 90,
@@ -705,7 +721,6 @@
                     }
                 ]
             },
-            // 第10步 - 赋诗
             {
                 scene: "第五幕：赋诗传世",
                 progress: 95,
@@ -720,7 +735,6 @@
                     }
                 ]
             },
-            // 第11步 - 苏方赞叹诗才
             {
                 scene: "第五幕：赋诗传世",
                 progress: 98,
@@ -735,7 +749,6 @@
                     }
                 ]
             },
-            // 第12步 - 最终指示
             {
                 scene: "第五幕：赋诗传世",
                 progress: 100,
@@ -754,7 +767,6 @@
 
         // 初始化对话
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化时缓存元素
             dialogueContent = document.getElementById('dialogueContent');
             choiceContainer = document.getElementById('choiceContainer');
             progressBar = document.getElementById('progress');
@@ -769,7 +781,7 @@
                 loadDialogue(currentDialogueIndex);
             });
 
-            // 浮动操作按钮功能 - 与page1完全一致
+            // 浮动按钮交互
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
@@ -777,7 +789,6 @@
                 fabMenu.classList.toggle('open');
             });
 
-            // 点击页面其他地方关闭FAB菜单
             document.addEventListener('click', function(e) {
                 if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                     fabMenu.classList.remove('open');
@@ -790,7 +801,6 @@
                 dot.addEventListener('click', () => {
                     pageDots.forEach(d => d.classList.remove('active'));
                     dot.classList.add('active');
-                    // 这里可以添加页面跳转逻辑
                 });
             });
 
@@ -814,9 +824,7 @@
         // 加载对话函数
         function loadDialogue(index) {
             if (index < 0) {
-                // 显示完成消息
                 document.getElementById('completionMessage').style.display = 'block';
-                // 清空对话和选择区域
                 dialogueContent.innerHTML = '';
                 choiceContainer.innerHTML = '';
                 return;
