@@ -205,7 +205,7 @@
             transform: scale(0.98);
         }
 
-        /* 浮动操作按钮样式 - 与page6完全一致 */
+        /* 浮动操作按钮样式 - 保留核心样式 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -298,34 +298,6 @@
 
         .fab-item:hover .fab-label {
             opacity: 1;
-        }
-
-        /* 页面指示器 - 调整位置避免与FAB重叠 */
-        .page-indicator {
-            position: fixed;
-            bottom: 100px; /* 增加底部距离，避免与FAB重叠 */
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            z-index: 99;
-        }
-
-        .page-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(139, 69, 19, 0.4);
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .page-dot.active {
-            background-color: #8B4513;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
         /* 统一的响应式断点设计 */
@@ -539,7 +511,7 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 - 与page6完全一致 -->
+    <!-- 浮动操作按钮 - 保留核心功能 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -549,13 +521,6 @@
                 菜单
             </a>
         </div>
-    </div>
-
-    <!-- 页面指示器 - 调整位置避免与FAB重叠 -->
-    <div class="page-indicator">
-        <div class="page-dot"></div>
-        <div class="page-dot"></div>
-        <div class="page-dot active"></div>
     </div>
 
     <!-- 引入本地Three.js库 -->
@@ -864,7 +829,7 @@
                 renderer.setSize(container.clientWidth, container.clientHeight);
             });
             
-            // 浮动操作按钮功能 - 与page6完全一致
+            // 浮动操作按钮功能 - 保留核心功能
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
@@ -877,23 +842,6 @@
                 if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                     fabMenu.classList.remove('open');
                 }
-            });
-
-            // 页面指示器交互 - 优化跳转逻辑
-            const pageDots = document.querySelectorAll('.page-dot');
-            pageDots.forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    // 移除所有active类
-                    pageDots.forEach(d => d.classList.remove('active'));
-                    // 添加当前active类
-                    dot.classList.add('active');
-                    
-                    // 页面跳转逻辑 - 确保链接正确
-                    const pages = ['page7.html', 'page8.html', '#']; // 当前页面用#
-                    if (pages[index] && pages[index] !== '#') {
-                        window.location.href = pages[index];
-                    }
-                });
             });
             
             // 动画循环
