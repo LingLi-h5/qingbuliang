@@ -20,7 +20,12 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            /* 将渐变背景替换为自定义照片 */
+            background-image: url('../assets/images/主题.png'); /* 替换为你的照片路径 */
+            background-size: cover; /* 确保图片覆盖整个屏幕 */
+            background-position: center; /* 图片居中显示 */
+            background-repeat: no-repeat; /* 不重复平铺 */
+            background-attachment: fixed; /* 固定背景，防止滚动时移动 */
             overflow: hidden;
             height: 100vh;
             display: flex;
@@ -28,17 +33,31 @@
             align-items: center;
             padding: 10px;
             touch-action: manipulation;
+            position: relative;
+            z-index: 0;
+        }
+        
+        /* 添加半透明覆盖层，增强文字可读性 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2); /* 可调整透明度，0.2表示20%不透明度 */
+            z-index: -1;
         }
         
         .container {
             width: 100%;
-            height: 100vh;
-            max-height: 100vh;
+            max-width: 600px; /* 添加最大宽度，避免在大屏幕上过度拉伸 */
+            height: 100%;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* 均匀分布内容 */
             padding: 5px 0;
         }
         
@@ -104,13 +123,12 @@
         .model-container {
             position: relative;
             width: 100%;
-            flex: 1;
-            min-height: 0;
+            height: 60vh; /* 简化为单一的视口高度百分比 */
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin: 5px 0;
+            margin: 10px 0;
             border: 2px solid #8B4513;
             touch-action: none;
         }
@@ -160,7 +178,7 @@
             max-width: 300px;
             padding: 0 10px;
             flex-shrink: 0;
-            transform: translateX(-20px); /* 向左偏移，避免与FAB太靠近 */
+            /* 移除不必要的偏移 */
         }
         
         .control-btn {
@@ -282,10 +300,10 @@
             opacity: 1;
         }
 
-        /* 页面指示器 - 与page6完全一致 */
+        /* 页面指示器 - 调整位置避免与FAB重叠 */
         .page-indicator {
             position: fixed;
-            bottom: 25px;
+            bottom: 100px; /* 增加底部距离，避免与FAB重叠 */
             left: 0;
             right: 0;
             display: flex;
@@ -310,16 +328,20 @@
             box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
         }
 
-        /* 响应式设计 - 与page6完全一致 */
+        /* 统一的响应式断点设计 */
         @media (max-width: 768px) {
+            .model-container {
+                height: 50vh;
+            }
+            
             .fab-container {
-                bottom: 25px;
-                right: 25px;
+                bottom: 20px;
+                right: 20px;
             }
             
             .fab-main {
-                width: 58px;
-                height: 58px;
+                width: 56px;
+                height: 56px;
                 font-size: 24px;
             }
             
@@ -328,21 +350,16 @@
                 height: 60px;
                 font-size: 14px;
             }
-
-            .controls {
-                transform: translateX(-15px); /* 中等屏幕偏移量调整 */
-            }
         }
 
         @media (max-width: 480px) {
-            .fab-container {
-                bottom: 20px;
-                right: 20px;
+            .model-container {
+                height: 55vh;
             }
             
             .fab-main {
-                width: 52px;
-                height: 52px;
+                width: 50px;
+                height: 50px;
                 font-size: 22px;
             }
             
@@ -351,14 +368,14 @@
                 height: 55px;
                 font-size: 13px;
             }
-
-            .controls {
-                transform: translateX(-10px); /* 小屏幕偏移量调整 */
-            }
         }
         
-        /* 横屏优化 */
+        /* 横屏模式统一调整 */
         @media (orientation: landscape) {
+            .model-container {
+                height: 70vh;
+            }
+            
             .container {
                 padding: 5px 0;
             }
@@ -398,7 +415,6 @@
             .controls {
                 margin: 4px 0;
                 gap: 8px;
-                transform: translateX(-15px); /* 横屏偏移量调整 */
             }
             
             .control-btn {
@@ -427,7 +443,10 @@
             .controls {
                 max-width: 280px;
                 gap: 8px;
-                transform: translateX(-8px); /* 超小屏幕偏移量调整 */
+            }
+            
+            .model-container {
+                height: 50vh;
             }
         }
 
@@ -468,13 +487,16 @@
             
             .controls {
                 max-width: 320px;
-                transform: translateX(-25px); /* 大屏幕偏移量增加 */
             }
             
             .control-btn {
                 padding: 12px 18px;
                 font-size: 0.9rem;
                 min-height: 44px;
+            }
+            
+            .model-container {
+                height: 50vh;
             }
         }
     </style>
@@ -529,7 +551,7 @@
         </div>
     </div>
 
-    <!-- 页面指示器 - 与page6完全一致 -->
+    <!-- 页面指示器 - 调整位置避免与FAB重叠 -->
     <div class="page-indicator">
         <div class="page-dot"></div>
         <div class="page-dot"></div>
@@ -857,19 +879,19 @@
                 }
             });
 
-            // 页面指示器交互 - 与page6完全一致
+            // 页面指示器交互 - 优化跳转逻辑
             const pageDots = document.querySelectorAll('.page-dot');
             pageDots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
+                    // 移除所有active类
                     pageDots.forEach(d => d.classList.remove('active'));
+                    // 添加当前active类
                     dot.classList.add('active');
-                    // 这里可以添加页面跳转逻辑
-                    if (index === 0) {
-                        window.location.href = 'page7.html';
-                    } else if (index === 1) {
-                        window.location.href = 'page8.html';
-                    } else if (index === 2) {
-                        // 当前页面
+                    
+                    // 页面跳转逻辑 - 确保链接正确
+                    const pages = ['page7.html', 'page8.html', '#']; // 当前页面用#
+                    if (pages[index] && pages[index] !== '#') {
+                        window.location.href = pages[index];
                     }
                 });
             });
