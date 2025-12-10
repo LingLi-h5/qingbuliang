@@ -216,34 +216,6 @@
             background: #f5e3d4;
         }
 
-        /* 页面指示器 */
-        .page-indicator {
-            position: fixed;
-            bottom: 25px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            z-index: 99;
-        }
-
-        .page-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(139, 69, 19, 0.4);
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .page-dot.active {
-            background-color: #8B4513;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
-        }
-
         /* 合并的响应式设计 */
         @media (max-width: 768px) {
             .fab-container { bottom: 25px; right: 25px; }
@@ -321,13 +293,6 @@
             <a href="page0.html" class="fab-item">菜单</a>
             <a href="page3.html" class="fab-item">下页</a>
         </div>
-    </div>
-
-    <!-- 页面指示器 -->
-    <div class="page-indicator">
-        <div class="page-dot active" data-index="0"></div>
-        <div class="page-dot" data-index="1"></div>
-        <div class="page-dot" data-index="2"></div>
     </div>
 
     <!-- 引入ECharts库 -->
@@ -489,18 +454,6 @@
         document.addEventListener('click', () => {
             fabMenu.classList.remove('open');
             fabMain.classList.remove('active');
-        });
-
-        // 页面指示器
-        document.querySelectorAll('.page-dot').forEach(dot => {
-            dot.addEventListener('click', function() {
-                const index = this.getAttribute('data-index');
-                document.querySelectorAll('.page-dot').forEach(d => d.classList.remove('active'));
-                this.classList.add('active');
-                
-                // 这里可以添加页面切换逻辑
-                console.log('切换到页面:', index);
-            });
         });
 
         // 响应式调整
