@@ -60,15 +60,14 @@
             line-height: 1.2;
         }
         
-        /* 主内容区 - 保留原有背景设置 */
+        /* 主内容区 - 移除半透明遮罩层，仅保留背景图片 */
         .main-content {
             display: flex;
             flex-direction: column;
             flex: 1;
             overflow: hidden;
             padding: 10px;
-            background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
-                        url('../assets/images/主题.png');
+            background: url('../assets/images/主题.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

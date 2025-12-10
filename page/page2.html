@@ -51,10 +51,10 @@
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
-            background: linear-gradient(to bottom, #f8f4e8, #fffaf0);
+            /* 移除白色背景渐变遮罩 */
         }
 
-        /* 地图背景 - 使用CSS背景图片 */
+        /* 地图背景 - 使用CSS背景图片（仅保留背景图，移除半透明遮罩） */
         #map::before {
             content: '';
             position: absolute;
@@ -66,7 +66,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.15;
+            /* 移除opacity半透明遮罩 */
             z-index: 0;
             pointer-events: none;
         }
