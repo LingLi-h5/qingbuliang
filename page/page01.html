@@ -36,17 +36,9 @@
             display: block;
         }
         
-        /* 添加遮罩层提高文字可读性 */
+        /* 移除半透明遮罩层 */
         .background-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(255, 236, 210, 0.15) 0%, 
-                rgba(252, 182, 159, 0.15) 100%);
-            z-index: 1;
+            display: none;
         }
         
         /* 主容器 */
@@ -73,19 +65,19 @@
             letter-spacing: 3px;
         }
         
-        /* 进入提示 */
+        /* 进入提示 - 改为实色背景，移除透明效果 */
         .enter-prompt {
             color: #fff;
             font-size: 2.5rem;
             padding: 20px 50px;
-            background-color: rgba(230, 126, 34, 0.85);
+            background-color: #e67e22; /* 实色代替半透明 */
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
             animation: fadeInUp 1s ease-out 0.5s both;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffffff; /* 实色边框代替透明边框 */
             position: relative;
             overflow: hidden;
         }
@@ -93,7 +85,7 @@
         /* 鼠标悬停效果 */
         .enter-prompt:hover {
             transform: translateY(-5px) scale(1.05);
-            background-color: rgba(211, 84, 0, 0.95);
+            background-color: #d35400; /* 实色代替半透明 */
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
         }
         
@@ -102,23 +94,9 @@
             transform: translateY(0) scale(0.98);
         }
         
-        /* 微光效果 */
+        /* 移除微光效果 */
         .enter-prompt::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            transition: left 0.5s;
-        }
-        
-        .enter-prompt:hover::after {
-            left: 100%;
+            display: none;
         }
         
         /* 动画效果 */
@@ -186,7 +164,7 @@
             
             .enter-prompt:active {
                 transform: scale(0.95);
-                background-color: rgba(211, 84, 0, 0.95);
+                background-color: #d35400; /* 实色代替半透明 */
             }
         }
     </style>

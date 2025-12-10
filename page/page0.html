@@ -19,7 +19,7 @@
             --white: #ffffff;
             --shadow-color: rgba(139, 69, 19, 0.15);
             --shadow-active: rgba(139, 69, 19, 0.2);
-            --overlay-bg: rgba(0, 0, 0, 0.7);
+            --overlay-bg: #000000; /* 实色代替半透明 */
             --card-gap: 20px;
         }
 
@@ -53,19 +53,6 @@
             touch-action: manipulation;
         }
 
-        /* 半透明遮罩 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            z-index: 0;
-            backdrop-filter: blur(2px);
-        }
-
         /* 容器样式 */
         .container {
             width: 100%;
@@ -96,7 +83,7 @@
             opacity: 0.9;
         }
 
-        /* 菜单卡片 */
+        /* 菜单卡片 - 移除透明和滤镜 */
         .menu-cards {
             display: flex;
             flex-direction: column;
@@ -105,14 +92,14 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--white); /* 实色白色代替半透明 */
             border-radius: 24px;
             padding: 0;
             text-decoration: none;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 12px 40px var(--shadow-color);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* 移除 backdrop-filter: blur(20px); */
+            border: 1px solid #e0e0e0; /* 实色边框代替透明边框 */
             overflow: hidden;
             position: relative;
             cursor: pointer;
@@ -203,18 +190,9 @@
             opacity: 0.8;
         }
 
+        /* 移除卡片hover渐变遮罩 */
         .card-hover {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s;
-        }
-
-        .card:active .card-hover {
-            left: 100%;
+            display: none;
         }
 
         /* 页脚 */
@@ -226,23 +204,23 @@
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        /* 分享弹窗 */
+        /* 分享弹窗 - 移除滤镜，改为实色 */
         .share-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--overlay-bg);
+            background: var(--overlay-bg); /* 实色黑色 */
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(5px);
+            /* 移除 backdrop-filter: blur(5px); */
         }
 
         .share-modal {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: #ffecd2; /* 实色代替渐变 */
             border-radius: 30px;
             padding: 30px;
             width: 90%;
@@ -250,7 +228,7 @@
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalIn 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #e0e0e0; /* 实色边框 */
         }
 
         .share-header {
@@ -282,7 +260,7 @@
             height: 200px;
             border-radius: 15px;
             object-fit: cover;
-            border: 1px solid rgba(139, 69, 19, 0.1);
+            border: 1px solid #e0e0e0; /* 实色边框 */
         }
 
         .share-instruction {
@@ -345,12 +323,12 @@
             }
         }
 
-        /* 子页面菜单按钮 */
+        /* 子页面菜单按钮 - 移除滤镜，改为实色 */
         .menu-button {
             position: fixed;
             top: 25px;
             left: 25px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--white); /* 实色白色 */
             color: var(--primary-brown);
             width: 55px;
             height: 55px;
@@ -363,13 +341,13 @@
             box-shadow: 0 8px 25px var(--shadow-color);
             z-index: 1000;
             transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* 移除 backdrop-filter: blur(20px); */
+            border: 1px solid #e0e0e0; /* 实色边框 */
         }
 
         .menu-button:active {
             transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.8);
+            background: #f5f5f5; /* 浅灰色代替半透明 */
         }
 
         /* 响应式设计 - 合并和简化 */

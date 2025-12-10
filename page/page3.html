@@ -127,7 +127,7 @@
             overflow: hidden;
         }
 
-        /* 图片背景容器 */
+        /* 图片背景容器 - 移除了遮罩层相关样式 */
         .chart-background {
             position: absolute;
             top: 0;
@@ -137,7 +137,7 @@
             z-index: 0;
             overflow: hidden;
             border-radius: 12px;
-            opacity: 0.15; /* 调整透明度 */
+            /* 移除了透明度，保留图片原有效果 */
         }
 
         .chart-background img {
@@ -145,7 +145,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
-            filter: sepia(0.3) brightness(1.1);
+            /* 移除了滤镜效果，保留原图 */
         }
 
         #sunburst-chart {

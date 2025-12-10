@@ -14,13 +14,13 @@
         }
         
         body {
-            background-color: #fdf6e3; /* 备用背景色，防止图片加载失败时显示 */
+            background-color: #fdf6e3;
             overflow: hidden;
             height: 100vh;
             touch-action: manipulation;
         }
         
-        /* 新的背景图容器 - 全屏背景 */
+        /* 背景图容器 - 全屏背景 */
         .background-container {
             position: fixed;
             top: 0;
@@ -29,26 +29,20 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
-            background-color: #fdf6e3; /* 与备用背景色一致 */
+            background-color: #fdf6e3;
         }
         
         /* 全屏背景图片样式 */
         .background-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 关键：覆盖整个容器，可能会裁剪图片 */
+            object-fit: cover;
             display: block;
         }
         
-        /* 添加半透明遮罩层，确保文字可读性 */
+        /* 移除半透明遮罩层 */
         .background-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 236, 210, 0.25) 0%, rgba(252, 182, 159, 0.25) 100%);
-            z-index: 1;
+            display: none;
         }
         
         .container {
@@ -78,14 +72,15 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
-            background-color: rgba(255, 255, 255, 0.88); /* 降低透明度，更好显示背景 */
+            /* 移除毛玻璃和透明效果，改为实色背景 */
+            background-color: #ffffff;
             padding: 25px 20px;
             border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
             z-index: 15;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px); /* 增加毛玻璃效果 */
+            border: 1px solid #e0e0e0;
+            /* 移除 backdrop-filter 滤镜 */
             animation: float 5s ease-in-out infinite;
         }
         
@@ -138,15 +133,9 @@
             position: relative;
         }
         
+        /* 移除食材的渐变遮罩 */
         .ingredient::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
-            border-radius: 50%;
+            display: none;
         }
         
         .ingredient-img {
@@ -160,13 +149,14 @@
         .loading-bar-container {
             width: 100%;
             height: 18px;
-            background-color: rgba(255,255,255,0.8);
+            /* 改为实色背景 */
+            background-color: #f5f5f5;
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 25px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             position: relative;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
         
         .loading-bar {
@@ -179,6 +169,7 @@
             overflow: hidden;
         }
         
+        /* 保留进度条的流光效果（如需移除可删除此样式） */
         .loading-bar::after {
             content: "";
             position: absolute;
@@ -201,7 +192,8 @@
             margin-bottom: 20px;
             text-align: center;
             font-weight: 500;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            /* 移除文字阴影 */
+            text-shadow: none;
         }
         
         .enter-btn {
@@ -223,14 +215,9 @@
             overflow: hidden;
         }
         
+        /* 移除按钮的渐变遮罩 */
         .enter-btn::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+            display: none;
         }
         
         .enter-btn:hover {
@@ -245,7 +232,6 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
-            /* 平板和手机上调整内容区域大小 */
             .loading-content {
                 max-width: 90%;
                 padding: 20px 15px;
@@ -266,7 +252,7 @@
             
             .loading-content {
                 padding: 20px 15px;
-                backdrop-filter: blur(5px); /* 手机上减少模糊效果，提高性能 */
+                /* 移除手机端的模糊效果 */
             }
             
             .enter-btn {
@@ -325,9 +311,8 @@
     </style>
 </head>
 <body>
-    <!-- 新增的背景图容器 - 全屏背景 -->
+    <!-- 背景图容器 -->
     <div class="background-container">
-        <!-- 请将下面的图片路径替换为您自己的手绘图片 -->
         <img src="assets/images/主题.png" alt="海南清补凉手绘背景" class="background-image">
         <div class="background-overlay"></div>
     </div>
@@ -339,7 +324,6 @@
                 <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
-                    <!-- 请将下面的图片路径替换为您自己绘制的食材图片 -->
                     <div class="ingredient">
                         <img src="assets/images/1.jpg" alt="红豆" class="ingredient-img" loading="lazy">
                     </div>
@@ -369,25 +353,22 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 先预加载背景图片，避免闪烁
+            // 先预加载背景图片
             const bgImage = new Image();
-            bgImage.src = 'assets/images/主题.png'; // 修改为正确的路径
+            bgImage.src = 'assets/images/主题.png';
             
             bgImage.onload = function() {
                 console.log('背景图片加载成功');
-                // 背景图片加载完成后，开始主加载流程
                 startMainLoading();
             };
             
             bgImage.onerror = function() {
                 console.warn('背景图片加载失败，使用备用背景');
-                // 显示警告信息（可选）
                 const warningMsg = document.createElement('div');
                 warningMsg.style.cssText = 'position:fixed; top:10px; left:10px; background:rgba(255,0,0,0.1); color:#c00; padding:5px; border-radius:3px; font-size:12px; z-index:100;';
                 warningMsg.textContent = '背景图片加载失败，路径: assets/images/主题.png';
                 document.body.appendChild(warningMsg);
                 
-                // 即使背景加载失败，也继续执行
                 startMainLoading();
             };
             
@@ -406,7 +387,6 @@
                         progress = 100;
                         clearInterval(loadingInterval);
                         
-                        // 加载完成后的动画
                         setTimeout(() => {
                             loadingText.textContent = "加载完成！准备品尝美味...";
                             enterBtn.style.opacity = "1";
@@ -428,7 +408,6 @@
                 
                 // 点击进入按钮
                 enterBtn.addEventListener('click', function() {
-                    // 添加点击效果
                     this.style.transform = "scale(0.95)";
                     
                     loadingPage.style.opacity = "0";
@@ -439,7 +418,7 @@
                     }, 800);
                 });
                 
-                // 键盘支持：按回车键也可以触发按钮
+                // 键盘支持
                 enterBtn.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -457,7 +436,7 @@
                     lastTouchEnd = now;
                 }, false);
                 
-                // 添加触摸反馈
+                // 触摸反馈
                 enterBtn.addEventListener('touchstart', function() {
                     this.style.transform = "scale(0.95)";
                 });
@@ -466,7 +445,7 @@
                     this.style.transform = "scale(1)";
                 });
                 
-                // 添加鼠标悬停效果
+                // 鼠标悬停效果
                 enterBtn.addEventListener('mouseenter', function() {
                     this.style.transform = "translateY(-2px)";
                 });
