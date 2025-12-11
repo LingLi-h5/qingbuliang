@@ -29,12 +29,13 @@
             width: 100%;
             height: calc(100vh - 20px);
             max-height: calc(100vh - 20px);
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border: 1px solid #e0e0e0;
         }
         
         header {
@@ -74,22 +75,24 @@
             border-radius: 12px;
         }
         
-        /* 步骤条容器 - 保持不变 */
+        /* 步骤条容器 - 修改为纯白色 */
         .progress-container {
             margin: 10px 0;
             flex-shrink: 0;
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: #ffffff;
             padding: 10px;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
         }
         
         .progress-bar {
             height: 6px;
-            background-color: rgba(255, 236, 210, 0.7);
+            background-color: #f5f5f5;
             border-radius: 3px;
             overflow: hidden;
             margin-bottom: 8px;
+            border: 1px solid #e0e0e0;
         }
         
         .progress {
@@ -120,7 +123,7 @@
         .step-icon {
             width: 30px;
             height: 30px;
-            background-color: rgba(255, 236, 210, 0.8);
+            background-color: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -130,6 +133,7 @@
             color: #5a3e36;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
         }
         
         .step.active .step-icon {
@@ -159,18 +163,18 @@
         /* 演示区域 - 关键修改：移除半透明遮罩、边框和内阴影 */
         .demo-area {
             flex: 1;
-            background-color: transparent; /* 移除半透明背景 */
+            background-color: transparent;
             border-radius: 12px;
             padding: 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            box-shadow: none; /* 移除内阴影 */
+            box-shadow: none;
             margin-top: 8px;
-            border: none; /* 移除边框 */
+            border: none;
         }
         
-        /* 展示框 - 保留白色框框：白色背景、圆角、阴影都保留 */
+        /* 展示框 - 修改为纯白色 */
         .gif-container {
             flex: 1;
             display: flex;
@@ -178,11 +182,12 @@
             justify-content: center;
             margin-bottom: 10px;
             min-height: 0;
-            background-color: rgba(255, 255, 255, 0.8); /* 保留白色背景框 */
+            background-color: #ffffff;
             border-radius: 10px;
             padding: 10px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15); /* 保留框的阴影 */
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
             overflow: hidden;
+            border: 1px solid #e0e0e0;
         }
         
         /* GIF样式 - 保持不变 */
@@ -205,7 +210,7 @@
             to { opacity: 1; transform: scale(1); }
         }
         
-        /* 步骤说明 - 保留白色背景，确保文字清晰 */
+        /* 步骤说明 - 修改为纯白色 */
         .step-instruction {
             font-size: 0.9rem;
             color: #d2697a;
@@ -214,10 +219,11 @@
             line-height: 1.3;
             margin-bottom: 12px;
             flex-shrink: 0;
-            background-color: rgba(255, 255, 255, 0.8); /* 保留白色背景 */
+            background-color: #ffffff;
             padding: 8px 12px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
         }
         
         .button-group {
@@ -266,7 +272,7 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 弹窗样式 - 保持不变 */
+        /* 弹窗样式 - 修改为纯白色 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -281,7 +287,7 @@
         }
         
         .modal-content {
-            background: white;
+            background: #ffffff;
             padding: 25px;
             border-radius: 15px;
             text-align: center;
@@ -289,6 +295,7 @@
             max-width: 280px;
             width: 80%;
             animation: modalFadeIn 0.3s ease;
+            border: 1px solid #e0e0e0;
         }
         
         @keyframes modalFadeIn {
@@ -327,7 +334,7 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 浮动操作按钮样式 - 保持不变 */
+        /* 浮动操作按钮样式 - 修改为纯白色 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -381,7 +388,7 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: white;
+            background: #ffffff;
             color: #8B4513;
             display: flex;
             align-items: center;
@@ -395,6 +402,7 @@
             position: relative;
             text-align: center;
             padding: 5px;
+            border: 1px solid #e0e0e0;
         }
 
         .fab-item:hover {

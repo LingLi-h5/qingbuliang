@@ -82,12 +82,11 @@
             font-weight: 700;
             position: relative;
             display: inline-block;
-            background: rgba(255, 255, 255, 0.9);
+            background: #ffffff; 
             padding: 15px 30px;
             border-radius: var(--radius-lg);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid #e0e0e0; 
         }
 
         .header h1::after {
@@ -102,19 +101,20 @@
             border-radius: 2px;
         }
 
+        /* 核心修改：与index.html白色框框完全一致的样式 */
         .header p {
             color: var(--medium-text);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.7;
-            opacity: 0.9;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 15px 20px;
-            border-radius: var(--radius-md);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* 完全匹配index.html的视觉属性 */
+            background-color: #ffffff;
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            border: 1px solid #e0e0e0;
+            opacity: 1; /* 移除半透明，保持实色 */
         }
 
         /* 时间轴容器 */
@@ -124,11 +124,10 @@
             margin: 0 auto 40px;
             position: relative;
             padding: 25px 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: #ffffff; 
             border-radius: var(--radius-lg);
-            backdrop-filter: blur(8px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid #e0e0e0; 
             position: relative;
             z-index: 1;
         }
@@ -276,13 +275,12 @@
             justify-content: center;
             gap: 10px;
             opacity: 0.8;
-            background: rgba(255, 255, 255, 0.85);
+            background: #ffffff; 
             padding: 10px 20px;
             border-radius: 20px;
             margin: 15px auto;
             width: fit-content;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #e0e0e0; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -296,7 +294,7 @@
             50% { transform: translateX(-4px); }
         }
 
-        /* 模态框 */
+        /* 模态框 - 完全匹配index.html白色框框样式 */
         .modal {
             display: none;
             position: fixed;
@@ -313,12 +311,15 @@
         }
 
         .modal-content {
-            background-color: var(--white);
+            /* 与index.html白色框框完全一致的视觉属性 */
+            background-color: #ffffff;
             width: 100%;
             max-width: 550px;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            border: 1px solid #e0e0e0;
+            opacity: 1;
             animation: slideUp 0.5s ease;
             max-height: 90vh;
             overflow-y: auto;
@@ -332,6 +333,8 @@
             justify-content: space-between;
             align-items: center;
             position: relative;
+            border-radius: 20px 20px 0 0;
+            margin: -25px -20px 25px -20px;
         }
 
         .modal-header::after {
@@ -370,7 +373,7 @@
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 25px;
@@ -562,6 +565,11 @@
                 padding: 12px 20px;
             }
             
+            /* 响应式下保持与index.html一致的内边距 */
+            .header p {
+                padding: 20px 15px;
+            }
+            
             .timeline {
                 gap: 35px;
                 padding: 65px 20px 30px;
@@ -592,6 +600,19 @@
                 height: 60px;
                 font-size: 14px;
             }
+
+            /* 模态框响应式适配 */
+            .modal-content {
+                padding: 20px 15px;
+                border-radius: 20px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .modal-header {
+                padding: 20px;
+                margin: -20px -15px 20px -15px;
+                border-radius: 15px 15px 0 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -608,9 +629,12 @@
                 padding: 10px 15px;
             }
             
+            /* 移动端保持视觉一致性 */
             .header p {
                 font-size: 1rem;
-                padding: 12px 15px;
+                padding: 20px 15px;
+                border-radius: 20px; /* 适度缩小圆角，保持比例 */
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             }
             
             .timeline {
@@ -634,19 +658,30 @@
             .node-title {
                 font-size: 0.85rem;
             }
+
+            /* 模态框移动端适配 */
+            .modal-content {
+                padding: 20px 15px;
+                border-radius: 20px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .modal-header {
+                padding: 20px;
+                margin: -20px -15px 20px -15px;
+                border-radius: 15px 15px 0 0;
+            }
         }
 
         /* 优化背景图片显示 - 修正移动设备的图片路径 */
         @media (max-width: 768px) {
             body {
-                /* 同样移除移动设备的背景渐变遮罩 */
                 background: url("../assets/images/主题.png") center/cover no-repeat fixed;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 页面内容保持不变 -->
     <div class="header">
         <h1>清补凉文化溯源</h1>
         <p>清补凉，源自岭南地区的传统糖水，历经千年演变，融合多元文化，成为海南最具代表性的夏日甜品。</p>
@@ -740,7 +775,7 @@
     </div>
 
     <script>
-        // 历史数据 - 这个对象必须存在
+        // 历史数据
         const historyData = {
             "秦汉时期": {
                 title: "药食同源起源",
@@ -843,12 +878,9 @@
             if (!node) return;
 
             const year = node.dataset.year;
-            console.log('点击的年份:', year); // 调试用
             const data = historyData[year];
             
             if (data) {
-                console.log('找到的数据:', data); // 调试用
-                
                 // 更新模态框内容
                 modalTitle.textContent = `${year} - ${data.title}`;
                 modalText.innerHTML = data.content;
@@ -862,8 +894,6 @@
                 // 显示模态框
                 modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
-            } else {
-                console.error('没有找到对应年份的数据:', year);
             }
         });
 
@@ -879,7 +909,6 @@
         // 初始激活第一个节点
         document.addEventListener('DOMContentLoaded', function() {
             activeNode.classList.add('active');
-            console.log('页面加载完成，历史数据:', historyData); // 调试用
         });
     </script>
 </body>

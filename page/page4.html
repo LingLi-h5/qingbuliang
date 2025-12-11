@@ -21,8 +21,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: scroll; /* 修改为scroll，提高移动端兼容性 */
-            background-blend-mode: normal; /* 修改为normal，确保图片清晰可见 */
+            background-attachment: scroll;
+            background-blend-mode: normal;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -33,18 +33,15 @@
             position: relative;
         }
 
-        /* 移除半透明遮罩层 */
-
         .header {
             text-align: center;
             margin-bottom: 15px;
             width: 100%;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.85);
+            background-color: #ffffff; /* 改为实色白色 */
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
-            border: 1px solid rgba(139, 69, 19, 0.1);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e0e0e0; /* 与index一致的边框 */
         }
 
         .header h1 {
@@ -81,15 +78,13 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.8);
+            background-color: #ffffff; /* 改为实色白色 */
             border-radius: 20px;
             padding: 15px;
             box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e0e0e0; /* 与index一致的边框 */
         }
 
-        /* 碗的容器 */
         .bowl-wrapper {
             position: relative;
             width: 220px;
@@ -101,7 +96,6 @@
             overflow: hidden;
         }
 
-        /* 你的碗图片 */
         .custom-bowl {
             width: 100%;
             height: 100%;
@@ -118,7 +112,6 @@
             left: 0;
         }
 
-        /* 修改食材容器样式 - 与卡片样式一致 */
         .ingredient {
             position: absolute;
             width: 65px;
@@ -132,7 +125,6 @@
             box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
             z-index: 10;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
             overflow: hidden;
         }
 
@@ -141,7 +133,6 @@
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
         }
 
-        /* 选中食材的高亮效果 */
         .ingredient.selected {
             border: 3px solid #8B4513;
             transform: scale(1.1);
@@ -155,7 +146,6 @@
             border-radius: 15px;
         }
 
-        /* 碗中的食材 */
         .ingredient-in-bowl {
             position: absolute;
             width: 65px;
@@ -189,7 +179,7 @@
 
         .info-card {
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background-color: #ffffff; /* 改为实色白色 */
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
@@ -199,8 +189,7 @@
             position: relative;
             z-index: 5;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e0e0e0; /* 与index一致的边框 */
         }
 
         .info-card.active {
@@ -269,15 +258,13 @@
             font-size: 0.9rem;
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.7);
+            background-color: #ffffff; /* 改为实色白色 */
             border-radius: 15px;
             line-height: 1.5;
             box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e0e0e0; /* 与index一致的边框 */
         }
 
-        /* 食材特定样式 - 改为渐变背景 */
         .mung-bean { 
             background: linear-gradient(135deg, #8B4513, #D2691E);
             top: 10%; 
@@ -314,13 +301,11 @@
             right: 25%; 
         }
 
-        /* 悬浮效果 */
         .ingredient:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(139, 69, 19, 0.3);
         }
 
-        /* 浮动操作按钮样式 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -374,7 +359,7 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.95);
+            background-color: #ffffff; /* 改为实色白色 */
             color: #8B4513;
             display: flex;
             align-items: center;
@@ -388,8 +373,7 @@
             position: relative;
             text-align: center;
             padding: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e0e0e0; /* 与index一致的边框 */
         }
 
         .fab-item:hover {
@@ -417,7 +401,6 @@
             opacity: 1;
         }
 
-        /* 响应式设计 */
         @media (max-width: 768px) {
             .fab-container {
                 bottom: 25px;
@@ -561,7 +544,6 @@
             }
         }
 
-        /* 横屏优化 */
         @media (orientation: landscape) and (max-height: 500px) {
             body {
                 padding: 10px;
@@ -584,9 +566,6 @@
                 margin-bottom: 0;
             }
         }
-
-        /* 移除原有的小屏幕背景重置，改为图片加载失败时的处理 */
-        /* 背景图片加载失败时的回退样式通过JS处理，不再通过CSS媒体查询 */
     </style>
 </head>
 <body>
@@ -636,7 +615,6 @@
         <p>👆 点击任意食材开始探索</p>
     </div>
 
-    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -652,7 +630,6 @@
     </div>
 
     <script>
-        // 浮动操作按钮功能
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
@@ -660,7 +637,6 @@
             fabMenu.classList.toggle('open');
         });
 
-        // 点击页面其他地方关闭FAB菜单
         document.addEventListener('click', function(e) {
             if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                 fabMenu.classList.remove('open');
@@ -672,7 +648,6 @@
             const infoCard = document.getElementById('info-card');
             const bowlWrapper = document.getElementById('bowlWrapper');
             
-            // 食材信息数据
             const ingredientData = {
                 'mung-bean': {
                     name: '绿豆',
@@ -753,32 +728,24 @@
                 }
             };
 
-            // 当前选中的食材
             let currentIngredient = null;
 
-            // 为每个食材添加点击事件
             ingredients.forEach(ingredient => {
                 ingredient.addEventListener('click', function() {
                     const ingredientId = this.getAttribute('data-id');
                     
-                    // 如果点击的是当前已选中的食材，则不执行任何操作
                     if (currentIngredient === ingredientId) return;
                     
-                    // 更新当前选中的食材
                     currentIngredient = ingredientId;
                     
-                    // 获取食材数据
                     const data = ingredientData[ingredientId];
                     
-                    // 更新信息卡片
                     updateInfoCard(data);
                     
-                    // 执行飞入动画
                     flyToBowl(this, ingredientId);
                 });
             });
 
-            // 更新信息卡片内容
             function updateInfoCard(data) {
                 infoCard.innerHTML = `
                     <h2>${data.name}</h2>
@@ -791,56 +758,42 @@
                     <p>${data.usage}</p>
                 `;
                 
-                // 激活卡片显示动画
                 infoCard.classList.add('active');
             }
 
-            // 飞入碗中的动画效果
             function flyToBowl(element, ingredientId) {
-                // 移除其他食材的选中状态
                 ingredients.forEach(ing => ing.classList.remove('selected'));
-                // 添加当前选中状态
                 element.classList.add('selected');
                 
-                // 获取碗容器的位置
                 const bowlRect = bowlWrapper.getBoundingClientRect();
                 const ingredientRect = element.getBoundingClientRect();
                 
-                // 计算从食材位置到碗中心的偏移量
                 const deltaX = bowlRect.left + bowlRect.width/2 - ingredientRect.left - ingredientRect.width/2;
                 const deltaY = bowlRect.top + bowlRect.height/2 - ingredientRect.top - ingredientRect.height/2;
                 
-                // 设置CSS变量用于动画
                 element.style.setProperty('--tx', `${deltaX}px`);
                 element.style.setProperty('--ty', `${deltaY}px`);
                 
-                // 添加飞行动画类
                 element.classList.add('flying');
                 
-                // 动画结束后，在碗中显示食材
                 setTimeout(() => {
-                    // 移除碗中已有的食材
                     const existingIngredient = bowlWrapper.querySelector('.ingredient-in-bowl');
                     if (existingIngredient) {
                         existingIngredient.remove();
                     }
                     
-                    // 创建碗中的食材
                     const ingredientInBowl = document.createElement('div');
                     ingredientInBowl.className = `ingredient-in-bowl active`;
                     ingredientInBowl.innerHTML = `<img src="${element.querySelector('img').src}" alt="${ingredientData[ingredientId].name}">`;
                     
-                    // 将食材添加到碗容器中
                     bowlWrapper.appendChild(ingredientInBowl);
                     
-                    // 重置外部食材状态
                     element.classList.remove('flying');
                     element.style.removeProperty('--tx');
                     element.style.removeProperty('--ty');
                 }, 1000);
             }
 
-            // 预加载背景图片
             const bgImg = new Image();
             bgImg.onload = () => console.log('背景图片加载完成');
             bgImg.onerror = () => {

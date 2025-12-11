@@ -16,7 +16,6 @@
         }
 
         body {
-            /* 只修改了这里，将线性渐变替换为背景图片 */
             background: url('../assets/images/主题.png') no-repeat center center fixed;
             background-size: cover;
             overflow-x: hidden;
@@ -188,31 +187,59 @@
             font-size: 0.8rem;
         }
 
+        /* 关键修改：探索指南样式匹配参考代码的白色框框 */
         .instructions {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 8px;
-            width: 100%;
+            /* 改为实色白色背景，移除半透明效果 */
+            background-color: #ffffff;
+            /* 匹配参考代码的圆角 */
+            border-radius: 25px;
+            /* 匹配参考代码的内边距 */
+            padding: 25px 20px;
+            width: 90%;
+            max-width: 800px;
             margin: 15px auto;
             text-align: left;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            /* 匹配参考代码的阴影效果 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            /* 匹配参考代码的边框 */
+            border: 1px solid #e0e0e0;
+            /* 移除 backdrop-filter（参考代码无此效果） */
+            position: relative;
+            z-index: 2;
         }
 
         .instructions h2 {
-            color: #8B4513;
-            margin-bottom: 10px;
+            color: #d35400; /* 标题颜色匹配参考代码的主色调 */
+            margin-bottom: 20px; /* 增加底部间距，匹配参考代码 */
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.5rem; /* 增大标题字体，匹配参考代码 */
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* 增加文字阴影，匹配参考代码 */
+            position: relative;
+        }
+
+        /* 给标题添加下划线，匹配参考代码的标题样式 */
+        .instructions h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
+            border-radius: 2px;
         }
 
         .instructions ul {
-            padding-left: 18px;
+            padding-left: 25px; /* 调整列表缩进，优化显示 */
         }
 
         .instructions li {
-            margin-bottom: 8px;
-            line-height: 1.4;
-            font-size: 0.85rem;
+            margin-bottom: 12px; /* 增加列表项间距 */
+            line-height: 1.6; /* 优化行高，提升可读性 */
+            font-size: 1rem; /* 增大列表字体，匹配参考代码风格 */
+            color: #5a3921; /* 确保文字颜色协调 */
         }
 
         @keyframes fadeInDown {
@@ -362,6 +389,21 @@
                 height: 60px;
                 font-size: 14px;
             }
+
+            /* 响应式调整探索指南 */
+            .instructions {
+                max-width: 90%;
+                padding: 20px 15px;
+            }
+
+            .instructions h2 {
+                font-size: 1.3rem;
+            }
+
+            .instructions li {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -380,6 +422,19 @@
                 width: 55px;
                 height: 55px;
                 font-size: 13px;
+            }
+
+            /* 响应式调整探索指南 */
+            .instructions {
+                padding: 20px 15px;
+            }
+
+            .instructions h2 {
+                font-size: 1.2rem;
+            }
+
+            .instructions li {
+                font-size: 0.85rem;
             }
         }
 
@@ -415,6 +470,20 @@
             .shop-name {
                 font-size: 1rem;
             }
+
+            /* 超小屏幕调整探索指南 */
+            .instructions {
+                padding: 18px 12px;
+            }
+
+            .instructions h2 {
+                font-size: 1.1rem;
+            }
+
+            .instructions li {
+                font-size: 0.8rem;
+                margin-bottom: 8px;
+            }
         }
 
         /* 横屏优化 */
@@ -424,12 +493,13 @@
             }
             
             .instructions {
-                padding: 10px;
+                padding: 15px;
+                margin: 10px auto;
             }
             
             .instructions li {
-                margin-bottom: 5px;
-                font-size: 0.8rem;
+                margin-bottom: 8px;
+                font-size: 0.85rem;
             }
         }
     </style>
