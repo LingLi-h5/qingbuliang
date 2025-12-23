@@ -314,7 +314,7 @@
             /* 与index.html白色框框完全一致的视觉属性 */
             background-color: #ffffff;
             width: 100%;
-            max-width: 550px;
+            max-width: 650px; /* 增加模态框宽度以便容纳更大的照片 */
             padding: 25px 20px;
             border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -399,26 +399,66 @@
             text-align: center;
         }
 
-        .map-placeholder {
+        /* 修改部分：增大照片容器尺寸 */
+        .photo-container {
             width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #f5e3d4 0%, #e9d0b8 100%);
+            height: 300px; /* 增大高度以更好展示图片 */
             border-radius: var(--radius-sm);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: var(--primary-brown);
-            overflow: hidden;
-            border: 2px dashed var(--secondary-brown);
+            border: 2px solid var(--secondary-brown);
+            background: #f9f9f9; /* 添加背景色，图片加载时更好看 */
         }
 
-        .map-caption {
+        /* 照片样式 - 修改以适应更大的容器 */
+        .history-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 改为contain以完整显示图片，不会裁剪 */
+            transition: transform 0.5s ease;
+            background: #fff; /* 图片背景色 */
+        }
+
+        .history-photo:hover {
+            transform: scale(1.03); /* 减小缩放比例，避免过大 */
+        }
+
+        .photo-caption {
             text-align: center;
             font-style: italic;
             color: #666;
-            margin-top: 12px;
-            font-size: 0.95rem;
+            margin-top: 15px; /* 增加与图片的间距 */
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 8px 15px;
+            background: rgba(245, 227, 212, 0.3);
+            border-radius: var(--radius-sm);
+        }
+
+        /* 照片加载时的占位符 */
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5e3d4 0%, #e9d0b8 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-brown);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .photo-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
         }
 
         /* 食材标签 */
@@ -603,6 +643,7 @@
 
             /* 模态框响应式适配 */
             .modal-content {
+                max-width: 90%; /* 移动端使用百分比宽度 */
                 padding: 20px 15px;
                 border-radius: 20px;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -612,6 +653,11 @@
                 padding: 20px;
                 margin: -20px -15px 20px -15px;
                 border-radius: 15px 15px 0 0;
+            }
+
+            /* 移动端照片容器调整 */
+            .photo-container {
+                height: 250px; /* 移动端适当减小但仍保持较大 */
             }
         }
 
@@ -661,6 +707,7 @@
 
             /* 模态框移动端适配 */
             .modal-content {
+                max-width: 95%; /* 小屏幕进一步增大宽度 */
                 padding: 20px 15px;
                 border-radius: 20px;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -670,6 +717,19 @@
                 padding: 20px;
                 margin: -20px -15px 20px -15px;
                 border-radius: 15px 15px 0 0;
+            }
+
+            /* 小屏幕照片容器调整 */
+            .photo-container {
+                height: 220px; /* 小屏幕保持合适高度 */
+            }
+            
+            .photo-placeholder {
+                font-size: 0.9rem;
+            }
+            
+            .photo-placeholder i {
+                font-size: 3rem;
             }
         }
 
@@ -748,12 +808,15 @@
                     <p>请点击时间轴节点查看详情</p>
                 </div>
                 <div class="modal-map">
-                    <div class="map-placeholder">
-                        <div class="flex-center" style="width:100%;height:100%;color:var(--primary-brown);font-size:16px;font-weight:bold;">
-                            历史地图展示
+                    <!-- 修改部分：用你的照片替换原来的地图占位符 -->
+                    <div class="photo-container" id="photoContainer">
+                        <!-- 初始占位符，点击节点后会被替换为照片 -->
+                        <div class="photo-placeholder">
+                            <i class="fas fa-image"></i>
+                            <span>点击时间轴节点查看历史照片</span>
                         </div>
                     </div>
-                    <div class="map-caption" id="modalMapCaption">点击时间轴节点查看不同时期的传播路径</div>
+                    <div class="photo-caption" id="modalMapCaption">点击时间轴节点查看不同时期的照片</div>
                 </div>
             </div>
         </div>
@@ -789,7 +852,8 @@
                         <div class="ingredient">莲子</div>
                     </div>
                 `,
-                mapCaption: "秦汉时期清补凉相关食材在岭南地区的传播路径"
+                // 修改部分：更新图片描述
+                mapCaption: "秦汉时期清补凉相关食材的历史照片"
             },
             "唐宋时期": {
                 title: "中原文化传入",
@@ -803,7 +867,7 @@
                         <div class="ingredient">银耳</div>
                     </div>
                 `,
-                mapCaption: "唐宋时期清补凉在中原与岭南之间的传播路径"
+                mapCaption: "唐宋时期清补凉相关历史照片"
             },
             "明清时期": {
                 title: "岭南特色形成",
@@ -817,7 +881,7 @@
                         <div class="ingredient">红豆</div>
                     </div>
                 `,
-                mapCaption: "明清时期清补凉在岭南地区的传播与演变"
+                mapCaption: "明清时期清补凉的历史照片"
             },
             "民国时期": {
                 title: "海南本土化",
@@ -831,7 +895,7 @@
                         <div class="ingredient">西瓜</div>
                     </div>
                 `,
-                mapCaption: "民国时期清补凉在海南地区的本土化发展"
+                mapCaption: "民国时期清补凉的历史照片"
             },
             "现代": {
                 title: "文化传承与创新",
@@ -845,7 +909,7 @@
                         <div class="ingredient">椰果</div>
                     </div>
                 `,
-                mapCaption: "现代清补凉在全国及海外的传播路径"
+                mapCaption: "现代清补凉制作与品尝照片"
             }
         };
 
@@ -858,7 +922,45 @@
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         const timeline = document.querySelector('.timeline');
+        const photoContainer = document.getElementById('photoContainer');
         let activeNode = document.querySelector('.timeline-node:first-child');
+
+        // 修改部分：不同时期的照片路径配置
+        // 请将以下路径替换为你自己的照片路径
+        const photoPaths = {
+            "秦汉时期": '../assets/images/图1.png',        // 秦汉时期照片
+            "唐宋时期": '../assets/images/图2.png',     // 唐宋时期照片
+            "明清时期": '../assets/images/图3.png',     // 明清时期照片
+            "民国时期": '../assets/images/图4.png',      // 民国时期照片
+            "现代": '../assets/images/图5.png'             // 现代照片
+        };
+
+        // 照片描述（可选）
+        const photoDescriptions = {
+            "秦汉时期": "秦汉时期的清补凉食材展示",
+            "唐宋时期": "唐宋时期的清补凉制作工艺",
+            "明清时期": "明清时期的清补凉特色配料",
+            "民国时期": "民国时期的海南清补凉摊点",
+            "现代": "现代清补凉的多样化创新"
+        };
+
+        // 创建照片元素函数
+        function createPhotoElement(photoPath, altText) {
+            const img = document.createElement('img');
+            img.src = photoPath;
+            img.alt = altText;
+            img.className = 'history-photo';
+            img.onerror = function() {
+                // 如果照片加载失败，显示占位符
+                this.parentElement.innerHTML = `
+                    <div class="photo-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>照片加载失败<br>请检查路径: ${photoPath}</span>
+                    </div>
+                `;
+            };
+            return img;
+        }
 
         // 浮动操作按钮功能
         fabMain.addEventListener('click', function() {
@@ -886,6 +988,27 @@
                 modalText.innerHTML = data.content;
                 modalMapCaption.textContent = data.mapCaption;
                 
+                // 更新照片 - 根据时期切换不同照片
+                if (photoPaths[year]) {
+                    // 清空照片容器
+                    photoContainer.innerHTML = '';
+                    
+                    // 创建新的照片元素
+                    const photoAlt = photoDescriptions[year] || `${year}清补凉历史照片`;
+                    const photoElement = createPhotoElement(photoPaths[year], photoAlt);
+                    
+                    // 添加照片到容器
+                    photoContainer.appendChild(photoElement);
+                } else {
+                    // 如果没有对应照片，显示占位符
+                    photoContainer.innerHTML = `
+                        <div class="photo-placeholder">
+                            <i class="fas fa-image"></i>
+                            <span>暂无${year}的照片<br>请添加照片到对应路径</span>
+                        </div>
+                    `;
+                }
+                
                 // 更新活动节点样式
                 if (activeNode) activeNode.classList.remove('active');
                 node.classList.add('active');
@@ -906,9 +1029,26 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 初始激活第一个节点
+        // 初始激活第一个节点并设置初始照片
         document.addEventListener('DOMContentLoaded', function() {
             activeNode.classList.add('active');
+            
+            // 设置初始照片（可选）
+            const initialYear = activeNode.dataset.year;
+            if (photoPaths[initialYear]) {
+                // 清空照片容器
+                photoContainer.innerHTML = '';
+                
+                // 创建初始照片
+                const photoAlt = photoDescriptions[initialYear] || `${initialYear}清补凉历史照片`;
+                const photoElement = createPhotoElement(photoPaths[initialYear], photoAlt);
+                
+                // 添加照片到容器
+                photoContainer.appendChild(photoElement);
+                
+                // 更新描述
+                modalMapCaption.textContent = historyData[initialYear].mapCaption;
+            }
         });
     </script>
 </body>
