@@ -399,7 +399,7 @@
             text-align: center;
         }
 
-        /* 修改部分：增大照片容器尺寸 */
+        /* 修改部分：照片容器使用渐变色背景 */
         .photo-container {
             width: 100%;
             height: 300px; /* 增大高度以更好展示图片 */
@@ -411,7 +411,21 @@
             justify-content: center;
             color: var(--primary-brown);
             border: 2px solid var(--secondary-brown);
-            background: #f9f9f9; /* 添加背景色，图片加载时更好看 */
+            background: linear-gradient(135deg, #fff9f0 0%, #f5e9d8 100%); /* 渐变色背景 */
+            box-shadow: inset 0 0 20px rgba(139, 69, 19, 0.1); /* 内阴影增加深度感 */
+            position: relative;
+        }
+
+        /* 照片加载前的背景效果 */
+        .photo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 249, 240, 0.8) 0%, rgba(245, 233, 216, 0.8) 100%);
+            z-index: 1;
         }
 
         /* 照片样式 - 修改以适应更大的容器 */
@@ -419,23 +433,12 @@
             width: 100%;
             height: 100%;
             object-fit: contain; /* 改为contain以完整显示图片，不会裁剪 */
-            /* 移除了transition和:hover效果 */
-            background: #fff; /* 图片背景色 */
+            position: relative;
+            z-index: 2; /* 确保照片在背景之上 */
         }
 
-        /* 移除了:hover效果 */
-
-        .photo-caption {
-            text-align: center;
-            font-style: italic;
-            color: #666;
-            margin-top: 15px; /* 增加与图片的间距 */
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 8px 15px;
-            background: rgba(245, 227, 212, 0.3);
-            border-radius: var(--radius-sm);
-        }
+        /* 删除照片说明文字的CSS */
+        /* 删除了 .photo-caption 相关的CSS */
 
         /* 照片加载时的占位符 */
         .photo-placeholder {
@@ -451,6 +454,8 @@
             font-size: 1.1rem;
             text-align: center;
             padding: 20px;
+            position: relative;
+            z-index: 3; /* 占位符在最上层 */
         }
 
         .photo-placeholder i {
@@ -657,6 +662,10 @@
             .photo-container {
                 height: 250px; /* 移动端适当减小但仍保持较大 */
             }
+            
+            .photo-placeholder i {
+                font-size: 3.2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -727,7 +736,7 @@
             }
             
             .photo-placeholder i {
-                font-size: 3rem;
+                font-size: 2.8rem;
             }
         }
 
@@ -814,7 +823,7 @@
                             <span>点击时间轴节点查看历史照片</span>
                         </div>
                     </div>
-                    <div class="photo-caption" id="modalMapCaption">点击时间轴节点查看不同时期的照片</div>
+                    <!-- 删除照片说明文字 -->
                 </div>
             </div>
         </div>
@@ -850,8 +859,7 @@
                         <div class="ingredient">莲子</div>
                     </div>
                 `,
-                // 修改部分：更新图片描述
-                mapCaption: "秦汉时期清补凉相关食材的历史照片"
+                // 删除地图描述
             },
             "唐宋时期": {
                 title: "中原文化传入",
@@ -865,7 +873,7 @@
                         <div class="ingredient">银耳</div>
                     </div>
                 `,
-                mapCaption: "唐宋时期清补凉相关历史照片"
+                // 删除地图描述
             },
             "明清时期": {
                 title: "岭南特色形成",
@@ -879,7 +887,7 @@
                         <div class="ingredient">红豆</div>
                     </div>
                 `,
-                mapCaption: "明清时期清补凉的历史照片"
+                // 删除地图描述
             },
             "民国时期": {
                 title: "海南本土化",
@@ -893,7 +901,7 @@
                         <div class="ingredient">西瓜</div>
                     </div>
                 `,
-                mapCaption: "民国时期清补凉的历史照片"
+                // 删除地图描述
             },
             "现代": {
                 title: "文化传承与创新",
@@ -907,7 +915,7 @@
                         <div class="ingredient">椰果</div>
                     </div>
                 `,
-                mapCaption: "现代清补凉制作与品尝照片"
+                // 删除地图描述
             }
         };
 
@@ -915,7 +923,6 @@
         const modal = document.getElementById('historyModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalText = document.getElementById('modalText');
-        const modalMapCaption = document.getElementById('modalMapCaption');
         const closeBtn = document.querySelector('.close-btn');
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
@@ -984,7 +991,6 @@
                 // 更新模态框内容
                 modalTitle.textContent = `${year} - ${data.title}`;
                 modalText.innerHTML = data.content;
-                modalMapCaption.textContent = data.mapCaption;
                 
                 // 更新照片 - 根据时期切换不同照片
                 if (photoPaths[year]) {
@@ -1043,9 +1049,6 @@
                 
                 // 添加照片到容器
                 photoContainer.appendChild(photoElement);
-                
-                // 更新描述
-                modalMapCaption.textContent = historyData[initialYear].mapCaption;
             }
         });
     </script>
