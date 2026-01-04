@@ -42,6 +42,8 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
             border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
@@ -83,6 +85,8 @@
             padding: 15px;
             box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
             border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            /* 保障碗容器基础层级 */
+            z-index: 1;
         }
 
         .bowl-wrapper {
@@ -92,8 +96,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* 碗的层级低于食材 */
             z-index: 2;
-            overflow: hidden;
+            overflow: visible !important; /* 关键：允许食材超出碗容器 */
         }
 
         .custom-bowl {
@@ -102,6 +107,9 @@
             object-fit: contain;
             pointer-events: none;
             filter: drop-shadow(0 5px 15px rgba(139, 69, 19, 0.2));
+            /* 碗图片层级最低 */
+            z-index: 2;
+            position: relative;
         }
 
         .ingredients-container {
@@ -110,6 +118,9 @@
             height: 100%;
             top: 0;
             left: 0;
+            /* 食材容器层级高于碗 */
+            z-index: 99;
+            pointer-events: auto;
         }
 
         .ingredient {
@@ -123,9 +134,12 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
-            z-index: 10;
+            /* 食材图标最高层级 */
+            z-index: 100;
             border: 2px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
+            /* 确保点击穿透 */
+            pointer-events: auto;
         }
 
         .ingredient:active {
@@ -153,6 +167,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* 碗内食材层级低于外部食材 */
             z-index: 3;
             opacity: 0;
             transition: opacity 0.3s;
@@ -236,14 +251,17 @@
             0% {
                 transform: scale(1);
                 opacity: 1;
+                z-index: 100;
             }
             50% {
                 transform: scale(1.3) translate(var(--tx), var(--ty));
                 opacity: 0.8;
+                z-index: 100;
             }
             100% {
                 transform: scale(1) translate(0, 0);
                 opacity: 0;
+                z-index: 100;
             }
         }
 
@@ -263,6 +281,8 @@
             line-height: 1.5;
             box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
             border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            position: relative;
+            z-index: 1;
         }
 
         .mung-bean { 
@@ -270,7 +290,7 @@
             top: 10%; 
             left: 5%; 
         }
-        .red-bean { 
+        .coconut { 
             background: linear-gradient(135deg, #DC143C, #B22222);
             top: 15%; 
             right: 5%; 
@@ -282,20 +302,20 @@
         }
         .macaroni { 
             background: linear-gradient(135deg, #D2691E, #CD853F);
-            bottom: 25%; 
-            right: 10%; 
+            bottom: 5%; 
+            right: 50%; 
         }
-        .wintermelon { 
+        .red-date { 
             background: linear-gradient(135deg, #8B4513, #A0522D);
             top: 30%; 
             left: 20%; 
         }
-        .red-date { 
+        .taro-ball { 
             background: linear-gradient(135deg, #8B0000, #A52A2A);
             top: 40%; 
             right: 15%; 
         }
-        .quail-egg { 
+        .mango { 
             background: linear-gradient(135deg, #A0522D, #DEB887);
             bottom: 10%; 
             right: 25%; 
@@ -310,7 +330,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 100;
+            z-index: 200; /* 悬浮按钮层级高于食材 */
         }
 
         .fab-main {
@@ -328,7 +348,7 @@
             border: none;
             font-size: 26px;
             position: relative;
-            z-index: 101;
+            z-index: 201;
         }
 
         .fab-main:hover {
@@ -347,6 +367,7 @@
             transform: translateY(25px) scale(0.9);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             pointer-events: none;
+            z-index: 200;
         }
 
         .fab-menu.open {
@@ -374,6 +395,7 @@
             text-align: center;
             padding: 5px;
             border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            z-index: 200;
         }
 
         .fab-item:hover {
@@ -395,6 +417,7 @@
             transition: opacity 0.3s ease;
             pointer-events: none;
             font-weight: 500;
+            z-index: 201;
         }
 
         .fab-item:hover .fab-label {
@@ -577,30 +600,30 @@
     <div class="container">
         <div class="bowl-container">
             <div class="bowl-wrapper" id="bowlWrapper">
-                <img src="../assets/images/主题.png" alt="清补凉碗" class="custom-bowl">
+                <img src="../assets/images/椰子碗.png" class="custom-bowl">
             </div>
             
             <div class="ingredients-container">
                 <div class="ingredient mung-bean" data-id="mung-bean">
-                    <img src="../assets/images/1.jpg" alt="绿豆">
+                    <img src="../assets/images/绿豆.png" alt="绿豆">
                 </div>
-                <div class="ingredient red-bean" data-id="red-bean">
-                    <img src="../assets/images/2.jpg" alt="红豆">
+                <div class="ingredient coconut" data-id="coconut">
+                    <img src="../assets/images/椰子.png" alt="椰子">
                 </div>
                 <div class="ingredient jobstears" data-id="jobstears">
-                    <img src="../assets/images/3.jpg" alt="薏米">
+                    <img src="../assets/images/薏米.png" alt="薏米">
                 </div>
                 <div class="ingredient macaroni" data-id="macaroni">
-                    <img src="../assets/images/4.jpg" alt="通心粉">
-                </div>
-                <div class="ingredient wintermelon" data-id="wintermelon">
-                    <img src="../assets/images/5.jpg" alt="冬瓜薏">
+                    <img src="../assets/images/通心粉.png" alt="通心粉">
                 </div>
                 <div class="ingredient red-date" data-id="red-date">
-                    <img src="../assets/images/66.jpg" alt="红枣">
+                    <img src="../assets/images/红枣.png" alt="红枣">
                 </div>
-                <div class="ingredient quail-egg" data-id="quail-egg">
-                    <img src="../assets/images/1.jpg" alt="鹌鹑蛋">
+                <div class="ingredient taro-ball" data-id="taro-ball">
+                    <img src="../assets/images/芋圆.png" alt="芋圆">
+                </div>
+                <div class="ingredient mango" data-id="mango">
+                    <img src="../assets/images/芒果.png" alt="芒果">
                 </div>
             </div>
         </div>
@@ -622,9 +645,11 @@
         <div class="fab-menu" id="fabMenu">
             <a href="page0.html" class="fab-item" id="menuBtn">
                 菜单
+                <span class="fab-label">返回菜单</span>
             </a>
             <a href="page5.html" class="fab-item">
                 下页
+                <span class="fab-label">下一页</span>
             </a>
         </div>
     </div>
@@ -660,16 +685,16 @@
                     ],
                     usage: '可煮粥、做汤、制作绿豆沙等甜品。夏季常用来制作绿豆汤解暑。'
                 },
-                'red-bean': {
-                    name: '红豆',
-                    description: '红豆营养丰富，含有丰富的蛋白质、维生素B群和矿物质。',
+                'coconut': {
+                    name: '椰子',
+                    description: '椰子是清补凉的核心食材，椰肉和椰汁都富含营养，是热带特色食材。',
                     benefits: [
-                        '补血养心，改善气色',
-                        '利水消肿，帮助排除体内多余水分',
-                        '富含膳食纤维，促进消化',
-                        '含有皂角苷，有利尿作用'
+                        '生津止渴，清凉解暑',
+                        '补充电解质，缓解脱水',
+                        '富含中链脂肪酸，易被人体吸收',
+                        '椰肉富含膳食纤维，促进肠道健康'
                     ],
-                    usage: '常用于煮粥、做红豆沙、制作甜品和糕点。'
+                    usage: '椰汁可直接饮用，椰肉可切块加入清补凉，也可制作椰奶、椰蓉等。'
                 },
                 'jobstears': {
                     name: '薏米',
@@ -680,29 +705,18 @@
                         '增强免疫力，抗肿瘤',
                         '降血糖，适合糖尿病患者'
                     ],
-                    usage: '可煮粥、炖汤，或与其它谷物一起烹饪。'
+                    usage: '可煮粥、炖汤，或与其它谷物一起烹饪，是清补凉的经典配料。'
                 },
                 'macaroni': {
                     name: '通心粉',
-                    description: '通心粉是一种面食，主要由小麦粉制成，是西方常见的主食之一。',
+                    description: '通心粉是清补凉的特色配料之一，由小麦粉制成，口感Q弹有嚼劲。',
                     benefits: [
                         '提供碳水化合物，补充能量',
                         '含有蛋白质和少量维生素',
                         '易于消化，适合肠胃虚弱者',
-                        '可搭配各种蔬菜肉类，营养均衡'
+                        '增加清补凉的口感层次'
                     ],
-                    usage: '可煮汤、炒制或做成沙拉，搭配各种酱料食用。'
-                },
-                'wintermelon': {
-                    name: '冬瓜薏',
-                    description: '冬瓜薏是冬瓜的种子，在传统中医中常被用作药材。',
-                    benefits: [
-                        '清热利湿，消除水肿',
-                        '润肺化痰，缓解咳嗽',
-                        '富含不饱和脂肪酸，有益心血管',
-                        '含有多种氨基酸，增强免疫力'
-                    ],
-                    usage: '通常煮水饮用，或与其他药材一起煎服。'
+                    usage: '提前煮熟后加入清补凉中，搭配椰汁食用口感更佳。'
                 },
                 'red-date': {
                     name: '红枣',
@@ -711,27 +725,40 @@
                         '补中益气，养血安神',
                         '富含维生素C，增强免疫力',
                         '改善贫血，提升血色',
-                        '保护肝脏，减轻化学药物对肝脏的损害'
+                        '中和清补凉的凉性，调和性味'
                     ],
-                    usage: '可直接食用，也可煮粥、泡茶、炖汤或制作甜品。'
+                    usage: '去核后加入清补凉，可增加甜味，无需额外加糖。'
                 },
-                'quail-egg': {
-                    name: '鹌鹑蛋',
-                    description: '鹌鹑蛋虽然体积小，但营养价值高，有"动物中的人参"之称。',
+                'taro-ball': {
+                    name: '芋圆',
+                    description: '芋圆由芋头和红薯粉制成，是清补凉的经典甜品配料，口感软糯Q弹。',
                     benefits: [
-                        '富含卵磷脂，健脑益智',
-                        '维生素B2含量高，促进生长发育',
-                        '保护视力，预防眼疾',
-                        '调节血脂，预防动脉硬化'
+                        '提供丰富的膳食纤维',
+                        '芋头富含黏液蛋白，增强免疫力',
+                        '低脂肪低热量，饱腹感强',
+                        '富含钾元素，调节体内电解质'
                     ],
-                    usage: '可煮食、蒸蛋、卤制或作为配菜加入各种菜肴中。'
+                    usage: '煮熟后加入清补凉，冷藏后食用口感更佳，是清补凉的颜值担当。'
+                },
+                'mango': {
+                    name: '芒果',
+                    description: '芒果是热带水果之王，果肉香甜多汁，是清补凉的热门水果配料。',
+                    benefits: [
+                        '富含维生素A和C，保护视力',
+                        '芒果酮酸具有抗氧化作用',
+                        '促进肠道蠕动，帮助消化',
+                        '补充水分和多种矿物质'
+                    ],
+                    usage: '去皮切块后加入清补凉，与椰汁搭配风味独特，果香浓郁。'
                 }
             };
 
             let currentIngredient = null;
 
             ingredients.forEach(ingredient => {
-                ingredient.addEventListener('click', function() {
+                ingredient.addEventListener('click', function(e) {
+                    // 阻止事件冒泡，确保食材点击优先
+                    e.stopPropagation();
                     const ingredientId = this.getAttribute('data-id');
                     
                     if (currentIngredient === ingredientId) return;

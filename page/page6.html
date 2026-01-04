@@ -31,8 +31,6 @@
             position: relative;
         }
 
-        /* 移除全局半透明遮罩层 */
-
         .container {
             max-width: 100%;
             width: 100%;
@@ -60,8 +58,6 @@
             color: #654321;
             font-size: 0.95rem;
             max-width: 100%;
-            margin: 0 auto;
-            line-height: 1.5;
         }
 
         .dialogue-container {
@@ -72,10 +68,10 @@
             background-color: rgba(255, 255, 255, 0.65);
             background-blend-mode: overlay;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px; /* 增加容器内边距 */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            min-height: 350px;
+            min-height: 420px; /* 大幅增加容器高度 */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -85,34 +81,43 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 25px; /* 增加气泡间距 */
             margin-bottom: 20px;
             overflow-y: auto;
-            max-height: 300px;
+            max-height: 350px; /* 增加内容区高度 */
             padding-right: 8px;
-            /* 强制开启硬件加速，减少滚动卡顿 */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
         }
 
         .dialogue-bubble {
-            padding: 12px 15px;
-            border-radius: 16px;
+            padding: 18px 20px; /* 大幅增加气泡内边距 */
+            border-radius: 18px;
             max-width: 85%;
             text-align: left;
-            line-height: 1.5;
+            line-height: 1.6;
             position: relative;
-            animation: fadeIn 0.3s ease-out; /* 加快气泡出现动画 */
-            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease-out;
+            font-size: 1rem; /* 放大文字 */
         }
 
         .character {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 10px; /* 增加头像与文字间距 */
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
+            gap: 12px; /* 增加头像和名字间距 */
+            font-size: 1.05rem; /* 放大名字字体 */
+        }
+
+        /* 超大头像尺寸 - 核心修改 */
+        .character-avatar {
+            width: 60px; /* 最终调整为60px（原48px） */
+            height: 60px;
+            border-radius: 12px; /* 适配大尺寸的圆角 */
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25); /* 增强阴影立体感 */
         }
 
         .sufang {
@@ -148,31 +153,31 @@
         .choice-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .choice-btn {
             background: linear-gradient(to right, #8B4513, #A0522D);
             color: white;
             border: none;
-            padding: 12px 18px;
-            border-radius: 25px;
+            padding: 14px 20px;
+            border-radius: 28px;
             cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s ease; /* 加快按钮反馈速度 */
-            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.35);
             text-align: left;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             animation: fadeIn 0.3s ease-out;
-            min-height: 50px;
+            min-height: 55px;
             touch-action: manipulation;
         }
 
         .choice-btn:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.3);
+            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
             background: linear-gradient(to right, #7a3a10, #8f4820);
         }
 
@@ -197,24 +202,24 @@
             height: 100%;
             background: linear-gradient(to right, #8B4513, #A0522D);
             width: 0%;
-            transition: width 0.3s ease-out; /* 加快进度条动画 */
+            transition: width 0.3s ease-out;
         }
 
         .scene-indicator {
             color: #654321;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             font-style: italic;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .thinking-indicator {
             text-align: center;
-            padding: 12px;
+            padding: 15px;
             color: #8B4513;
             font-style: italic;
-            animation: pulse 1s infinite; /* 加快思考动画频率 */
-            font-size: 0.9rem;
+            animation: pulse 1s infinite;
+            font-size: 1rem;
             border-radius: 12px;
             background: #ffffff;
             margin-top: 10px;
@@ -224,7 +229,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(4px); /* 减少位移距离 */
+                transform: translateY(4px);
             }
             to {
                 opacity: 1;
@@ -254,20 +259,20 @@
             background: linear-gradient(to right, #8B4513, #A0522D);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 14px 28px;
+            border-radius: 28px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.05rem;
             transition: all 0.2s ease;
-            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
+            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.35);
             margin-top: 15px;
             animation: fadeIn 0.5s ease-out;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
             margin: 15px auto 0;
-            min-height: 45px;
+            min-height: 50px;
         }
 
         .fab-container {
@@ -356,38 +361,43 @@
             opacity: 1;
         }
 
-        /* 响应式样式保持不变 */
+        /* 响应式适配超大头像 */
         @media (max-width: 768px) {
-            .header h1 { font-size: 1.4rem; }
+            .header h1 { font-size: 1.5rem; }
             .fab-container { bottom: 25px; right: 25px; }
-            .fab-main { width: 58px; height: 58px; font-size: 24px; }
-            .fab-item { width: 60px; height: 60px; font-size: 14px; }
+            .fab-main { width: 60px; height: 60px; font-size: 24px; }
+            .fab-item { width: 65px; height: 65px; font-size: 15px; }
+            .character-avatar { width: 52px; height: 52px; border-radius: 10px; }
         }
 
         @media (max-width: 480px) {
             .fab-container { bottom: 20px; right: 20px; }
-            .fab-main { width: 52px; height: 52px; font-size: 22px; }
-            .fab-item { width: 55px; height: 55px; font-size: 13px; }
+            .fab-main { width: 56px; height: 56px; font-size: 22px; }
+            .fab-item { width: 60px; height: 60px; font-size: 14px; }
+            .character-avatar { width: 48px; height: 48px; border-radius: 10px; }
         }
 
         @media (max-width: 380px) {
             .header h1 { font-size: 1.4rem; }
-            .header p { font-size: 0.9rem; }
-            .dialogue-container { padding: 15px; min-height: 320px; }
-            .dialogue-bubble { padding: 10px 12px; max-width: 90%; font-size: 0.9rem; }
-            .character { font-size: 0.85rem; }
-            .choice-btn { padding: 10px 15px; font-size: 0.9rem; min-height: 45px; }
+            .header p { font-size: 0.95rem; }
+            .dialogue-container { padding: 20px; min-height: 380px; }
+            .dialogue-bubble { padding: 15px 18px; max-width: 90%; font-size: 0.95rem; }
+            .character { font-size: 1rem; gap: 10px; margin-bottom: 8px; }
+            .choice-btn { padding: 12px 18px; font-size: 0.95rem; min-height: 50px; }
+            .character-avatar { width: 44px; height: 44px; border-radius: 8px; }
         }
 
         @media (max-width: 320px) {
-            .dialogue-bubble { max-width: 95%; font-size: 0.85rem; }
-            .choice-btn { font-size: 0.85rem; padding: 8px 12px; }
+            .dialogue-bubble { max-width: 95%; font-size: 0.9rem; }
+            .choice-btn { font-size: 0.9rem; padding: 10px 15px; }
+            .character-avatar { width: 40px; height: 40px; border-radius: 8px; }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
-            .dialogue-container { min-height: 250px; }
-            .dialogue-content { max-height: 180px; }
-            .dialogue-bubble { padding: 8px 10px; font-size: 0.85rem; }
+            .dialogue-container { min-height: 320px; }
+            .dialogue-content { max-height: 250px; }
+            .dialogue-bubble { padding: 12px 15px; font-size: 0.9rem; }
+            .character-avatar { width: 40px; height: 40px; border-radius: 8px; }
         }
     </style>
 </head>
@@ -435,6 +445,12 @@
         let dialogueContent, choiceContainer, progressBar, sceneIndicator;
         let currentDialogueIndex = 0;
         let isProcessing = false;
+
+        const avatarConfig = {
+            dongpo: '../assets/images/苏东坡.png',
+            sufang: '../assets/images/绿豆.png',
+            villager: '../assets/images/芒果.png'
+        };
 
         const dialogueData = [
             {
@@ -606,20 +622,19 @@
             dialogueContent.innerHTML = '';
             choiceContainer.innerHTML = '';
 
-            // 快速创建气泡，无额外延迟
             const bubble = document.createElement('div');
             bubble.className = `dialogue-bubble ${dialogue.type}`;
-            const iconClass = dialogue.type === 'dongpo' ? 'fas fa-user-tie' : dialogue.type === 'villager' ? 'fas fa-user-friends' : 'fas fa-user';
             bubble.innerHTML = `
-                <div class="character"><i class="${iconClass}"></i>${dialogue.speaker}</div>
+                <div class="character">
+                    <img src="${avatarConfig[dialogue.type]}" alt="${dialogue.speaker}" class="character-avatar">
+                    ${dialogue.speaker}
+                </div>
                 <div>${dialogue.message}</div>
             `;
             dialogueContent.appendChild(bubble);
             
-            // 立即滚动到底部，不等待
             dialogueContent.scrollTop = dialogueContent.scrollHeight;
 
-            // 快速生成选项按钮
             dialogue.choices.forEach(choice => {
                 const button = document.createElement('button');
                 button.className = 'choice-btn';
@@ -628,29 +643,27 @@
                     if (isProcessing) return;
                     isProcessing = true;
                     
-                    // 禁用按钮
                     choiceContainer.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
                     
-                    // 添加用户回复
                     if (choice.response) {
                         const userBubble = document.createElement('div');
                         userBubble.className = 'dialogue-bubble sufang';
                         userBubble.innerHTML = `
-                            <div class="character"><i class="fas fa-user"></i>苏方</div>
+                            <div class="character">
+                                <img src="${avatarConfig.sufang}" alt="苏方" class="character-avatar">
+                                苏方
+                            </div>
                             <div>${choice.response}</div>
                         `;
                         dialogueContent.appendChild(userBubble);
-                        // 立即滚动
                         dialogueContent.scrollTop = dialogueContent.scrollHeight;
                     }
 
-                    // 显示思考提示
                     const thinking = document.createElement('div');
                     thinking.className = 'thinking-indicator';
                     thinking.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 思考中...';
                     choiceContainer.appendChild(thinking);
 
-                    // 核心优化：延迟缩短到 500ms
                     setTimeout(() => {
                         currentDialogueIndex = choice.next;
                         loadDialogue(currentDialogueIndex);
