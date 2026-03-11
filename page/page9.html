@@ -19,11 +19,7 @@
         }
 
         body {
-            background-image: url('../assets/images/主题.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             overflow: hidden;
             height: 100vh;
             display: flex;
@@ -34,7 +30,31 @@
             position: relative;
             z-index: 0;
         }
-        
+
+        /* ✅ 已按要求调整：宽度 93% */
+        .page1-white-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 400px;
+            height: 97vh;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            border: 1px solid #e0e0e0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .page1-white-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            padding: 0;
+            pointer-events: none;
+        }
+
         .container {
             width: 100%;
             max-width: 600px;
@@ -45,6 +65,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 5px 0;
+            position: relative;
+            z-index: 2;
         }
         
         header {
@@ -514,6 +536,11 @@
     </style>
 </head>
 <body>
+
+    <div class="page1-white-box">
+        <img src="../assets/images/666.png" alt="背景图">
+    </div>
+
     <div class="container">
         <header>
             <h1>3D模型交互展示</h1>
@@ -558,7 +585,7 @@
         </button>
         <div class="fab-menu" id="fabMenu">
             <a href="page0.html" class="fab-item">
-                菜单
+                <span class="fab-label">菜单</span>
             </a>
         </div>
     </div>
@@ -566,429 +593,386 @@
     <script src="../js/three.min.js"></script>
     <script src="../js/OrbitControls.js"></script>
     <script src="../js/GLTFLoader.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 控制台调试信息
-            console.log('Three.js版本:', THREE.REVISION);
-            console.log('开始初始化3D场景...');
-            
-            const loadingElement = document.getElementById('loading');
-            const errorElement = document.getElementById('error');
-            const warningElement = document.getElementById('warning');
-            
-            // 检测WebGL支持
-            if (!isWebGLAvailable()) {
-                showError('您的设备或浏览器不支持WebGL，无法显示3D模型。<br>请尝试：<br>1. 更新浏览器到最新版本<br>2. 检查浏览器设置中是否启用了WebGL<br>3. 使用其他设备（如智能手机）');
-                return;
-            }
-            
-            loadingElement.textContent = '正在设置3D场景...';
-            
-            // 获取容器尺寸
-            const container = document.querySelector('.model-container');
-            
-            // 场景设置
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffecd2);
-            
-            // 相机设置
-            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 5;
-            
-            // 创建渲染器（改进的错误处理）
-            let renderer;
-            try {
-                renderer = new THREE.WebGLRenderer({ 
-                    canvas: document.getElementById('model-canvas'),
-                    antialias: false,
-                    powerPreference: "default",
-                    alpha: true,
-                    preserveDrawingBuffer: false
-                });
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Three.js版本:', THREE.REVISION);
+    console.log('开始初始化3D场景...');
+    
+    const loadingElement = document.getElementById('loading');
+    const errorElement = document.getElementById('error');
+    const warningElement = document.getElementById('warning');
+    
+    if (!isWebGLAvailable()) {
+        showError('您的设备或浏览器不支持WebGL，无法显示3D模型。<br>请尝试：<br>1. 更新浏览器到最新版本<br>2. 检查浏览器设置中是否启用了WebGL<br>3. 使用其他设备（如智能手机）');
+        return;
+    }
+    
+    loadingElement.textContent = '正在设置3D场景...';
+    
+    const container = document.querySelector('.model-container');
+    
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffecd2);
+    
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+    
+    let renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('model-canvas'),
+            antialias: false,
+            powerPreference: "default",
+            alpha: true,
+            preserveDrawingBuffer: false
+        });
+        
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        console.log('渲染器创建成功');
+    } catch (error) {
+        showError(`WebGL渲染器创建失败: ${error.message}<br>请尝试更新浏览器或使用其他设备。`);
+        return;
+    }
+    
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 10, 5);
+    scene.add(directionalLight);
+    
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.7;
+    controls.zoomSpeed = 0.8;
+    controls.panSpeed = 0.5;
+    
+    if (controls.touches) {
+        controls.touches = {
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN
+        };
+    }
+    
+    let loadedModel = null;
+    const originalMaterials = new Map();
+    let performanceMode = true;
+    
+    loadingElement.textContent = '正在加载3D模型...';
+    
+    const manager = new THREE.LoadingManager();
+    manager.onProgress = function(url, loaded, total) {
+        const percent = Math.round((loaded / total) * 100);
+        loadingElement.textContent = `正在加载模型资源... ${percent}%`;
+    };
+    
+    manager.onError = function(url) {
+        console.warn('资源加载失败:', url);
+    };
+    
+    const loader = new THREE.GLTFLoader(manager);
+    
+    const modelPaths = [
+        '../assets/models/立方体.glb',
+        '../assets/立方体.glb',
+        './立方体.glb',
+        '../assets/images/立方体.glb'
+    ];
+    
+    let currentPathIndex = 0;
+    
+    function tryLoadModel() {
+        if (currentPathIndex >= modelPaths.length) {
+            showWarning('无法找到模型文件，已创建替代模型。<br>请确保模型文件存在且路径正确。');
+            createFallbackModel();
+            return;
+        }
+        
+        const modelPath = modelPaths[currentPathIndex];
+        console.log(`尝试加载模型: ${modelPath} (尝试 ${currentPathIndex + 1}/${modelPaths.length})`);
+        
+        loader.load(
+            modelPath,
+            function(gltf) {
+                console.log('模型加载成功:', modelPath);
                 
-                renderer.setSize(container.clientWidth, container.clientHeight);
-                renderer.outputEncoding = THREE.sRGBEncoding;
-                console.log('渲染器创建成功');
-            } catch (error) {
-                showError(`WebGL渲染器创建失败: ${error.message}<br>请尝试更新浏览器或使用其他设备。`);
-                return;
-            }
-            
-            // 添加光源
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(10, 10, 5);
-            scene.add(directionalLight);
-            
-            // 轨道控制器设置
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.1;
-            controls.rotateSpeed = 0.7;
-            controls.zoomSpeed = 0.8;
-            controls.panSpeed = 0.5;
-            
-            if (controls.touches) {
-                controls.touches = {
-                    ONE: THREE.TOUCH.ROTATE,
-                    TWO: THREE.TOUCH.DOLLY_PAN
-                };
-            }
-            
-            // 存储加载的模型和材质
-            let loadedModel = null;
-            const originalMaterials = new Map();
-            let performanceMode = true;
-            
-            loadingElement.textContent = '正在加载3D模型...';
-            
-            // 创建加载管理器
-            const manager = new THREE.LoadingManager();
-            manager.onProgress = function(url, loaded, total) {
-                const percent = Math.round((loaded / total) * 100);
-                loadingElement.textContent = `正在加载模型资源... ${percent}%`;
-            };
-            
-            manager.onError = function(url) {
-                console.warn('资源加载失败:', url);
-            };
-            
-            // 加载GLTF模型
-            const loader = new THREE.GLTFLoader(manager);
-            
-            // 尝试多个可能的模型路径
-            const modelPaths = [
-                '../assets/models/立方体.glb',
-                '../assets/立方体.glb',
-                './立方体.glb',
-                '../assets/images/立方体.glb'
-            ];
-            
-            let currentPathIndex = 0;
-            
-            function tryLoadModel() {
-                if (currentPathIndex >= modelPaths.length) {
-                    showWarning('无法找到模型文件，已创建替代模型。<br>请确保模型文件存在且路径正确。');
-                    createFallbackModel();
+                if (!validateModel(gltf)
+                ) {
+                    currentPathIndex++;
+                    setTimeout(tryLoadModel, 500);
                     return;
                 }
                 
-                const modelPath = modelPaths[currentPathIndex];
-                console.log(`尝试加载模型: ${modelPath} (尝试 ${currentPathIndex + 1}/${modelPaths.length})`);
-                
-                loader.load(
-                    modelPath,
-                    function(gltf) {
-                        console.log('模型加载成功:', modelPath);
-                        
-                        // 验证模型
-                        if (!validateModel(gltf)) {
-                            currentPathIndex++;
-                            setTimeout(tryLoadModel, 500);
-                            return;
-                        }
-                        
-                        // 移除现有模型
-                        if (loadedModel) {
-                            scene.remove(loadedModel);
-                        }
-                        
-                        loadedModel = gltf.scene;
-                        scene.add(loadedModel);
-                        
-                        // 保存原始材质
-                        saveOriginalMaterials(loadedModel);
-                        
-                        // 启用性能模式
-                        if (performanceMode) {
-                            enablePerformanceMode();
-                        }
-                        
-                        // 调整相机位置
-                        fitCameraToObject(camera, controls, loadedModel, 1.5);
-                        
-                        // 隐藏加载指示器
-                        loadingElement.style.display = 'none';
-                        console.log('3D场景初始化完成');
-                    },
-                    function(xhr) {
-                        const percent = Math.round(xhr.loaded / xhr.total * 100);
-                        loadingElement.textContent = `正在加载模型... ${percent}%`;
-                    },
-                    function(error) {
-                        console.error('模型加载失败:', error, '路径:', modelPath);
-                        currentPathIndex++;
-                        setTimeout(tryLoadModel, 500);
-                    }
-                );
-            }
-            
-            // 验证模型
-            function validateModel(gltf) {
-                if (!gltf.scene) {
-                    console.error('模型文件不包含场景数据');
-                    return false;
+                if (loadedModel) {
+                    scene.remove(loadedModel);
                 }
                 
-                let hasMeshes = false;
-                gltf.scene.traverse(function(child) {
-                    if (child.isMesh) {
-                        hasMeshes = true;
-                    }
-                });
+                loadedModel = gltf.scene;
+                scene.add(loadedModel);
                 
-                if (!hasMeshes) {
-                    console.error('模型文件不包含网格对象');
-                    return false;
-                }
+                saveOriginalMaterials(loadedModel);
                 
-                return true;
-            }
-            
-            // 保存原始材质（改进版）
-            function saveOriginalMaterials(object) {
-                originalMaterials.clear();
-                
-                object.traverse(function(child) {
-                    if (child.isMesh && child.material) {
-                        // 保存材质信息和引用
-                        originalMaterials.set(child, {
-                            material: child.material,
-                            uuid: child.material.uuid,
-                            type: child.material.type
-                        });
-                    }
-                });
-                
-                console.log(`保存了 ${originalMaterials.size} 个材质`);
-            }
-            
-            // 启用性能模式（改进版）
-            function enablePerformanceMode() {
-                if (!loadedModel) return;
-                
-                console.log('启用性能模式');
-                performanceMode = true;
-                
-                loadedModel.traverse(function(child) {
-                    if (child.isMesh) {
-                        const original = originalMaterials.get(child);
-                        if (original && child.material) {
-                            // 保存原始材质引用
-                            child.userData.originalMaterial = child.material;
-                            
-                            // 创建简化材质（保留基本颜色和贴图）
-                            const basicMaterial = new THREE.MeshBasicMaterial({
-                                color: getMaterialColor(child.material),
-                                map: child.material.map,
-                                transparent: child.material.transparent,
-                                opacity: child.material.opacity
-                            });
-                            
-                            child.material = basicMaterial;
-                        }
-                    }
-                });
-                
-                updatePixelRatio();
-                document.getElementById('quality-toggle-btn').textContent = '高清模式';
-            }
-            
-            // 获取材质颜色
-            function getMaterialColor(material) {
-                if (material.color) return material.color;
-                if (material.emissive) return material.emissive;
-                return 0x888888;
-            }
-            
-            // 禁用性能模式（高清模式）
-            function disablePerformanceMode() {
-                if (!loadedModel) return;
-                
-                console.log('禁用性能模式（高清模式）');
-                performanceMode = false;
-                
-                loadedModel.traverse(function(child) {
-                    if (child.isMesh && child.userData.originalMaterial) {
-                        child.material = child.userData.originalMaterial;
-                        delete child.userData.originalMaterial;
-                    }
-                });
-                
-                updatePixelRatio();
-                document.getElementById('quality-toggle-btn').textContent = '性能模式';
-            }
-            
-            // 更新像素比
-            function updatePixelRatio() {
-                const pixelRatio = performanceMode ? 
-                    Math.min(window.devicePixelRatio, 1) : 
-                    Math.min(window.devicePixelRatio, 2);
-                renderer.setPixelRatio(pixelRatio);
-                console.log(`设置像素比: ${pixelRatio} (性能模式: ${performanceMode})`);
-            }
-            
-            // 创建替代模型
-            function createFallbackModel() {
-                try {
-                    console.log('创建替代模型');
-                    
-                    const geometry = new THREE.BoxGeometry(1, 1, 1);
-                    const material = new THREE.MeshNormalMaterial();
-                    const cube = new THREE.Mesh(geometry, material);
-                    
-                    scene.add(cube);
-                    loadedModel = cube;
-                    
-                    // 保存原始材质
-                    saveOriginalMaterials(loadedModel);
-                    
-                    // 调整相机位置
-                    fitCameraToObject(camera, controls, loadedModel, 2);
-                    
-                    // 隐藏加载指示器
-                    loadingElement.style.display = 'none';
-                    
-                } catch (error) {
-                    console.error('创建替代模型失败:', error);
-                    showError('无法创建3D模型，请检查控制台获取详细信息。');
-                }
-            }
-            
-            // 调整相机位置以适应对象
-            function fitCameraToObject(camera, controls, object, offset = 1.5) {
-                try {
-                    const box = new THREE.Box3().setFromObject(object);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-                    
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const fov = camera.fov * (Math.PI / 180);
-                    let cameraZ = Math.abs(maxDim / Math.sin(fov / 2));
-                    
-                    cameraZ *= offset;
-                    camera.position.z = cameraZ;
-                    camera.lookAt(center);
-                    
-                    controls.target.copy(center);
-                    controls.update();
-                } catch (error) {
-                    console.warn('调整相机位置失败:', error);
-                    camera.position.z = 5;
-                    controls.target.set(0, 0, 0);
-                    controls.update();
-                }
-            }
-            
-            // 显示错误信息
-            function showError(message) {
-                loadingElement.style.display = 'none';
-                warningElement.style.display = 'none';
-                errorElement.innerHTML = message;
-                errorElement.style.display = 'block';
-                console.error('显示错误:', message);
-            }
-            
-            // 显示警告信息
-            function showWarning(message) {
-                loadingElement.style.display = 'none';
-                errorElement.style.display = 'none';
-                warningElement.innerHTML = message;
-                warningElement.style.display = 'block';
-                console.warn('显示警告:', message);
-            }
-            
-            // 检测WebGL支持
-            function isWebGLAvailable() {
-                try {
-                    const canvas = document.createElement('canvas');
-                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                    return !!(window.WebGLRenderingContext && gl);
-                } catch (e) {
-                    console.error('WebGL检测失败:', e);
-                    return false;
-                }
-            }
-            
-            // 设备性能检测
-            function detectLowEndDevice() {
-                const ua = navigator.userAgent;
-                const isLowEndCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-                const isLowEndMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
-                const isOldDevice = /Android [1-6]|iPhone OS [1-9]/.test(ua);
-                
-                return isLowEndCPU || isLowEndMemory || isOldDevice;
-            }
-            
-            // 开始加载模型
-            console.log('开始加载模型...');
-            tryLoadModel();
-            
-            // 控制按钮功能
-            let autoRotate = false;
-            document.getElementById('auto-rotate-btn').addEventListener('click', function() {
-                autoRotate = !autoRotate;
-                controls.autoRotate = autoRotate;
-                controls.autoRotateSpeed = 2.0;
-                this.textContent = autoRotate ? '停止旋转' : '自动旋转';
-                console.log('自动旋转:', autoRotate ? '开启' : '关闭');
-            });
-            
-            document.getElementById('quality-toggle-btn').addEventListener('click', function() {
                 if (performanceMode) {
-                    disablePerformanceMode();
-                } else {
                     enablePerformanceMode();
                 }
-            });
-            
-            // 窗口大小调整处理
-            window.addEventListener('resize', function() {
-                console.log('窗口大小调整');
-                const container = document.querySelector('.model-container');
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-            
-            // 浮动操作按钮功能
-            const fabMain = document.getElementById('fabMain');
-            const fabMenu = document.getElementById('fabMenu');
-            
-            fabMain.addEventListener('click', function(e) {
-                e.stopPropagation();
-                fabMenu.classList.toggle('open');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                    fabMenu.classList.remove('open');
-                }
-            });
-            
-            // 动画循环
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
+                
+                fitCameraToObject(camera, controls, loadedModel, 1.5);
+                
+                loadingElement.style.display = 'none';
+                console.log('3D场景初始化完成');
+            },
+            function(xhr) {
+                const percent = Math.round(xhr.loaded / xhr.total * 100);
+                loadingElement.textContent = `正在加载模型... ${percent}%`;
+            },
+            function(error) {
+                console.error('模型加载失败:', error, '路径:', modelPath);
+                currentPathIndex++;
+                setTimeout(tryLoadModel, 500);
             }
-            
-            // 启动动画
-            console.log('启动动画循环');
-            animate();
-            
-            // 输出设备信息
-            console.log('设备信息:', {
-                userAgent: navigator.userAgent,
-                hardwareConcurrency: navigator.hardwareConcurrency,
-                deviceMemory: navigator.deviceMemory,
-                pixelRatio: window.devicePixelRatio,
-                isLowEndDevice: detectLowEndDevice()
-            });
+        );
+    }
+    
+    function validateModel(gltf) {
+        if (!gltf.scene) {
+            console.error('模型文件不包含场景数据');
+            return false;
+        }
+        
+        let hasMeshes = false;
+        gltf.scene.traverse(function(child) {
+            if (child.isMesh) {
+                hasMeshes = true;
+            }
         });
+        
+        if (!hasMeshes) {
+            console.error('模型文件不包含网格对象');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function saveOriginalMaterials(object) {
+        originalMaterials.clear();
+        
+        object.traverse(function(child) {
+            if (child.isMesh && child.material) {
+                originalMaterials.set(child, {
+                    material: child.material,
+                    uuid: child.material.uuid,
+                    type: child.material.type
+                });
+            }
+        });
+        
+        console.log(`保存了 ${originalMaterials.size} 个材质`);
+    }
+    
+    function enablePerformanceMode() {
+        if (!loadedModel) return;
+        
+        console.log('启用性能模式');
+        performanceMode = true;
+        
+        loadedModel.traverse(function(child) {
+            if (child.isMesh) {
+                const original = originalMaterials.get(child);
+                if (original && child.material) {
+                    child.userData.originalMaterial = child.material;
+                    
+                    const basicMaterial = new THREE.MeshBasicMaterial({
+                        color: getMaterialColor(child.material),
+                        map: child.material.map,
+                        transparent: child.material.transparent,
+                        opacity: child.material.opacity
+                    });
+                    
+                    child.material = basicMaterial;
+                }
+            }
+        });
+        
+        updatePixelRatio();
+        document.getElementById('quality-toggle-btn').textContent = '高清模式';
+    }
+    
+    function getMaterialColor(material) {
+        if (material.color) return material.color;
+        if (material.emissive) return material.emissive;
+        return 0x888888;
+    }
+    
+    function disablePerformanceMode() {
+        if (!loadedModel) return;
+        
+        console.log('禁用性能模式（高清模式）');
+        performanceMode = false;
+        
+        loadedModel.traverse(function(child) {
+            if (child.isMesh && child.userData.originalMaterial) {
+                child.material = child.userData.originalMaterial;
+                delete child.userData.originalMaterial;
+            }
+        });
+        
+        updatePixelRatio();
+        document.getElementById('quality-toggle-btn').textContent = '性能模式';
+    }
+    
+    function updatePixelRatio() {
+        const pixelRatio = performanceMode ? 
+            Math.min(window.devicePixelRatio, 1) : 
+            Math.min(window.devicePixelRatio, 2);
+        renderer.setPixelRatio(pixelRatio);
+        console.log(`设置像素比: ${pixelRatio} (性能模式: ${performanceMode})`);
+    }
+    
+    function createFallbackModel() {
+        try {
+            console.log('创建替代模型');
+            
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshNormalMaterial();
+            const cube = new THREE.Mesh(geometry, material);
+            
+            scene.add(cube);
+            loadedModel = cube;
+            
+            saveOriginalMaterials(loadedModel);
+            
+            fitCameraToObject(camera, controls, loadedModel, 2);
+            
+            loadingElement.style.display = 'none';
+            
+        } catch (error) {
+            console.error('创建替代模型失败:', error);
+            showError('无法创建3D模型，请检查控制台获取详细信息。');
+        }
+    }
+    
+    function fitCameraToObject(camera, controls, object, offset = 1.5) {
+        try {
+            const box = new THREE.Box3().setFromObject(object);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = camera.fov * (Math.PI / 180);
+            let cameraZ = Math.abs(maxDim / Math.sin(fov / 2));
+            
+            cameraZ *= offset;
+            camera.position.z = cameraZ;
+            camera.lookAt(center);
+            
+            controls.target.copy(center);
+            controls.update();
+        } catch (error) {
+            console.warn('调整相机位置失败:', error);
+            camera.position.z = 5;
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+    }
+    
+    function showError(message) {
+        loadingElement.style.display = 'none';
+        warningElement.style.display = 'none';
+        errorElement.innerHTML = message;
+        errorElement.style.display = 'block';
+        console.error('显示错误:', message);
+    }
+    
+    function showWarning(message) {
+        loadingElement.style.display = 'none';
+        errorElement.style.display = 'none';
+        warningElement.innerHTML = message;
+        warningElement.style.display = 'block';
+        console.warn('显示警告:', message);
+    }
+    
+    function isWebGLAvailable() {
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            return !!(window.WebGLRenderingContext && gl);
+        } catch (e) {
+            console.error('WebGL检测失败:', e);
+            return false;
+        }
+    }
+    
+    function detectLowEndDevice() {
+        const ua = navigator.userAgent;
+        const isLowEndCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+        const isLowEndMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
+        const isOldDevice = /Android [1-6]|iPhone OS [1-9]/.test(ua);
+        
+        return isLowEndCPU || isLowEndMemory || isOldDevice;
+    }
+    
+    console.log('开始加载模型...');
+    tryLoadModel();
+    
+    let autoRotate = false;
+    document.getElementById('auto-rotate-btn').addEventListener('click', function() {
+        autoRotate = !autoRotate;
+        controls.autoRotate = autoRotate;
+        controls.autoRotateSpeed = 2.0;
+        this.textContent = autoRotate ? '停止旋转' : '自动旋转';
+        console.log('自动旋转:', autoRotate ? '开启' : '关闭');
+    });
+    
+    document.getElementById('quality-toggle-btn').addEventListener('click', function() {
+        if (performanceMode) {
+            disablePerformanceMode();
+        } else {
+            enablePerformanceMode();
+        }
+    });
+    
+    window.addEventListener('resize', function() {
+        console.log('窗口大小调整');
+        const container = document.querySelector('.model-container');
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+    
+    const fabMain = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    
+    fabMain.addEventListener('click', function(e) {
+        e.stopPropagation();
+        fabMenu.classList.toggle('open');
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
+            fabMenu.classList.remove('open');
+        }
+    });
+    
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    
+    console.log('启动动画循环');
+    animate();
+    
+    console.log('设备信息:', {
+        userAgent: navigator.userAgent,
+        hardwareConcurrency: navigator.hardwareConcurrency,
+        deviceMemory: navigator.deviceMemory,
+        pixelRatio: window.devicePixelRatio,
+        isLowEndDevice: detectLowEndDevice()
+    });
+});
     </script>
 </body>
 </html>

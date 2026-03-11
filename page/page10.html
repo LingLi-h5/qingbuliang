@@ -1,9 +1,409 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>分享美好，传承清补凉文化</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式 - 与地图页保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 背景图样式 - 你可以在这里放自己的图片 */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* ========== 在这里替换你的背景图片路径 ========== */
+            background-image: url('../assets/images/666.png');
+            /* ============================================ */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        /* 标题区域 - 适配当前页面内容 */
+        .title {
+            position: relative;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            z-index: 10;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            padding: 0 10px;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .title p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        /* 核心价值卡片容器 */
+        .core-values {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 10px;
+            margin-bottom: 60px;
+        }
+
+        /* 核心价值卡片样式 */
+        .value-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        /* 图标容器 */
+        .value-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.3);
+        }
+
+        .value-icon i {
+            color: white;
+            font-size: 22px;
+        }
+
+        /* 卡片内容 */
+        .value-content {
+            flex: 1;
+        }
+
+        .value-content h3 {
+            font-size: 1.1rem;
+            color: #8B4513;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .value-content p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 引导文字 - 原按钮改为纯文字，无跳转功能 */
+        .guide-text {
+            position: relative;
+            z-index: 10;
+            width: 85%;
+            max-width: 350px;
+            height: 50px;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            cursor: default;        /* 默认光标，表示不可点击 */
+            opacity: 0.9;           /* 略微柔和，表示静态 */
+            pointer-events: none;    /* 完全禁止点击事件，无跳转 */
+        }
+
+        .guide-text i {
+            font-size: 1.2rem;
+        }
+
+        /* 浮动操作按钮 - 与地图页保持一致 */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .fab-main {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            font-size: 26px;
+            position: relative;
+            z-index: 101;
+        }
+
+        .fab-main.active {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            opacity: 0;
+            transform: translateY(25px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .fab-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .fab-item {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            color: #8B4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .fab-item:hover {
+            transform: scale(1.15);
+            background: #f5e3d4;
+        }
+
+        /* 响应式设计 - 与地图页保持一致并适配当前内容 */
+        @media (max-width: 768px) {
+            .fab-container { bottom: 25px; right: 25px; }
+            .fab-main { width: 58px; height: 58px; font-size: 24px; }
+            .fab-item { width: 60px; height: 60px; font-size: 14px; }
+            .title h1 { font-size: 1.3rem; }
+            .title p { font-size: 0.95rem; }
+            .value-card { padding: 18px 14px; }
+            .value-icon { width: 45px; height: 45px; }
+            .value-icon i { font-size: 20px; }
+            .value-content h3 { font-size: 1rem; }
+            .value-content p { font-size: 0.85rem; }
+            .guide-text { height: 46px; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .fab-container { bottom: 20px; right: 20px; }
+            .fab-main { width: 52px; height: 52px; font-size: 22px; }
+            .fab-item { width: 55px; height: 55px; font-size: 13px; }
+            .title h1 { font-size: 1.2rem; }
+            .title p { font-size: 0.9rem; }
+            .core-values { gap: 15px; }
+            .value-card { padding: 16px 12px; gap: 12px; }
+            .value-icon { width: 40px; height: 40px; }
+            .value-icon i { font-size: 18px; }
+            .value-content h3 { font-size: 0.95rem; }
+            .value-content p { font-size: 0.8rem; }
+            .guide-text { height: 46px; font-size: 0.9rem; }
+        }
+
+        @media (min-width: 768px) and (min-height: 800px) {
+            .title h1 { font-size: 1.6rem; }
+            .title p { font-size: 1.1rem; }
+            .core-values { gap: 25px; }
+            .value-card { padding: 22px 18px; }
+            .value-icon { width: 55px; height: 55px; }
+            .value-icon i { font-size: 24px; }
+            .value-content h3 { font-size: 1.2rem; }
+            .value-content p { font-size: 1rem; }
+            .guide-text { height: 54px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="title">
+            <h1>分享美好，传承清补凉文化</h1>
+            <p>每一份分享，都是文化的传递。清补凉不仅仅是一碗甜品，更是千年食疗智慧、地域人文与舌尖记忆的凝结。通过分享，我们可以：</p>
+        </div>
+
+        <!-- 核心价值卡片 -->
+        <div class="core-values">
+            <!-- 传递养生智慧 -->
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="value-content">
+                    <h3>传递养生智慧</h3>
+                    <p>让更多人了解食材的药用价值与搭配理念，延续“药食同源”的中华饮食哲学。</p>
+                </div>
+            </div>
+
+            <!-- 推广地域文化 -->
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="value-content">
+                    <h3>推广地域文化</h3>
+                    <p>将海南的清补凉故事带到更远的地方，成为一张行走的“文化名片”。</p>
+                </div>
+            </div>
+
+            <!-- 联结情感记忆 -->
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="value-content">
+                    <h3>联结情感记忆</h3>
+                    <p>一碗清补凉，承载的是夏日的清凉、家乡的滋味与共享的温情。</p>
+                </div>
+            </div>
+
+            <!-- 激发互动探索 -->
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="value-content">
+                    <h3>激发互动探索</h3>
+                    <p>邀请朋友一起体验H5中的制作、游戏与历史，共同感受数字文化的魅力。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 引导文字 - 已改为纯文字，无链接无跳转 -->
+        <div class="guide-text">
+            <i class="fas fa-arrow-right"></i>
+            开始您的分享之旅
+        </div>
+    </div>
+
+    <!-- 浮动操作按钮 - 与地图页保持一致 -->
+    <div class="fab-container">
+        <button class="fab-main" id="fabMain">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page11.html" class="fab-item">下页</a>
+        </div>
+    </div>
+
+    <script>
+        // 浮动按钮交互逻辑 - 与地图页保持一致
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        
+        // FAB菜单切换
+        fabMain.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabMenu.classList.toggle('open');
+            fabMain.classList.toggle('active');
+        });
+
+        // 点击外部关闭菜单
+        document.addEventListener('click', () => {
+            fabMenu.classList.remove('open');
+            fabMain.classList.remove('active');
+        });
+
+        // 页面加载完成后调整布局
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                // 确保容器滚动正常
+                const container = document.querySelector('.container');
+                container.scrollTop = 0;
+            }, 100);
+        });
+
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            // 适配不同屏幕尺寸
+            const fabMain = document.getElementById('fabMain');
+            fabMenu.classList.remove('open');
+            fabMain.classList.remove('active');
+        });
+    </script>
+</body>
 </html>

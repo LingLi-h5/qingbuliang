@@ -42,19 +42,16 @@
         }
 
         body {
-            /* 移除了背景渐变遮罩，只保留背景图片 */
-            background: url("../assets/images/主题.png") center/cover no-repeat fixed;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 15px;
+            padding: 0;
             color: var(--dark-text);
             position: relative;
         }
-
-        /* 移除了body::before遮罩层样式 */
 
         /* 工具类 */
         .flex-center {
@@ -63,70 +60,99 @@
             justify-content: center;
         }
 
-        /* 头部样式 */
+        /* 头部样式 - 仅缩小宽度、居中 */
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin: 8px 0 12px;
             width: 100%;
-            max-width: 800px;
-            padding: 0 10px;
+            max-width: 340px; /* 👈 只改这里：缩小、居中 */
+            padding: 0 8px;
             position: relative;
             z-index: 1;
         }
 
         .header h1 {
             color: var(--primary-brown);
-            font-size: 2.4rem;
-            margin-bottom: 15px;
+            font-size: 1.4rem; /* 👈 缩小 */
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px var(--shadow-light);
             font-weight: 700;
             position: relative;
             display: inline-block;
             background: #ffffff; 
-            padding: 15px 30px;
-            border-radius: var(--radius-lg);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            padding: 8px 16px; /* 👈 缩小内边距 */
+            border-radius: var(--radius-md);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
             border: 1px solid #e0e0e0; 
         }
 
         .header h1::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -6px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
+            width: 60px;
+            height: 2px;
             background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
             border-radius: 2px;
         }
 
-        /* 核心修改：与index.html白色框框完全一致的样式 */
         .header p {
             color: var(--medium-text);
-            font-size: 1.1rem;
-            max-width: 600px;
+            font-size: 0.9rem; /* 👈 缩小 */
+            max-width: 320px; /* 👈 缩小 */
             margin: 0 auto;
-            line-height: 1.7;
-            /* 完全匹配index.html的视觉属性 */
+            line-height: 1.6;
             background-color: #ffffff;
-            padding: 25px 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            padding: 12px 14px; /* 👈 缩小 */
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
             border: 1px solid #e0e0e0;
-            opacity: 1; /* 移除半透明，保持实色 */
+            opacity: 1;
         }
 
-        /* 时间轴容器 */
+        /* 🔥 背景图 100% 完全不动、不改 */
+        .page-bg-container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 800px;
+            height: calc(100vh - 30px);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-bg-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../assets/images/999.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        /* 时间轴容器 - 仅缩小、居中 */
         .timeline-container {
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto 40px;
+            max-width: 360px; /* 👈 只改这里：缩小、居中 */
+            margin: 0 auto 20px;
             position: relative;
-            padding: 25px 0;
+            padding: 15px 0;
             background: #ffffff; 
-            border-radius: var(--radius-lg);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            border-radius: var(--radius-md);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.14);
             border: 1px solid #e0e0e0; 
             position: relative;
             z-index: 1;
@@ -135,8 +161,8 @@
         .timeline {
             display: flex;
             overflow-x: auto;
-            padding: 70px 25px 35px;
-            gap: 45px;
+            padding: 50px 18px 20px;
+            gap: 28px;
             scroll-behavior: smooth;
             position: relative;
             -webkit-overflow-scrolling: touch;
@@ -149,35 +175,35 @@
 
         .timeline-line {
             position: absolute;
-            top: 85px;
-            left: 25px;
-            right: 25px;
-            height: 4px;
+            top: 62px;
+            left: 18px;
+            right: 18px;
+            height: 3px;
             background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
             border-radius: 2px;
             z-index: 1;
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.25);
         }
 
-        /* 时间轴节点 */
+        /* 时间轴节点 - 缩小 */
         .timeline-node {
             flex: 0 0 auto;
-            width: 150px;
+            width: 90px; /* 👈 缩小 */
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
             transition: var(--transition-medium);
-            padding: 15px 10px;
-            border-radius: var(--radius-lg);
+            padding: 10px 6px;
+            border-radius: var(--radius-md);
             position: relative;
             z-index: 2;
         }
 
         .timeline-node:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
         }
 
         .timeline-node:active {
@@ -185,24 +211,24 @@
         }
 
         .timeline-node.active {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             background: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
         }
 
         .node-icon {
-            width: 80px;
-            height: 80px;
+            width: 50px; /* 👈 缩小 */
+            height: 50px; /* 👈 缩小 */
             border-radius: var(--radius-circle);
             background: linear-gradient(135deg, var(--white), #f9f9f9);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
-            box-shadow: 0 6px 20px var(--shadow-medium);
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px var(--shadow-medium);
             position: relative;
             z-index: 2;
-            border: 3px solid var(--secondary-brown);
+            border: 2px solid var(--secondary-brown);
             transition: var(--transition-medium);
             overflow: hidden;
         }
@@ -222,8 +248,8 @@
         }
 
         .timeline-node.active .node-icon {
-            transform: scale(1.15);
-            box-shadow: 0 8px 25px rgba(210, 105, 30, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 6px 18px rgba(210, 105, 30, 0.4);
         }
 
         .timeline-node.active .node-icon::before {
@@ -236,7 +262,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
@@ -249,8 +275,8 @@
         .node-year {
             font-weight: 700;
             color: var(--primary-brown);
-            font-size: 1.2rem;
-            margin-bottom: 8px;
+            font-size: 0.9rem; /* 👈 缩小 */
+            margin-bottom: 5px;
             text-align: center;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
@@ -258,8 +284,8 @@
         .node-title {
             color: var(--medium-text);
             text-align: center;
-            font-size: 0.95rem;
-            line-height: 1.4;
+            font-size: 0.8rem; /* 👈 缩小 */
+            line-height: 1.3;
             font-weight: 500;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
@@ -268,24 +294,24 @@
         .scroll-hint {
             text-align: center;
             color: var(--primary-brown);
-            margin-top: 15px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            font-size: 0.82rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             opacity: 0.8;
             background: #ffffff; 
-            padding: 10px 20px;
-            border-radius: 20px;
-            margin: 15px auto;
+            padding: 6px 14px;
+            border-radius: 16px;
+            margin: 8px auto;
             width: fit-content;
             border: 1px solid #e0e0e0; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
         }
 
         .scroll-hint i {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             animation: bounce 2s infinite;
         }
 
@@ -294,7 +320,7 @@
             50% { transform: translateX(-4px); }
         }
 
-        /* 模态框 - 完全匹配index.html白色框框样式 */
+        /* 🔥 模态框 - 彻底变小、手机专用 */
         .modal {
             display: none;
             position: fixed;
@@ -302,39 +328,38 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.4s ease;
-            padding: 20px;
+            padding: 15px;
         }
 
         .modal-content {
-            /* 与index.html白色框框完全一致的视觉属性 */
             background-color: #ffffff;
             width: 100%;
-            max-width: 650px; /* 增加模态框宽度以便容纳更大的照片 */
-            padding: 25px 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            max-width: 320px; /* 👈 彻底缩小 */
+            padding: 18px 16px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             border: 1px solid #e0e0e0;
             opacity: 1;
             animation: slideUp 0.5s ease;
-            max-height: 90vh;
+            max-height: 80vh; /* 👈 不占满屏幕 */
             overflow-y: auto;
         }
 
         .modal-header {
             background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown));
             color: white;
-            padding: 25px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
-            border-radius: 20px 20px 0 0;
-            margin: -25px -20px 25px -20px;
+            border-radius: 16px 16px 0 0;
+            margin: -18px -16px 18px -16px;
         }
 
         .modal-header::after {
@@ -343,23 +368,23 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(to right, var(--light-brown), var(--cream));
         }
 
         .modal-header h2 {
-            font-size: 1.6rem;
+            font-size: 1.15rem; /* 👈 缩小 */
             font-weight: 600;
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 250, 0.2);
             border: none;
             color: white;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            width: 42px;
-            height: 42px;
+            width: 34px;
+            height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -376,33 +401,32 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 16px;
         }
 
         .modal-text {
-            line-height: 1.8;
+            line-height: 1.6;
             color: #333;
-            font-size: 1.05rem;
+            font-size: 0.9rem; /* 👈 缩小 */
         }
 
         .modal-text p {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .modal-map {
             width: 100%;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-sm);
             overflow: hidden;
-            box-shadow: 0 5px 15px var(--shadow-light);
+            box-shadow: 0 4px 10px var(--shadow-light);
             background: #f9f5f0;
-            padding: 20px;
+            padding: 12px;
             text-align: center;
         }
 
-        /* 修改部分：照片容器使用渐变色背景 */
         .photo-container {
             width: 100%;
-            height: 300px; /* 增大高度以更好展示图片 */
+            height: 200px; /* 👈 缩小图片高度 */
             border-radius: var(--radius-sm);
             overflow: hidden;
             display: flex;
@@ -411,12 +435,11 @@
             justify-content: center;
             color: var(--primary-brown);
             border: 2px solid var(--secondary-brown);
-            background: linear-gradient(135deg, #fff9f0 0%, #f5e9d8 100%); /* 渐变色背景 */
-            box-shadow: inset 0 0 20px rgba(139, 69, 19, 0.1); /* 内阴影增加深度感 */
+            background: linear-gradient(135deg, #fff9f0 0%, #f5e9d8 100%);
+            box-shadow: inset 0 0 15px rgba(139, 69, 19, 0.1);
             position: relative;
         }
 
-        /* 照片加载前的背景效果 */
         .photo-container::before {
             content: '';
             position: absolute;
@@ -424,23 +447,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, rgba(255, 249, 240, 0.8) 0%, rgba(245, 233, 216, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(255, 249, 240, 0.8) 0%, rgba(245, 233, 216, 0.8) 100%);
             z-index: 1;
         }
 
-        /* 照片样式 - 修改以适应更大的容器 */
         .history-photo {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 改为contain以完整显示图片，不会裁剪 */
+            object-fit: contain;
             position: relative;
-            z-index: 2; /* 确保照片在背景之上 */
+            z-index: 2;
         }
 
-        /* 删除照片说明文字的CSS */
-        /* 删除了 .photo-caption 相关的CSS */
-
-        /* 照片加载时的占位符 */
         .photo-placeholder {
             width: 100%;
             height: 100%;
@@ -451,16 +469,16 @@
             justify-content: center;
             color: var(--primary-brown);
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             position: relative;
-            z-index: 3; /* 占位符在最上层 */
+            z-index: 3;
         }
 
         .photo-placeholder i {
-            font-size: 4rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
             opacity: 0.7;
         }
 
@@ -468,25 +486,25 @@
         .ingredients {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
             justify-content: center;
         }
 
         .ingredient {
             background: #f5e3d4;
-            padding: 10px 16px;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
             color: var(--primary-brown);
             font-weight: 500;
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.1);
             transition: var(--transition-fast);
         }
 
         .ingredient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.15);
         }
 
         /* 动画 */
@@ -498,7 +516,7 @@
         @keyframes slideUp {
             from { 
                 opacity: 0;
-                transform: translateY(60px);
+                transform: translateY(40px);
             }
             to { 
                 opacity: 1;
@@ -509,43 +527,43 @@
         /* 浮动操作按钮 */
         .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
         }
 
         .fab-main {
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             border-radius: var(--radius-circle);
             background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            box-shadow: 0 5px 20px rgba(139, 69, 19, 0.4);
             cursor: pointer;
             transition: var(--transition-medium);
             border: none;
-            font-size: 26px;
+            font-size: 22px;
             position: relative;
             z-index: 101;
         }
 
         .fab-main:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+            box-shadow: 0 6px 24px rgba(139, 69, 19, 0.6);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 75px;
+            bottom: 65px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 14px;
             opacity: 0;
-            transform: translateY(25px) scale(0.9);
+            transform: translateY(20px) scale(0.9);
             transition: var(--transition-medium);
             pointer-events: none;
         }
@@ -557,39 +575,39 @@
         }
 
         .fab-item {
-            width: 70px;
-            height: 70px;
+            width: 54px;
+            height: 54px;
             border-radius: var(--radius-circle);
             background: var(--white);
             color: var(--primary-brown);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px var(--shadow-dark);
+            box-shadow: 0 3px 15px var(--shadow-dark);
             cursor: pointer;
             transition: var(--transition-fast);
             text-decoration: none;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             position: relative;
             text-align: center;
-            padding: 5px;
+            padding: 4px;
         }
 
         .fab-item:hover {
-            transform: scale(1.15);
+            transform: scale(1.12);
             background: #f5e3d4;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
         }
 
         .fab-label {
             position: absolute;
-            right: 80px;
+            right: 65px;
             background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -601,154 +619,12 @@
             opacity: 1;
         }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-                padding: 12px 20px;
-            }
-            
-            /* 响应式下保持与index.html一致的内边距 */
-            .header p {
-                padding: 20px 15px;
-            }
-            
-            .timeline {
-                gap: 35px;
-                padding: 65px 20px 30px;
-            }
-            
-            .timeline-node {
-                width: 130px;
-            }
-            
-            .node-icon {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .fab-container {
-                bottom: 25px;
-                right: 25px;
-            }
-            
-            .fab-main {
-                width: 58px;
-                height: 58px;
-                font-size: 24px;
-            }
-            
-            .fab-item {
-                width: 60px;
-                height: 60px;
-                font-size: 14px;
-            }
-
-            /* 模态框响应式适配 */
-            .modal-content {
-                max-width: 90%; /* 移动端使用百分比宽度 */
-                padding: 20px 15px;
-                border-radius: 20px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            }
-
-            .modal-header {
-                padding: 20px;
-                margin: -20px -15px 20px -15px;
-                border-radius: 15px 15px 0 0;
-            }
-
-            /* 移动端照片容器调整 */
-            .photo-container {
-                height: 250px; /* 移动端适当减小但仍保持较大 */
-            }
-            
-            .photo-placeholder i {
-                font-size: 3.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 15px 10px;
-            }
-            
-            .header {
-                margin-bottom: 30px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-                padding: 10px 15px;
-            }
-            
-            /* 移动端保持视觉一致性 */
-            .header p {
-                font-size: 1rem;
-                padding: 20px 15px;
-                border-radius: 20px; /* 适度缩小圆角，保持比例 */
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            }
-            
-            .timeline {
-                gap: 25px;
-                padding: 60px 15px 25px;
-            }
-            
-            .timeline-node {
-                width: 110px;
-            }
-            
-            .node-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .node-year {
-                font-size: 1.1rem;
-            }
-            
-            .node-title {
-                font-size: 0.85rem;
-            }
-
-            /* 模态框移动端适配 */
-            .modal-content {
-                max-width: 95%; /* 小屏幕进一步增大宽度 */
-                padding: 20px 15px;
-                border-radius: 20px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            }
-
-            .modal-header {
-                padding: 20px;
-                margin: -20px -15px 20px -15px;
-                border-radius: 15px 15px 0 0;
-            }
-
-            /* 小屏幕照片容器调整 */
-            .photo-container {
-                height: 220px; /* 小屏幕保持合适高度 */
-            }
-            
-            .photo-placeholder {
-                font-size: 0.9rem;
-            }
-            
-            .photo-placeholder i {
-                font-size: 2.8rem;
-            }
-        }
-
-        /* 优化背景图片显示 - 修正移动设备的图片路径 */
-        @media (max-width: 768px) {
-            body {
-                background: url("../assets/images/主题.png") center/cover no-repeat fixed;
-            }
-        }
+        /* 移除原有媒体查询，避免冲突 */
     </style>
 </head>
 <body>
+    <div class="page-bg-container"></div>
+
     <div class="header">
         <h1>清补凉文化溯源</h1>
         <p>清补凉，源自岭南地区的传统糖水，历经千年演变，融合多元文化，成为海南最具代表性的夏日甜品。</p>
@@ -815,15 +691,12 @@
                     <p>请点击时间轴节点查看详情</p>
                 </div>
                 <div class="modal-map">
-                    <!-- 修改部分：用你的照片替换原来的地图占位符 -->
                     <div class="photo-container" id="photoContainer">
-                        <!-- 初始占位符，点击节点后会被替换为照片 -->
                         <div class="photo-placeholder">
                             <i class="fas fa-image"></i>
                             <span>点击时间轴节点查看历史照片</span>
                         </div>
                     </div>
-                    <!-- 删除照片说明文字 -->
                 </div>
             </div>
         </div>
@@ -835,12 +708,8 @@
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">
-                菜单
-            </a>
-            <a href="page2.html" class="fab-item">
-                下页
-            </a>
+            <a href="page0.html" class="fab-item" id="menuBtn">菜单</a>
+            <a href="page2.html" class="fab-item">下页</a>
         </div>
     </div>
 
@@ -859,7 +728,6 @@
                         <div class="ingredient">莲子</div>
                     </div>
                 `,
-                // 删除地图描述
             },
             "唐宋时期": {
                 title: "中原文化传入",
@@ -873,7 +741,6 @@
                         <div class="ingredient">银耳</div>
                     </div>
                 `,
-                // 删除地图描述
             },
             "明清时期": {
                 title: "岭南特色形成",
@@ -887,7 +754,6 @@
                         <div class="ingredient">红豆</div>
                     </div>
                 `,
-                // 删除地图描述
             },
             "民国时期": {
                 title: "海南本土化",
@@ -901,7 +767,6 @@
                         <div class="ingredient">西瓜</div>
                     </div>
                 `,
-                // 删除地图描述
             },
             "现代": {
                 title: "文化传承与创新",
@@ -915,7 +780,6 @@
                         <div class="ingredient">椰果</div>
                     </div>
                 `,
-                // 删除地图描述
             }
         };
 
@@ -930,17 +794,15 @@
         const photoContainer = document.getElementById('photoContainer');
         let activeNode = document.querySelector('.timeline-node:first-child');
 
-        // 修改部分：不同时期的照片路径配置
-        // 请将以下路径替换为你自己的照片路径
+        // 照片路径
         const photoPaths = {
-            "秦汉时期": '../assets/images/图1.png',        // 秦汉时期照片
-            "唐宋时期": '../assets/images/图2.png',     // 唐宋时期照片
-            "明清时期": '../assets/images/图3.png',     // 明清时期照片
-            "民国时期": '../assets/images/图4.png',      // 民国时期照片
-            "现代": '../assets/images/图5.png'             // 现代照片
+            "秦汉时期": '../assets/images/图1.png',
+            "唐宋时期": '../assets/images/图2.png',
+            "明清时期": '../assets/images/图3.png',
+            "民国时期": '../assets/images/图4.png',
+            "现代": '../assets/images/图5.png'
         };
 
-        // 照片描述（可选）
         const photoDescriptions = {
             "秦汉时期": "秦汉时期的清补凉食材展示",
             "唐宋时期": "唐宋时期的清补凉制作工艺",
@@ -949,14 +811,12 @@
             "现代": "现代清补凉的多样化创新"
         };
 
-        // 创建照片元素函数
         function createPhotoElement(photoPath, altText) {
             const img = document.createElement('img');
             img.src = photoPath;
-            img.alt = altText;
+            alt = altText;
             img.className = 'history-photo';
             img.onerror = function() {
-                // 如果照片加载失败，显示占位符
                 this.parentElement.innerHTML = `
                     <div class="photo-placeholder">
                         <i class="fas fa-image"></i>
@@ -967,19 +827,18 @@
             return img;
         }
 
-        // 浮动操作按钮功能
+        // 浮动按钮
         fabMain.addEventListener('click', function() {
             fabMenu.classList.toggle('open');
         });
 
-        // 点击页面其他地方关闭FAB菜单
         document.addEventListener('click', function(e) {
             if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                 fabMenu.classList.remove('open');
             }
         });
 
-        // 使用事件委托处理时间轴节点点击
+        // 时间轴点击
         timeline.addEventListener('click', (e) => {
             const node = e.target.closest('.timeline-node');
             if (!node) return;
@@ -988,37 +847,27 @@
             const data = historyData[year];
             
             if (data) {
-                // 更新模态框内容
                 modalTitle.textContent = `${year} - ${data.title}`;
                 modalText.innerHTML = data.content;
                 
-                // 更新照片 - 根据时期切换不同照片
                 if (photoPaths[year]) {
-                    // 清空照片容器
                     photoContainer.innerHTML = '';
-                    
-                    // 创建新的照片元素
                     const photoAlt = photoDescriptions[year] || `${year}清补凉历史照片`;
                     const photoElement = createPhotoElement(photoPaths[year], photoAlt);
-                    
-                    // 添加照片到容器
                     photoContainer.appendChild(photoElement);
                 } else {
-                    // 如果没有对应照片，显示占位符
                     photoContainer.innerHTML = `
                         <div class="photo-placeholder">
                             <i class="fas fa-image"></i>
-                            <span>暂无${year}的照片<br>请添加照片到对应路径</span>
+                            <span>暂无${year}的照片</span>
                         </div>
                     `;
                 }
                 
-                // 更新活动节点样式
                 if (activeNode) activeNode.classList.remove('active');
                 node.classList.add('active');
                 activeNode = node;
                 
-                // 显示模态框
                 modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
@@ -1033,21 +882,14 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 初始激活第一个节点并设置初始照片
+        // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             activeNode.classList.add('active');
-            
-            // 设置初始照片（可选）
             const initialYear = activeNode.dataset.year;
             if (photoPaths[initialYear]) {
-                // 清空照片容器
                 photoContainer.innerHTML = '';
-                
-                // 创建初始照片
                 const photoAlt = photoDescriptions[initialYear] || `${initialYear}清补凉历史照片`;
                 const photoElement = createPhotoElement(photoPaths[initialYear], photoAlt);
-                
-                // 添加照片到容器
                 photoContainer.appendChild(photoElement);
             }
         });

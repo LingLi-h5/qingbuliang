@@ -1,9 +1,628 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>轻松分享，传递美味与文化</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式 - 保持与前序页面完全一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 背景图样式 - 延续统一视觉 */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* ===== 背景图片放置位置 ===== */
+            /* 请将下面的url替换为您实际的图片路径 */
+            background-image: url('../assets/images/666.png');
+            /* 如果希望使用临时占位图，可以换成下方这个链接（一张暖色美食背景） */
+            /* background-image: url('https://images.unsplash.com/photo-1505252585461-04db1eb84625?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80'); */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.85;  /* 调整不透明度让文字更清晰，可按需修改 */
+        }
+
+        /* 标题区域 - 适配当前页面内容 */
+        .title {
+            position: relative;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            z-index: 10;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            padding: 0 10px;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .title p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        /* 可分享内容卡片容器 */
+        .share-cards {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        /* 分享内容卡片样式 */
+        .share-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 22px 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 20px solid #D2691E;
+            border-left: 20px solid transparent;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .share-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-card.active {
+            border: 2px solid #8B4513;
+        }
+
+        .share-card.active::after {
+            opacity: 1;
+        }
+
+        .share-card h3 {
+            font-size: 1.1rem;
+            color: #8B4513;
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-card h3 i {
+            font-size: 1rem;
+        }
+
+        .share-card p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+            padding-right: 10px;
+        }
+
+        /* 分享渠道区域 */
+        .share-channels {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            margin-bottom: 30px;
+        }
+
+        .share-channels h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .channel-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .channel-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .channel-item i {
+            font-size: 24px;
+            color: #8B4513;
+        }
+
+        .channel-item span {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        /* 操作指引区域 */
+        .operation-guide {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 60px;
+        }
+
+        .operation-guide h3 {
+            font-size: 1.1rem;
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .guide-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #8B4513;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 主分享按钮 */
+        .main-share-btn {
+            position: relative;
+            z-index: 10;
+            width: 85%;
+            max-width: 350px;
+            height: 50px;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .main-share-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.5);
+        }
+
+        .main-share-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .main-share-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* 浮动操作按钮 - 保持一致 */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .fab-main {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            font-size: 26px;
+            position: relative;
+            z-index: 101;
+        }
+
+        .fab-main.active {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            opacity: 0;
+            transform: translateY(25px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .fab-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .fab-item {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            color: #8B4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .fab-item:hover {
+            transform: scale(1.15);
+            background: #f5e3d4;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .fab-container { bottom: 25px; right: 25px; }
+            .fab-main { width: 58px; height: 58px; font-size: 24px; }
+            .fab-item { width: 60px; height: 60px; font-size: 14px; }
+            .title h1 { font-size: 1.3rem; }
+            .title p { font-size: 0.95rem; }
+            .share-card { padding: 20px 16px; }
+            .share-card h3 { font-size: 1rem; }
+            .share-card p { font-size: 0.85rem; }
+            .channels-grid { gap: 12px; }
+            .channel-item { width: 55px; height: 55px; }
+            .channel-item i { font-size: 22px; }
+            .operation-guide { padding: 18px; }
+            .guide-step { gap: 8px; }
+            .step-number { width: 22px; height: 22px; font-size: 0.75rem; }
+            .step-text { font-size: 0.85rem; }
+        }
+
+        @media (max-width: 480px) {
+            .fab-container { bottom: 20px; right: 20px; }
+            .fab-main { width: 52px; height: 52px; font-size: 22px; }
+            .fab-item { width: 55px; height: 55px; font-size: 13px; }
+            .title h1 { font-size: 1.2rem; }
+            .title p { font-size: 0.9rem; }
+            .share-cards { gap: 15px; }
+            .share-card { padding: 18px 14px; }
+            .share-card h3 { font-size: 0.95rem; }
+            .share-card p { font-size: 0.8rem; }
+            .channels-grid { gap: 8px; }
+            .channel-item { width: 50px; height: 50px; }
+            .channel-item i { font-size: 20px; }
+            .channel-item span { font-size: 0.75rem; bottom: -22px; }
+            .operation-guide { padding: 16px; margin-bottom: 50px; }
+            .guide-step { gap: 6px; }
+            .step-number { width: 20px; height: 20px; font-size: 0.7rem; }
+            .step-text { font-size: 0.8rem; }
+            .main-share-btn { height: 46px; font-size: 0.9rem; }
+        }
+
+        @media (min-width: 768px) and (min-height: 800px) {
+            .title h1 { font-size: 1.6rem; }
+            .title p { font-size: 1.1rem; }
+            .share-cards { gap: 22px; }
+            .share-card { padding: 24px 20px; }
+            .share-card h3 { font-size: 1.2rem; }
+            .share-card p { font-size: 1rem; }
+            .channels-grid { gap: 20px; }
+            .channel-item { width: 65px; height: 65px; }
+            .channel-item i { font-size: 26px; }
+            .operation-guide { padding: 22px; }
+            .guide-step { gap: 12px; }
+            .step-number { width: 26px; height: 26px; font-size: 0.9rem; }
+            .step-text { font-size: 1rem; }
+            .main-share-btn { height: 54px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="title">
+            <h1>轻松分享，传递美味与文化</h1>
+            <p>选择您想分享的内容，一键发送至社交平台，邀请好友一起探索清补凉的世界。</p>
+        </div>
+
+        <!-- 可分享内容卡片 -->
+        <div class="share-cards">
+            <!-- 清补凉历史长卷 -->
+            <div class="share-card" id="card1">
+                <h3><i class="fas fa-scroll"></i>清补凉历史长卷</h3>
+                <p>“从秦汉药食到现代甜品，一碗清补凉穿越千年时光。点击探索完整时间轴 →”</p>
+            </div>
+
+            <!-- 我的清补凉制作成果 -->
+            <div class="share-card" id="card2">
+                <h3><i class="fas fa-bowl-food"></i>我的清补凉制作成果</h3>
+                <p>“亲手制作了一碗地道海南清补凉！你也来试试这个沉浸式制作教程吧 →”</p>
+            </div>
+
+            <!-- 食材功效闯关成绩单 -->
+            <div class="share-card" id="card3">
+                <h3><i class="fas fa-trophy"></i>食材功效闯关成绩单</h3>
+                <p>“在清补凉功效匹配游戏中获得XX分！你能挑战更高分吗？快来试试 →”</p>
+            </div>
+        </div>
+
+        <!-- 分享渠道区域 -->
+        <div class="share-channels">
+            <h3>选择分享平台</h3>
+            <div class="channels-grid">
+                <div class="channel-item" id="wechat">
+                    <i class="fab fa-weixin"></i>
+                    <span>微信</span>
+                </div>
+                <div class="channel-item" id="weibo">
+                    <i class="fab fa-weibo"></i>
+                    <span>微博</span>
+                </div>
+                <div class="channel-item" id="qq">
+                    <i class="fab fa-qq"></i>
+                    <span>QQ</span>
+                </div>
+                <div class="channel-item" id="xiaohongshu">
+                    <i class="fas fa-book-open"></i>
+                    <span>小红书</span>
+                </div>
+                <div class="channel-item" id="save">
+                    <i class="fas fa-download"></i>
+                    <span>保存至相册</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作指引区域 -->
+        <div class="operation-guide">
+            <h3>分享操作指引</h3>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">点击卡片选择您想要分享的清补凉相关内容</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">选择分享平台或点击“保存至相册”生成分享海报</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">编辑您的推荐语，一键发送给好友</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主分享按钮 -->
+        <button class="main-share-btn" id="shareBtn" disabled>
+            <i class="fas fa-paper-plane"></i>
+            生成并分享
+        </button>
+    </div>
+
+    <!-- 浮动操作按钮 -->
+    <div class="fab-container">
+        <button class="fab-main" id="fabMain">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page12.html" class="fab-item">下页</a>
+        </div>
+    </div>
+
+    <script>
+        // 变量初始化
+        const shareCards = document.querySelectorAll('.share-card');
+        const shareBtn = document.getElementById('shareBtn');
+        let selectedCard = null;
+
+        // 分享卡片选择逻辑
+        shareCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // 移除所有卡片的选中状态
+                shareCards.forEach(c => c.classList.remove('active'));
+                // 添加当前卡片的选中状态
+                card.classList.add('active');
+                selectedCard = card.id;
+                // 启用分享按钮
+                shareBtn.disabled = false;
+            });
+        });
+
+        // 分享按钮点击事件
+        shareBtn.addEventListener('click', () => {
+            if (!selectedCard) return;
+            
+            // 获取选中的内容
+            let shareContent = '';
+            switch(selectedCard) {
+                case 'card1':
+                    shareContent = '从秦汉药食到现代甜品，一碗清补凉穿越千年时光。点击探索完整时间轴 →';
+                    break;
+                case 'card2':
+                    shareContent = '亲手制作了一碗地道海南清补凉！你也来试试这个沉浸式制作教程吧 →';
+                    break;
+                case 'card3':
+                    shareContent = '在清补凉功效匹配游戏中获得XX分！你能挑战更高分吗？快来试试 →';
+                    break;
+            }
+
+            // 模拟分享逻辑（实际项目中需替换为真实分享接口）
+            alert(`已选择分享：${shareContent}\n\n分享功能已触发，实际项目中会调用对应平台的分享接口`);
+            
+            // 可选：跳转到分享成功页面
+            // window.location.href = 'share-success.html';
+        });
+
+        // 分享渠道点击事件
+        const channelItems = document.querySelectorAll('.channel-item');
+        channelItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (!selectedCard) {
+                    alert('请先选择要分享的内容！');
+                    return;
+                }
+                
+                const channelName = item.querySelector('span').textContent;
+                alert(`即将分享至【${channelName}】，实际项目中会调用该平台的分享接口`);
+            });
+        });
+
+        // 浮动按钮交互逻辑
+        const fabMain = document.getElementById('fabMain');
+        const fabMenu = document.getElementById('fabMenu');
+        
+        fabMain.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabMenu.classList.toggle('open');
+            fabMain.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            fabMenu.classList.remove('open');
+            fabMain.classList.remove('active');
+        });
+
+        // 页面加载完成后调整布局
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const container = document.querySelector('.container');
+                container.scrollTop = 0;
+            }, 100);
+        });
+
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            fabMenu.classList.remove('open');
+            fabMain.classList.remove('active');
+        });
+    </script>
+</body>
 </html>
