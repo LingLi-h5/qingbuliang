@@ -61,21 +61,19 @@
             line-height: 1.2;
         }
         
-        /* 主内容区 - 移除半透明遮罩层，仅保留背景图片 */
         .main-content {
             display: flex;
             flex-direction: column;
             flex: 1;
             overflow: hidden;
             padding: 10px;
-            background: url('../assets/images/666.png');
+            background: url('../assets/images/11.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 12px;
         }
         
-        /* 步骤条容器 - 修改为纯白色 */
         .progress-container {
             margin: 10px 0;
             flex-shrink: 0;
@@ -160,7 +158,6 @@
             line-height: 1;
         }
         
-        /* 演示区域 - 关键修改：移除半透明遮罩、边框和内阴影 */
         .demo-area {
             flex: 1;
             background-color: transparent;
@@ -174,7 +171,6 @@
             border: none;
         }
         
-        /* 展示框 - 修改为纯白色 */
         .gif-container {
             flex: 1;
             display: flex;
@@ -190,7 +186,6 @@
             border: 1px solid #e0e0e0;
         }
         
-        /* GIF样式 - 保持不变 */
         .step-gif {
             width: 100%;
             height: 100%;
@@ -210,7 +205,6 @@
             to { opacity: 1; transform: scale(1); }
         }
         
-        /* 步骤说明 - 修改为纯白色 */
         .step-instruction {
             font-size: 0.9rem;
             color: #d2697a;
@@ -272,7 +266,6 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 弹窗样式 - 修改为纯白色 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -334,7 +327,6 @@
             box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
         }
 
-        /* 浮动操作按钮样式 - 修改为纯白色 */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -360,9 +352,8 @@
             z-index: 101;
         }
 
-        .fab-main:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        .fab-main:active {
+            transform: scale(0.95);
         }
 
         .fab-menu {
@@ -405,32 +396,11 @@
             border: 1px solid #e0e0e0;
         }
 
-        .fab-item:hover {
-            transform: scale(1.15);
+        .fab-item:active {
+            transform: scale(0.95);
             background: #f5e3d4;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
         }
 
-        .fab-label {
-            position: absolute;
-            right: 80px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            font-weight: 500;
-        }
-
-        .fab-item:hover .fab-label {
-            opacity: 1;
-        }
-
-        /* 响应式设计 - 保持不变（已移除页面指示器相关响应式） */
         @media (max-width: 768px) {
             .fab-container {
                 bottom: 25px;
@@ -530,27 +500,6 @@
                 margin-bottom: 8px;
             }
         }
-
-        @media (orientation: landscape) and (max-height: 500px) {
-            .steps {
-                grid-template-columns: repeat(8, 1fr);
-                gap: 3px;
-            }
-            
-            .step-icon {
-                width: 25px;
-                height: 25px;
-                font-size: 0.7rem;
-            }
-            
-            .step-title {
-                font-size: 0.55rem;
-            }
-            
-            .step-desc {
-                font-size: 0.45rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -611,23 +560,21 @@
             
             <div class="demo-area">
                 <div class="gif-container">
-                    <img src="../assets/images/步骤1.gif" class="step-gif" id="gif-1" alt="倒入椰奶">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-2" alt="加入红豆">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-3" alt="加入绿豆">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-4" alt="放入薏米">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-5" alt="添加西米">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-6" alt="放入水果">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-7" alt="加入配料">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-8" alt="最后点缀">
+                    <img src="https://media.giphy.com/media/3o7TKt41vcwZzJdQ9y/giphy.gif" class="step-gif" id="gif-1">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-2">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-3">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-4">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-5">
+                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-6">
+                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-7">
+                    <img src="https://media.giphy.com/media/26gJ1g1GQaJ9hQlKM/giphy.gif" class="step-gif" id="gif-8">
                 </div>
                 
-                <div class="step-instruction" id="step-instruction">
-                    点击"开始制作"按钮，准备椰奶基底
-                </div>
+                <div class="step-instruction" id="step-instruction"></div>
                 
                 <div class="button-group">
-                    <button class="action-btn" id="action-btn">开始制作</button>
-                    <button class="action-btn complete-btn" id="complete-btn" style="display: none;">完成</button>
+                    <button class="action-btn" id="action-btn"></button>
+                    <button class="action-btn complete-btn" id="complete-btn" style="display:none;">完成</button>
                 </div>
             </div>
         </div>
@@ -638,12 +585,8 @@
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">
-                菜单
-            </a>
-            <a href="page8.html" class="fab-item">
-                下页
-            </a>
+            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page8.html" class="fab-item">下页</a>
         </div>
     </div>
 
@@ -665,6 +608,8 @@
             const gifs = document.querySelectorAll('.step-gif');
             const modalOverlay = document.getElementById('modal-overlay');
             const modalCloseBtn = document.getElementById('modal-close-btn');
+            const fabMain = document.getElementById('fabMain');
+            const fabMenu = document.getElementById('fabMenu');
             
             const stepInstructions = [
                 "点击'开始制作'按钮，准备椰奶基底",
@@ -681,107 +626,75 @@
             let currentStep = 0;
             const totalSteps = 8;
             
-            updateProgress();
-            updateStepInstruction();
-            updateGIF();
-            updateActionButton();
+            updateAll();
             
             steps.forEach(step => {
                 step.addEventListener('click', function() {
-                    const stepNum = parseInt(this.getAttribute('data-step'));
-                    if (stepNum <= currentStep + 1) {
-                        currentStep = stepNum - 1;
-                        updateProgress();
-                        updateStepInstruction();
-                        updateGIF();
-                        updateActionButton();
+                    const num = parseInt(this.dataset.step);
+                    if(num <= currentStep + 1){
+                        currentStep = num - 1;
+                        updateAll();
                     }
                 });
             });
             
             actionBtn.addEventListener('click', function() {
-                if (currentStep < totalSteps) {
+                if(currentStep < totalSteps){
                     currentStep++;
-                    updateProgress();
-                    updateStepInstruction();
-                    updateGIF();
-                    updateActionButton();
-                } else {
+                }else{
                     currentStep = 0;
-                    updateProgress();
-                    updateStepInstruction();
-                    updateGIF();
-                    updateActionButton();
                 }
+                updateAll();
             });
             
-            completeBtn.addEventListener('click', function() {
-                modalOverlay.style.display = 'flex';
-            });
+            completeBtn.addEventListener('click', () => modalOverlay.style.display = 'flex');
+            modalCloseBtn.addEventListener('click', () => modalOverlay.style.display = 'none');
+            modalOverlay.addEventListener('click', e => e.target === modalOverlay && (modalOverlay.style.display = 'none'));
             
-            modalCloseBtn.addEventListener('click', function() {
-                modalOverlay.style.display = 'none';
-            });
-            
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    modalOverlay.style.display = 'none';
-                }
-            });
-
-            const fabMain = document.getElementById('fabMain');
-            const fabMenu = document.getElementById('fabMenu');
-            
-            fabMain.addEventListener('click', function() {
-                fabMenu.classList.toggle('open');
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
+            fabMain.addEventListener('click', () => fabMenu.classList.toggle('open'));
+            document.addEventListener('click', e => {
+                if(!fabMain.contains(e.target) && !fabMenu.contains(e.target)){
                     fabMenu.classList.remove('open');
                 }
             });
             
-            function updateProgress() {
-                const progressPercentage = (currentStep / totalSteps) * 100;
-                progressBar.style.width = `${progressPercentage}%`;
-                
-                steps.forEach((step, index) => {
-                    const stepNum = index + 1;
-                    if (stepNum < currentStep + 1) {
-                        step.classList.add('completed');
-                        step.classList.remove('active');
-                    } else if (stepNum === currentStep + 1) {
-                        step.classList.add('active');
-                        step.classList.remove('completed');
-                    } else {
-                        step.classList.remove('active', 'completed');
-                    }
+            function updateAll(){
+                updateProgress();
+                updateStepInstruction();
+                updateGIF();
+                updateActionButton();
+            }
+            
+            function updateProgress(){
+                const per = (currentStep / totalSteps) * 100;
+                progressBar.style.width = per + '%';
+                steps.forEach((s,i) => {
+                    const n = i+1;
+                    s.classList.remove('active','completed');
+                    if(n < currentStep+1) s.classList.add('completed');
+                    else if(n === currentStep+1) s.classList.add('active');
                 });
             }
             
-            function updateStepInstruction() {
+            function updateStepInstruction(){
                 stepInstruction.textContent = stepInstructions[currentStep];
             }
             
-            function updateGIF() {
-                gifs.forEach(gif => {
-                    gif.classList.remove('active');
-                });
-                
-                if (currentStep > 0 && currentStep <= totalSteps) {
+            function updateGIF(){
+                gifs.forEach(g => g.classList.remove('active'));
+                if(currentStep > 0 && currentStep <= totalSteps){
                     document.getElementById(`gif-${currentStep}`).classList.add('active');
                 }
             }
             
-            function updateActionButton() {
-                if (currentStep === 0) {
+            function updateActionButton(){
+                if(currentStep === 0){
                     actionBtn.textContent = '开始制作';
                     completeBtn.style.display = 'none';
-                } else if (currentStep < totalSteps) {
+                }else if(currentStep < totalSteps){
                     actionBtn.textContent = '下一步';
                     completeBtn.style.display = 'none';
-                } else {
+                }else{
                     actionBtn.textContent = '重新开始';
                     completeBtn.style.display = 'block';
                 }

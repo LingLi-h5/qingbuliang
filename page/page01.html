@@ -2,23 +2,26 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>历史改革信息可视化</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/page01.css">
+    <!-- 手机端核心：禁止用户缩放，保证显示效果 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>清补凉主题页</title>
     <style>
-        /* 全屏背景图样式 */
-        body {
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 全屏容器，适配手机 */
+        body {
+            width: 100vw;
             height: 100vh;
             overflow: hidden;
-            position: relative;
             font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* 消除手机端点击高亮 */
         }
-        
-        /* 背景图容器 */
+
+        /* 全屏背景 */
         .background-container {
             position: fixed;
             top: 0;
@@ -27,21 +30,15 @@
             height: 100%;
             z-index: -1;
         }
-        
-        /* 全屏背景图片 */
+
         .background-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 关键：完全覆盖容器，可能裁剪图片边缘 */
+            object-fit: cover;
             display: block;
         }
-        
-        /* 移除半透明遮罩层 */
-        .background-overlay {
-            display: none;
-        }
-        
-        /* 主容器 */
+
+        /* 内容居中 */
         .container {
             position: relative;
             width: 100%;
@@ -51,209 +48,88 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
+            padding: 0 20px; /* 手机边距，防止文字贴边 */
         }
-        
-        /* 标题样式 */
+
+        /* 标题 - 手机端专用大小 */
         .title {
             color: #fff;
-            font-size: 4rem;
+            font-size: 12vw; /* 手机端用相对单位，自适应 */
             text-align: center;
-            margin-bottom: 40px;
-            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-            animation: fadeInDown 1s ease-out;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
             font-weight: bold;
-            letter-spacing: 3px;
+            animation: fadeInDown 1s ease-out;
         }
-        
-        /* 进入提示 - 改为实色背景，移除透明效果 */
+
+        /* 进入按钮 - 手机端手感最佳 */
         .enter-prompt {
             color: #fff;
-            font-size: 2.5rem;
-            padding: 20px 50px;
-            background-color: #e67e22; /* 实色代替半透明 */
+            font-size: 7vw;
+            padding: 16px 48px;
+            background: #e67e22;
             border-radius: 50px;
+            border: 2px solid #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             animation: fadeInUp 1s ease-out 0.5s both;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            border: 2px solid #ffffff; /* 实色边框代替透明边框 */
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* 鼠标悬停效果 */
-        .enter-prompt:hover {
-            transform: translateY(-5px) scale(1.05);
-            background-color: #d35400; /* 实色代替半透明 */
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* 点击效果 */
-        .enter-prompt:active {
-            transform: translateY(0) scale(0.98);
-        }
-        
-        /* 移除微光效果 */
-        .enter-prompt::after {
-            display: none;
-        }
-        
-        /* 动画效果 */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .title {
-                font-size: 3rem;
-                margin-bottom: 30px;
-            }
-            
-            .enter-prompt {
-                font-size: 2rem;
-                padding: 18px 40px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .title {
-                font-size: 2.5rem;
-                margin-bottom: 25px;
-            }
-            
-            .enter-prompt {
-                font-size: 1.8rem;
-                padding: 15px 35px;
-            }
-        }
-        
-        /* 防止长按菜单 */
-        .enter-prompt {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
-            -webkit-touch-callout: none;
+            -webkit-user-select: none;
         }
-        
-        /* 触摸设备优化 */
-        @media (hover: none) and (pointer: coarse) {
-            .enter-prompt:hover {
-                transform: none;
-            }
-            
-            .enter-prompt:active {
-                transform: scale(0.95);
-                background-color: #d35400; /* 实色代替半透明 */
-            }
+
+        /* 手机触摸反馈（比hover更重要） */
+        .enter-prompt:active {
+            transform: scale(0.94);
+            background: #d35400;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        /* 动画 */
+        @keyframes fadeInDown {
+            from { opacity:0; transform: translateY(-30px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity:0; transform: translateY(30px); }
+            to { opacity:1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <!-- 全屏背景图容器 -->
-    <div class="background-container">
-        <!-- 请将下面的图片路径替换为您自己的背景图片 -->
-        <img src="../assets/images/111.png" alt="清补凉背景图" class="background-image">
-        <div class="background-overlay"></div>
-    </div>
-    
-    <div class="container">
-        <h1 class="title">清补凉主题页</h1>
-        <div class="enter-prompt" id="enterPrompt">点击进入</div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const enterPrompt = document.getElementById('enterPrompt');
-            const bgImage = document.querySelector('.background-image');
-            
-            // 预加载背景图片
-            const bgImg = new Image();
-            bgImg.onload = function() {
-                console.log('背景图片加载成功');
-                // 可以在这里添加图片加载成功的回调
-            };
-            bgImg.onerror = function() {
-                console.error('背景图片加载失败，请检查路径:', bgImage.src);
-                // 加载失败时使用备用背景
-                document.body.style.backgroundColor = '#fdf6e3';
-            };
-            bgImg.src = bgImage.src;
-            
-            // 鼠标悬停效果
-            enterPrompt.addEventListener('mouseover', function() {
-                this.style.cursor = 'pointer';
-            });
-            
-            // 点击跳转
-            enterPrompt.addEventListener('click', function() {
-                // 添加点击动画
-                this.style.transform = 'scale(0.95)';
-                this.style.opacity = '0.7';
-                
-                // 添加页面淡出效果
-                document.querySelector('.container').style.opacity = '0';
-                document.querySelector('.container').style.transition = 'opacity 0.3s ease';
-                
-                // 页面跳转
-                setTimeout(function() {
-                    window.location.href = 'page0.html';
-                }, 300);
-            });
-            
-            // 触摸设备点击效果
-            enterPrompt.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.95)';
-                this.style.opacity = '0.7';
-            });
-            
-            enterPrompt.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
-                this.style.opacity = '1';
-            });
-            
-            // 键盘支持
-            enterPrompt.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-            
-            // 使元素可聚焦（为了键盘可访问性）
-            enterPrompt.setAttribute('tabindex', '0');
-            enterPrompt.setAttribute('role', 'button');
-            
-            // 防止双击缩放
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', function(event) {
-                const now = Date.now();
-                if (now - lastTouchEnd <= 300) {
-                    event.preventDefault();
-                }
-                lastTouchEnd = now;
-            }, false);
-        });
-    </script>
+<div class="background-container">
+    <img src="../assets/images/222.png" alt="背景" class="background-image">
+</div>
+
+<div class="container">
+    <h1 class="title">清补凉主题页</h1>
+    <div class="enter-prompt" id="enterPrompt">点击进入</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const enter = document.getElementById('enterPrompt');
+
+    // 点击跳转
+    enter.addEventListener('click', () => {
+        document.querySelector('.container').style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = 'page0.html';
+        }, 250);
+    });
+
+    // 手机端：禁止双击放大
+    let lastTouch = 0;
+    document.addEventListener('touchend', e => {
+        const now = Date.now();
+        if (now - lastTouch <= 200) e.preventDefault();
+        lastTouch = now;
+    }, false);
+});
+</script>
+
 </body>
 </html>

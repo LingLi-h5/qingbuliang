@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="screen-orientation" content="portrait">
     <title>清补凉文化探索</title>
     <style>
-        /* 定义CSS变量 - 统一白色为#ffffff与index保持一致 */
         :root {
             --primary-brown: #8B4513;
             --secondary-brown: #654321;
@@ -16,14 +17,13 @@
             --accent-3: #CD853F;
             --accent-4: #DEB887;
             --light-beige: #ffecd2;
-            --white: #ffffff; /* 与index保持一致的纯白色 */
+            --white: #ffffff;
             --shadow-color: rgba(139, 69, 19, 0.15);
             --shadow-active: rgba(139, 69, 19, 0.2);
-            --overlay-bg: #000000;
+            --overlay-bg: rgba(0,0,0,0.7);
             --card-gap: 20px;
         }
 
-        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -35,15 +35,15 @@
         }
 
         body {
-            background-image: url('../assets/images/111.png');
+            background-image: url('../assets/images/100.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: var(--light-beige);
             
-            position: relative;
-            overflow: hidden;
+            position: fixed;
+            width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -51,9 +51,9 @@
             justify-content: center;
             padding: 20px;
             touch-action: manipulation;
+            overflow: hidden;
         }
 
-        /* 容器样式 */
         .container {
             width: 100%;
             max-width: 420px;
@@ -62,7 +62,6 @@
             z-index: 1;
         }
 
-        /* 头部样式 */
         .header {
             margin-bottom: 40px;
             animation: fadeInDown 0.8s ease;
@@ -83,7 +82,6 @@
             opacity: 0.9;
         }
 
-        /* 菜单卡片 - 与index白色框保持一致 */
         .menu-cards {
             display: flex;
             flex-direction: column;
@@ -92,25 +90,23 @@
         }
 
         .card {
-            background: var(--white); /* 与index相同的纯白色背景 */
+            background: var(--white);
             border-radius: 24px;
             padding: 0;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             box-shadow: 0 12px 40px var(--shadow-color);
-            border: 1px solid #e0e0e0; /* 与index相同的边框样式 */
+            border: 1px solid #e0e0e0;
             overflow: hidden;
             position: relative;
             cursor: pointer;
-            
-            /* 统一动画设置 */
             animation: fadeInUp 0.8s ease;
             animation-fill-mode: both;
         }
 
         .card:active {
-            transform: scale(0.98);
-            box-shadow: 0 6px 25px var(--shadow-active);
+            transform: scale(0.96);
+            box-shadow: 0 6px 20px var(--shadow-active);
         }
 
         .card-content {
@@ -132,11 +128,9 @@
             flex-shrink: 0;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
-            font-size: 0; /* 隐藏Emoji */
             padding: 8px;
         }
 
-        /* 图标图片样式 */
         .icon-img {
             width: 100%;
             height: 100%;
@@ -144,12 +138,10 @@
             transition: all 0.3s ease;
         }
 
-        /* 卡片激活状态时的图标效果 */
         .card:active .icon-img {
             transform: scale(0.95);
         }
 
-        /* 使用类名代替nth-child选择器 */
         .card-icon.history {
             background: linear-gradient(135deg, var(--primary-brown), var(--accent-1));
             color: white;
@@ -189,12 +181,6 @@
             opacity: 0.8;
         }
 
-        /* 移除卡片hover渐变遮罩 */
-        .card-hover {
-            display: none;
-        }
-
-        /* 页脚 */
         .footer {
             color: var(--primary-brown);
             font-size: 0.85rem;
@@ -203,92 +189,6 @@
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        /* 分享弹窗 - 保持与index白色元素边框一致 */
-        .share-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay-bg);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .share-modal {
-            background: #ffecd2;
-            border-radius: 30px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: modalIn 0.4s ease;
-            border: 1px solid #e0e0e0; /* 与index相同的边框样式 */
-        }
-
-        .share-header {
-            margin-bottom: 20px;
-        }
-
-        .share-header h3 {
-            color: var(--primary-brown);
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-
-        .share-header p {
-            color: var(--secondary-brown);
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .qr-container {
-            background: white; /* 与index相同的纯白色背景 */
-            padding: 20px;
-            border-radius: 20px;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.1);
-            border: 1px solid #e0e0e0; /* 与index相同的边框样式 */
-        }
-
-        .qr-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 15px;
-            object-fit: cover;
-            border: 1px solid #e0e0e0;
-        }
-
-        .share-instruction {
-            color: var(--secondary-brown);
-            font-size: 0.9rem;
-            margin: 15px 0;
-            line-height: 1.5;
-        }
-
-        .close-share {
-            background: var(--primary-brown);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .close-share:active {
-            transform: scale(0.95);
-            background: var(--secondary-brown);
-        }
-
-        /* 动画定义 */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -311,23 +211,11 @@
             }
         }
 
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        /* 子页面菜单按钮 - 与index白色框保持一致 */
         .menu-button {
             position: fixed;
             top: 25px;
             left: 25px;
-            background: var(--white); /* 与index相同的纯白色背景 */
+            background: var(--white);
             color: var(--primary-brown);
             width: 55px;
             height: 55px;
@@ -340,7 +228,7 @@
             box-shadow: 0 8px 25px var(--shadow-color);
             z-index: 1000;
             transition: all 0.3s ease;
-            border: 1px solid #e0e0e0; /* 与index相同的边框样式 */
+            border: 1px solid #e0e0e0;
         }
 
         .menu-button:active {
@@ -348,122 +236,26 @@
             background: #f5f5f5;
         }
 
-        /* 响应式设计 */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: clamp(1.8rem, 5vw, 2.4rem);
             }
-            
             .header p {
                 font-size: clamp(0.9rem, 3vw, 1.1rem);
             }
-            
             .card-content {
                 padding: clamp(15px, 4vw, 25px);
             }
-            
             .card-icon {
                 width: clamp(50px, 10vw, 70px);
                 height: clamp(50px, 10vw, 70px);
-                padding: clamp(6px, 2vw, 8px);
-            }
-            
-            .icon-img {
-                width: 100%;
-                height: 100%;
-            }
-            
-            .card-text h3 {
-                font-size: clamp(1.1rem, 3.5vw, 1.3rem);
-            }
-            
-            .card-text p {
-                font-size: clamp(0.8rem, 2.5vw, 0.9rem);
             }
         }
 
-        /* 横屏优化 */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .container {
-                max-width: 90%;
-            }
-            
-            .header {
-                margin-bottom: 20px;
-            }
-            
-            .menu-cards {
-                flex-direction: row;
-                gap: 15px;
-            }
-            
-            .card {
-                flex: 1;
-            }
-            
-            .card-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .card-text {
-                text-align: center;
-            }
-            
-            .icon-img {
-                width: 100%;
-                height: 100%;
-            }
-            
-            .share-modal {
-                max-width: 300px;
-            }
-            
-            .qr-image {
-                width: 150px;
-                height: 150px;
-            }
-        }
-
-        /* 大屏幕优化 */
-        @media (min-width: 769px) and (min-height: 800px) {
-            .header h1 {
-                font-size: 3rem;
-            }
-            
-            .header p {
-                font-size: 1.3rem;
-            }
-            
-            .menu-cards {
-                gap: 25px;
-            }
-            
-            .share-modal {
-                max-width: 400px;
-            }
-            
-            .qr-image {
-                width: 250px;
-                height: 250px;
-            }
-        }
-
-        /* 超小屏幕特殊处理 */
         @media (max-width: 320px) {
             .card-content {
                 padding: 20px;
                 gap: 15px;
-            }
-            
-            .icon-img {
-                width: 100%;
-                height: 100%;
-            }
-            
-            .card-icon {
-                padding: 6px;
             }
         }
     </style>
@@ -476,8 +268,7 @@
         </div>
         
         <div class="menu-cards">
-            <a href="page1.html" class="card" data-index="0">
-                <div class="card-hover"></div>
+            <a href="page1.html" class="card">
                 <div class="card-content">
                     <div class="card-icon history">
                         <img src="../assets/images/书本.png" alt="文化溯源" class="icon-img">
@@ -489,8 +280,7 @@
                 </div>
             </a>
             
-            <a href="page4.html" class="card" data-index="1">
-                <div class="card-hover"></div>
+            <a href="page4.html" class="card">
                 <div class="card-content">
                     <div class="card-icon ingredients">
                         <img src="../assets/images/清补凉.png" alt="食材百科" class="icon-img">
@@ -502,8 +292,7 @@
                 </div>
             </a>
             
-            <a href="page7.html" class="card" data-index="2">
-                <div class="card-hover"></div>
+            <a href="page7.html" class="card">
                 <div class="card-content">
                     <div class="card-icon experience">
                         <img src="../assets/images/椰子树.png" alt="沉浸体验" class="icon-img">
@@ -515,9 +304,7 @@
                 </div>
             </a>
             
-            <!-- 新增分享卡片 -->
-            <a href="page10.html" class="card" data-index="3">
-                <div class="card-hover"></div>
+            <a href="page10.html" class="card">
                 <div class="card-content">
                     <div class="card-icon share">
                         <img src="../assets/images/贝壳.png" alt="分享探索" class="icon-img">
@@ -528,111 +315,35 @@
                     </div>
                 </div>
             </a>
+        </div>
         
         <div class="footer">
             <p>自由探索 · 随时返回</p>
         </div>
     </div>
 
-    <!-- 分享弹窗 -->
-    <div class="share-overlay" id="shareOverlay">
-        <div class="share-modal">
-            <div class="share-header">
-                <h3>分享清补凉文化</h3>
-                <p>扫码分享给朋友</p>
-            </div>
-            
-            <div class="qr-container">
-                <img src="../assets/images/贝壳.png" alt="分享二维码" class="qr-image" id="qrImage">
-            </div>
-            
-            <p class="share-instruction">
-                使用手机扫描二维码，即可分享清补凉文化探索之旅
-            </p>
-            
-            <button class="close-share" id="closeShare">
-                关闭分享
-            </button>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 设置卡片动画延迟
+            // 卡片动画
             const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${(index + 1) * 0.1}s`;
+            cards.forEach((card, i) => {
+                card.style.animationDelay = `${i * 0.1}s`;
             });
 
-            // 防止页面滚动
-            document.body.addEventListener('touchmove', function(e) {
-                e.preventDefault();
-            }, { passive: false });
-
-            // 分享功能
-            const shareCard = document.getElementById('shareCard');
-            const shareOverlay = document.getElementById('shareOverlay');
-            const closeShare = document.getElementById('closeShare');
-            const qrImage = document.getElementById('qrImage');
-
-            // 打开分享弹窗
-            shareCard.addEventListener('click', function() {
-                shareOverlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+            // 图标失败兜底
+            document.querySelectorAll('.icon-img').forEach(img => {
+                img.onerror = function() {
+                    const p = this.parentElement;
+                    p.innerHTML = '<span style="color:white; font-size:22px; font-weight:bold">图</span>';
+                };
             });
 
-            // 关闭分享弹窗
-            function closeShareModal() {
-                shareOverlay.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-
-            closeShare.addEventListener('click', closeShareModal);
-            shareOverlay.addEventListener('click', function(e) {
-                if (e.target === shareOverlay) {
-                    closeShareModal();
+            // 锁定竖屏
+            try {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('portrait');
                 }
-            });
-
-            // 二维码图片加载失败处理
-            qrImage.addEventListener('error', function() {
-                this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f0f0f0"/><text x="100" y="100" font-family="Arial" font-size="14" fill="%23666" text-anchor="middle" dy=".3em">请上传二维码图片</text></svg>';
-                
-                const instruction = document.querySelector('.share-instruction');
-                instruction.innerHTML = '请在代码中替换二维码图片路径<br>修改 src="your-qr-code-image.jpg" 为您的图片路径';
-                instruction.style.color = '#ff6b6b';
-            });
-
-            // 图标图片加载失败处理
-            const iconImages = document.querySelectorAll('.icon-img');
-            iconImages.forEach(img => {
-                img.addEventListener('error', function() {
-                    // 如果图片加载失败，显示一个简单的替代图标
-                    const parent = this.parentElement;
-                    const altText = this.alt;
-                    
-                    // 创建一个文本替代
-                    const textIcon = document.createElement('span');
-                    textIcon.textContent = altText.charAt(0);
-                    textIcon.style.cssText = `
-                        color: white;
-                        font-size: 1.5rem;
-                        font-weight: bold;
-                    `;
-                    
-                    // 替换图片
-                    parent.innerHTML = '';
-                    parent.appendChild(textIcon);
-                    
-                    console.log(`图标加载失败: ${this.src}`);
-                });
-            });
-
-            // 简化的背景图预加载
-            const bgImg = new Image();
-            bgImg.onload = () => console.log('背景图加载完成');
-            bgImg.onerror = () => document.body.style.backgroundImage = 'none';
-            bgImg.src = '../assets/images/主题.png';
+            } catch (e) {}
         });
     </script>
 </body>

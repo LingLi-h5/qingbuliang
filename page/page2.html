@@ -8,7 +8,6 @@
     <title>清补凉在中国分布的可视化地图</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -19,42 +18,36 @@
             user-select: none;
         }
 
-        body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        html, body {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             touch-action: manipulation;
         }
-        
+
         .container {
             width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            height: 100%;
             position: relative;
             padding: 10px;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         #map {
             width: 100%;
             flex: 1;
-            min-height: 0;
             margin-top: 60px;
             margin-bottom: 20px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
-            /* 移除白色背景渐变遮罩 */
+            background: transparent !important;
         }
 
-        /* 地图背景 - 使用CSS背景图片（仅保留背景图，移除半透明遮罩） */
+        /* 手机端专用背景图 */
         #map::before {
             content: '';
             position: absolute;
@@ -62,60 +55,60 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('../assets/images/444.png');
+            background-image: url('../assets/images/44.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* 移除opacity半透明遮罩 */
             z-index: 0;
             pointer-events: none;
+
         }
 
-        /* ECharts容器样式 */
+        /* ECharts 手机端适配 */
         #map > div:first-child {
             position: relative;
-            z-index: 1;
+            z-index: 1 !important;
             width: 100% !important;
             height: 100% !important;
+            background: transparent !important;
         }
 
         .title {
             position: absolute;
-            top: 10px;
+            top: 12px;
             left: 0;
             width: 100%;
             text-align: center;
             color: #333;
-            z-index: 10;
+            z-index: 999;
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
-            padding: 0 10px;
         }
 
         .title h1 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
+            font-size: 1.25rem;
+            margin-bottom: 4px;
             font-weight: 600;
         }
 
         .title p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
         }
 
-        /* 自定义图例样式 */
+        /* 手机端图例 */
         .custom-legend {
             position: absolute;
-            bottom: 15%;
+            bottom: 12%;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            z-index: 10;
+            z-index: 99;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px 20px;
+            gap: 10px 16px;
             max-width: 90%;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -124,134 +117,94 @@
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             white-space: nowrap;
         }
 
         .legend-color {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 3px;
             flex-shrink: 0;
         }
 
         .legend-text {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #333;
         }
 
-        /* 浮动操作按钮样式 - 精简版 */
+        /* 手机端浮动按钮 */
         .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
+            bottom: 25px;
+            right: 20px;
+            z-index: 9999;
         }
 
         .fab-main {
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             border: none;
-            font-size: 26px;
-            position: relative;
-            z-index: 101;
+            font-size: 22px;
         }
 
         .fab-main.active {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+            transform: rotate(45deg);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 75px;
+            bottom: 70px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 15px;
             opacity: 0;
-            transform: translateY(25px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
             pointer-events: none;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: all;
         }
 
         .fab-item {
-            width: 70px;
-            height: 70px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: white;
             color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
-            position: relative;
-            text-align: center;
-            padding: 5px;
+            text-decoration: none;
         }
 
-        .fab-item:hover {
-            transform: scale(1.15);
-            background: #f5e3d4;
-        }
-
-        /* 合并的响应式设计 */
-        @media (max-width: 768px) {
-            .fab-container { bottom: 25px; right: 25px; }
-            .fab-main { width: 58px; height: 58px; font-size: 24px; }
-            .fab-item { width: 60px; height: 60px; font-size: 14px; }
-            .title h1 { font-size: 1.2rem; }
-            .custom-legend { bottom: 12%; }
-        }
-
+        /* 手机端极致适配 */
         @media (max-width: 480px) {
-            .fab-container { bottom: 20px; right: 20px; }
-            .fab-main { width: 52px; height: 52px; font-size: 22px; }
-            .fab-item { width: 55px; height: 55px; font-size: 13px; }
-            .title h1 { font-size: 1.1rem; }
+            .title h1 { font-size: 1.15rem; }
             .title p { font-size: 0.8rem; }
-            .custom-legend { 
-                padding: 10px 12px; 
-                gap: 8px 12px; 
-                bottom: 10%;
-            }
-            .legend-text { font-size: 11px; }
-            .legend-color { width: 14px; height: 14px; }
-        }
-
-        @media (min-width: 768px) and (min-height: 800px) {
-            .title h1 { font-size: 1.5rem; }
-            .title p { font-size: 1rem; }
-            .custom-legend { padding: 15px 20px; gap: 15px 25px; }
-            .legend-text { font-size: 14px; }
-            .legend-color { width: 18px; height: 18px; }
-        }
-
-        /* 调试样式 - 如果背景不显示，启用此样式 */
-        .debug-bg {
-            background-color: #ff0000 !important;
-            opacity: 0.3 !important;
+            .custom-legend { padding: 8px 12px; gap: 8px 12px; bottom: 10%; }
+            .legend-text { font-size: 10px; }
+            .fab-main { width: 52px; height: 52px; }
+            .fab-item { width: 52px; height: 52px; font-size: 12px; }
         }
     </style>
 </head>
@@ -263,7 +216,6 @@
         </div>
         <div id="map"></div>
         
-        <!-- 自定义图例 -->
         <div class="custom-legend">
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #ff6b6b;"></div>
@@ -284,7 +236,6 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -295,12 +246,10 @@
         </div>
     </div>
 
-    <!-- 引入ECharts库 -->
     <script src="../js/echarts.min.js"></script>
     <script src="../js/china.js"></script>
 
     <script>
-        // 简化后的清补凉分布数据
         const qingbuliangData = [
             {name: '海南', value: 95, description: '清补凉的发源地，街头巷尾随处可见'},
             {name: '广东', value: 85, description: '深受欢迎的夏季甜品，各大糖水店均有售'},
@@ -338,36 +287,11 @@
             {name: '宁夏', value: 2, description: '几乎无分布'}
         ];
 
-        // 检查背景图片是否可用
-        function checkBackgroundImage() {
-            const mapElement = document.getElementById('map');
-            const computedStyle = window.getComputedStyle(mapElement, '::before');
-            
-            // 创建测试图片
-            const testImg = new Image();
-            testImg.onload = function() {
-                console.log('背景图片加载成功:', this.src);
-                // 图片加载成功，确保透明度正确
-                mapElement.classList.remove('debug-bg');
-            };
-            testImg.onerror = function() {
-                console.error('背景图片加载失败，使用备用背景');
-                // 使用CSS渐变作为备用背景
-                mapElement.style.background = 'linear-gradient(to bottom, #f8f4e8, #fffaf0)';
-                mapElement.classList.add('debug-bg');
-            };
-            
-            // 获取背景图片URL
-            const bgImageUrl = computedStyle.backgroundImage.slice(5, -2);
-            testImg.src = bgImageUrl;
-        }
-
-        // 初始化ECharts
+        // 手机端初始化ECharts
         const myChart = echarts.init(document.getElementById('map'));
 
-        // 配置项 - 调整为透明背景
         const option = {
-            backgroundColor: 'transparent', // 设置背景为透明
+            backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'item',
                 formatter: ({data, name}) => data ? 
@@ -377,117 +301,60 @@
                         <span style="color:#888;font-size:11px">${data.description}</span>
                     </div>` : 
                     `<b>${name}</b><br/>暂无数据`,
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backgroundColor: 'rgba(255,255,255,0.95)',
                 borderColor: '#8B4513',
-                textStyle: { color: '#333', fontSize: 12 },
-                extraCssText: 'box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px;',
+                textStyle: { color: '#333' },
+                extraCssText: 'border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,0.1)',
                 confine: true
             },
             visualMap: {
                 show: false,
                 pieces: [
-                    {min: 80, max: 100, label: '高分布区域', color: '#ff6b6b'},
-                    {min: 50, max: 79, label: '中分布区域', color: '#ffa726'},
-                    {min: 10, max: 49, label: '低分布区域', color: '#4ecdc4'},
-                    {min: 0, max: 9, label: '无分布区域', color: '#c7c7c7'}
+                    {min:80, max:100, color:'#ff6b6b'},
+                    {min:50, max:79, color:'#ffa726'},
+                    {min:10, max:49, color:'#4ecdc4'},
+                    {min:0, max:9, color:'#c7c7c7'}
                 ]
             },
             series: [{
                 type: 'map',
                 map: 'china',
                 roam: true,
-                scaleLimit: { min: 0.8, max: 8 },
+                scaleLimit: { min:0.9, max:5 },
                 emphasis: {
-                    label: { 
-                        show: true, 
-                        fontSize: 11, 
-                        fontWeight: 'bold',
-                        color: '#8B4513'
-                    },
-                    itemStyle: { 
-                        areaColor: 'rgba(255, 215, 0, 0.7)', // 半透明高亮
-                        borderColor: '#8B4513', 
-                        borderWidth: 1.5,
-                        shadowColor: 'rgba(139, 69, 19, 0.5)',
-                        shadowBlur: 10
-                    }
+                    label: { show:true, fontSize:11, color:'#8B4513' },
+                    itemStyle: { areaColor:'rgba(255,215,0,0.65)', borderColor:'#8B4513', borderWidth:1.5 }
                 },
                 itemStyle: { 
-                    borderColor: '#fff', 
-                    borderWidth: 0.5,
-                    areaColor: 'rgba(255, 255, 255, 0.2)', // 更透明，让背景更明显
-                    shadowColor: 'rgba(0, 0, 0, 0.05)',
-                    shadowBlur: 2
+                    borderColor:'#fff', 
+                    borderWidth:0.6,
+                    areaColor: 'rgba(255,255,255,0.15)'
                 },
-                label: {
-                    show: false,
-                    color: '#333',
-                    fontSize: 9
-                },
+                label: { show:false },
                 data: qingbuliangData
             }]
         };
 
-        // 设置ECharts选项
         myChart.setOption(option);
 
-        // 确保ECharts容器正确设置
-        setTimeout(() => {
-            const canvas = myChart.getDom().querySelector('canvas');
-            if (canvas) {
-                canvas.style.backgroundColor = 'transparent';
-            }
-        }, 100);
-
-        // 事件处理
+        // 手机端按钮交互
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
-        
-        // FAB菜单切换
+
         fabMain.addEventListener('click', (e) => {
             e.stopPropagation();
             fabMenu.classList.toggle('open');
             fabMain.classList.toggle('active');
         });
 
-        // 点击外部关闭菜单
         document.addEventListener('click', () => {
             fabMenu.classList.remove('open');
             fabMain.classList.remove('active');
         });
 
-        // 响应式调整
-        const resizeChart = () => {
-            myChart.resize();
-            // 重新检查背景
-            checkBackgroundImage();
-        };
-        
-        window.addEventListener('resize', resizeChart);
-        document.addEventListener('visibilitychange', () => !document.hidden && setTimeout(resizeChart, 100));
-        
-        // 初始化调整
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                resizeChart();
-                checkBackgroundImage();
-            }, 300);
-        });
-
-        // 调试模式：如果按D键，显示调试信息
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'd' || e.key === 'D') {
-                console.log('=== 调试信息 ===');
-                console.log('地图元素:', document.getElementById('map'));
-                console.log('计算样式:', window.getComputedStyle(document.getElementById('map'), '::before'));
-                console.log('ECharts实例:', myChart);
-                console.log('背景图片URL:', window.getComputedStyle(document.getElementById('map'), '::before').backgroundImage);
-                
-                // 临时提高背景透明度以便查看
-                const mapEl = document.getElementById('map');
-                mapEl.style.setProperty('--bg-opacity', '0.5', 'important');
-            }
-        });
+        // 手机端自适应
+        window.addEventListener('resize', () => myChart.resize());
+        window.addEventListener('load', () => setTimeout(() => myChart.resize(), 200));
     </script>
 </body>
 </html>

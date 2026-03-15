@@ -16,56 +16,56 @@
         }
 
         body {
-            background: linear-gradient(135deg, rgba(255, 236, 210, 0.7) 0%, rgba(252, 182, 159, 0.7) 100%);
-            background-image: url('../assets/images/333.png');
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background-image: url('../assets/images/3333.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: scroll;
+            background-attachment: fixed;
             background-blend-mode: normal;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 12px;
             touch-action: manipulation;
             position: relative;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             width: 100%;
-            padding: 10px;
-            background-color: #ffffff; /* 改为实色白色 */
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
-            border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            padding: 12px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+            border: 1px solid #e0e0e0;
             position: relative;
             z-index: 1;
         }
 
         .header h1 {
             color: #8B4513;
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: 1.7rem;
+            margin-bottom: 6px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             font-weight: 600;
         }
 
         .header p {
             color: #654321;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             max-width: 100%;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .container {
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             align-items: center;
             position: relative;
             z-index: 1;
@@ -74,31 +74,29 @@
         .bowl-container {
             position: relative;
             width: 100%;
-            height: 280px;
+            height: 270px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            background-color: #ffffff; /* 改为实色白色 */
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
-            border: 1px solid #e0e0e0; /* 与index一致的边框 */
-            /* 保障碗容器基础层级 */
+            margin-bottom: 16px;
+            background-color: #ffffff;
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.15);
+            border: 1px solid #e0e0e0;
             z-index: 1;
         }
 
         .bowl-wrapper {
             position: relative;
-            width: 220px;
-            height: 220px;
+            width: 210px;
+            height: 210px;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 碗的层级低于食材 */
             z-index: 2;
-            overflow: visible !important; /* 关键：允许食材超出碗容器 */
+            overflow: visible !important;
         }
 
         .custom-bowl {
@@ -106,8 +104,7 @@
             height: 100%;
             object-fit: contain;
             pointer-events: none;
-            filter: drop-shadow(0 5px 15px rgba(139, 69, 19, 0.2));
-            /* 碗图片层级最低 */
+            filter: drop-shadow(0 4px 12px rgba(139, 69, 19, 0.2));
             z-index: 2;
             position: relative;
         }
@@ -118,64 +115,61 @@
             height: 100%;
             top: 0;
             left: 0;
-            /* 食材容器层级高于碗 */
             z-index: 99;
             pointer-events: auto;
         }
 
         .ingredient {
             position: absolute;
-            width: 65px;
-            height: 65px;
-            border-radius: 20px;
+            width: 62px;
+            height: 62px;
+            border-radius: 18px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
-            /* 食材图标最高层级 */
+            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.2);
             z-index: 100;
             border: 2px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
-            /* 确保点击穿透 */
             pointer-events: auto;
+            user-select: none;
         }
 
         .ingredient:active {
-            transform: scale(0.95);
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
+            transform: scale(0.94);
+            box-shadow: 0 4px 14px rgba(139, 69, 19, 0.3);
         }
 
         .ingredient.selected {
             border: 3px solid #8B4513;
-            transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(139, 69, 19, 0.4);
+            transform: scale(1.08);
+            box-shadow: 0 10px 24px rgba(139, 69, 19, 0.4);
         }
 
         .ingredient img {
-            width: 85%;
-            height: 85%;
+            width: 82%;
+            height: 82%;
             object-fit: contain;
-            border-radius: 15px;
+            border-radius: 14px;
         }
 
         .ingredient-in-bowl {
             position: absolute;
-            width: 65px;
-            height: 65px;
+            width: 62px;
+            height: 62px;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 碗内食材层级低于外部食材 */
             z-index: 3;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.3);
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.3);
             background: white;
@@ -186,25 +180,25 @@
         }
 
         .ingredient-in-bowl img {
-            width: 85%;
-            height: 85%;
+            width: 82%;
+            height: 82%;
             object-fit: contain;
-            border-radius: 15px;
+            border-radius: 14px;
         }
 
         .info-card {
             width: 100%;
-            background-color: #ffffff; /* 改为实色白色 */
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            background-color: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s, transform 0.5s;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
             position: relative;
             z-index: 5;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            margin-bottom: 16px;
+            border: 1px solid #e0e0e0;
         }
 
         .info-card.active {
@@ -214,37 +208,37 @@
 
         .info-card h2 {
             color: #8B4513;
-            margin-bottom: 12px;
-            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
             border-bottom: 2px solid #f0c9a6;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             font-weight: 600;
         }
 
         .info-card h3 {
             color: #8B4513;
-            margin: 12px 0 8px;
-            font-size: 1.1rem;
+            margin: 10px 0 6px;
+            font-size: 1.05rem;
             font-weight: 600;
         }
 
         .info-card p {
             color: #654321;
-            line-height: 1.6;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-size: 0.92rem;
         }
 
         .info-card ul {
-            padding-left: 18px;
+            padding-left: 16px;
             color: #654321;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .info-card li {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         @keyframes flyToBowl {
@@ -254,8 +248,8 @@
                 z-index: 100;
             }
             50% {
-                transform: scale(1.3) translate(var(--tx), var(--ty));
-                opacity: 0.8;
+                transform: scale(1.25) translate(var(--tx), var(--ty));
+                opacity: 0.85;
                 z-index: 100;
             }
             100% {
@@ -266,21 +260,21 @@
         }
 
         .flying {
-            animation: flyToBowl 1s forwards;
+            animation: flyToBowl 0.9s forwards ease;
         }
 
         .instructions {
-            margin-top: 20px;
+            margin-top: 12px;
             text-align: center;
             color: #654321;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             width: 100%;
-            padding: 12px;
-            background-color: #ffffff; /* 改为实色白色 */
-            border-radius: 15px;
-            line-height: 1.5;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
-            border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 14px;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+            border: 1px solid #e0e0e0;
             position: relative;
             z-index: 1;
         }
@@ -321,51 +315,45 @@
             right: 25%; 
         }
 
-        .ingredient:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(139, 69, 19, 0.3);
-        }
-
         .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 200; /* 悬浮按钮层级高于食材 */
+            bottom: 24px;
+            right: 24px;
+            z-index: 200;
         }
 
         .fab-main {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.35s ease;
             border: none;
-            font-size: 26px;
+            font-size: 24px;
             position: relative;
             z-index: 201;
         }
 
-        .fab-main:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.7);
+        .fab-main:active {
+            transform: scale(0.95);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 75px;
+            bottom: 70px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
             opacity: 0;
-            transform: translateY(25px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.35s ease;
             pointer-events: none;
             z-index: 200;
         }
@@ -377,121 +365,55 @@
         }
 
         .fab-item {
-            width: 70px;
-            height: 70px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background-color: #ffffff; /* 改为实色白色 */
+            background-color: #ffffff;
             color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             position: relative;
             text-align: center;
-            padding: 5px;
-            border: 1px solid #e0e0e0; /* 与index一致的边框 */
+            padding: 4px;
+            border: 1px solid #e0e0e0;
             z-index: 200;
         }
 
-        .fab-item:hover {
-            transform: scale(1.15);
-            background: rgba(245, 227, 212, 0.9);
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
+        .fab-item:active {
+            transform: scale(0.95);
         }
 
-        .fab-label {
-            position: absolute;
-            right: 80px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            font-weight: 500;
-            z-index: 201;
-        }
-
-        .fab-item:hover .fab-label {
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .fab-container {
-                bottom: 25px;
-                right: 25px;
-            }
-            
-            .fab-main {
-                width: 58px;
-                height: 58px;
-                font-size: 24px;
-            }
-            
-            .fab-item {
-                width: 60px;
-                height: 60px;
-                font-size: 14px;
-            }
-            
-            .ingredient {
-                width: 60px;
-                height: 60px;
-                border-radius: 18px;
-            }
-            
-            .ingredient-in-bowl {
-                width: 60px;
-                height: 60px;
-                border-radius: 18px;
-            }
-        }
-
+        /* 手机端基础适配 */
         @media (max-width: 480px) {
             body {
-                padding: 15px 10px;
-                background-attachment: scroll;
-            }
-            
-            .header {
-                margin-bottom: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .header p {
-                font-size: 1rem;
-            }
-            
-            .bowl-container {
-                height: 260px;
                 padding: 10px;
             }
             
+            .bowl-container {
+                height: 250px;
+            }
+            
             .bowl-wrapper {
-                width: 200px;
-                height: 200px;
+                width: 190px;
+                height: 190px;
             }
             
             .ingredient {
-                width: 55px;
-                height: 55px;
+                width: 56px;
+                height: 56px;
                 border-radius: 16px;
             }
             
             .ingredient-in-bowl {
-                width: 55px;
-                height: 55px;
+                width: 56px;
+                height: 56px;
                 border-radius: 16px;
             }
             
@@ -501,26 +423,27 @@
             }
             
             .fab-main {
-                width: 52px;
-                height: 52px;
+                width: 56px;
+                height: 56px;
                 font-size: 22px;
             }
             
             .fab-item {
-                width: 55px;
-                height: 55px;
-                font-size: 13px;
+                width: 58px;
+                height: 58px;
+                font-size: 14px;
             }
         }
 
+        /* 小屏手机（iPhone SE） */
         @media (max-width: 380px) {
             .bowl-container {
-                height: 240px;
+                height: 230px;
             }
             
             .bowl-wrapper {
-                width: 180px;
-                height: 180px;
+                width: 170px;
+                height: 170px;
             }
             
             .ingredient {
@@ -536,57 +459,25 @@
             }
             
             .header h1 {
-                font-size: 1.6rem;
-            }
-            
-            .header p {
-                font-size: 0.9rem;
+                font-size: 1.5rem;
             }
             
             .info-card {
-                padding: 15px;
+                padding: 14px;
             }
         }
 
+        /* 超小屏 */
         @media (max-width: 340px) {
             .ingredient {
-                width: 45px;
-                height: 45px;
+                width: 46px;
+                height: 46px;
                 border-radius: 12px;
             }
             
             .bowl-wrapper {
-                width: 160px;
-                height: 160px;
-            }
-            
-            .ingredient-in-bowl {
-                width: 45px;
-                height: 45px;
-                border-radius: 12px;
-            }
-        }
-
-        @media (orientation: landscape) and (max-height: 500px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                max-width: 100%;
-                flex-direction: row;
-                gap: 20px;
-            }
-            
-            .bowl-container {
-                width: 50%;
-                height: 200px;
-                margin-bottom: 0;
-            }
-            
-            .info-card {
-                width: 50%;
-                margin-bottom: 0;
+                width: 155px;
+                height: 155px;
             }
         }
     </style>
@@ -645,11 +536,9 @@
         <div class="fab-menu" id="fabMenu">
             <a href="page0.html" class="fab-item" id="menuBtn">
                 菜单
-                <span class="fab-label">返回菜单</span>
             </a>
             <a href="page5.html" class="fab-item">
                 下页
-                <span class="fab-label">下一页</span>
             </a>
         </div>
     </div>
@@ -658,11 +547,12 @@
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
-        fabMain.addEventListener('click', function() {
+        fabMain.addEventListener('touchstart', function(e) {
+            e.preventDefault();
             fabMenu.classList.toggle('open');
         });
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('touchstart', function(e) {
             if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                 fabMenu.classList.remove('open');
             }
@@ -756,19 +646,16 @@
             let currentIngredient = null;
 
             ingredients.forEach(ingredient => {
-                ingredient.addEventListener('click', function(e) {
-                    // 阻止事件冒泡，确保食材点击优先
+                ingredient.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
                     const ingredientId = this.getAttribute('data-id');
                     
                     if (currentIngredient === ingredientId) return;
                     
                     currentIngredient = ingredientId;
-                    
                     const data = ingredientData[ingredientId];
-                    
                     updateInfoCard(data);
-                    
                     flyToBowl(this, ingredientId);
                 });
             });
@@ -818,7 +705,7 @@
                     element.classList.remove('flying');
                     element.style.removeProperty('--tx');
                     element.style.removeProperty('--ty');
-                }, 1000);
+                }, 900);
             }
 
             const bgImg = new Image();
