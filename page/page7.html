@@ -67,7 +67,7 @@
             flex: 1;
             overflow: hidden;
             padding: 10px;
-            background: url('../assets/images/11.png');
+            background: url('../assets/images/8.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -171,8 +171,10 @@
             border: none;
         }
         
+        /* 核心：固定高度，彻底禁止自动占位 */
         .gif-container {
             flex: 1;
+            max-height: 450px; /* 这个高度 = 原来GIF高度 + 被你删掉的文字高度 */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -203,21 +205,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
-        }
-        
-        .step-instruction {
-            font-size: 0.9rem;
-            color: #d2697a;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.3;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-            background-color: #ffffff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
         }
         
         .button-group {
@@ -401,6 +388,7 @@
             background: #f5e3d4;
         }
 
+        /* 响应式适配：不同屏幕高度下微调GIF容器高度 */
         @media (max-width: 768px) {
             .fab-container {
                 bottom: 25px;
@@ -417,6 +405,10 @@
                 width: 60px;
                 height: 60px;
                 font-size: 14px;
+            }
+            
+            .gif-container {
+                height: 240px;
             }
         }
 
@@ -436,6 +428,10 @@
                 width: 55px;
                 height: 55px;
                 font-size: 13px;
+            }
+            
+            .gif-container {
+                height: 200px;
             }
         }
 
@@ -470,14 +466,13 @@
                 padding: 12px;
             }
             
-            .step-instruction {
-                font-size: 0.8rem;
-                margin-bottom: 10px;
-            }
-            
             .action-btn {
                 padding: 10px 16px;
                 font-size: 0.8rem;
+            }
+            
+            .gif-container {
+                height: 220px;
             }
         }
 
@@ -486,17 +481,13 @@
                 padding: 8px;
             }
             
-            .step-instruction {
-                font-size: 0.75rem;
-                margin-bottom: 8px;
-            }
-            
             .action-btn {
                 padding: 8px 14px;
                 font-size: 0.75rem;
             }
             
             .gif-container {
+                height: 180px;
                 margin-bottom: 8px;
             }
         }
@@ -570,8 +561,6 @@
                     <img src="https://media.giphy.com/media/26gJ1g1GQaJ9hQlKM/giphy.gif" class="step-gif" id="gif-8">
                 </div>
                 
-                <div class="step-instruction" id="step-instruction"></div>
-                
                 <div class="button-group">
                     <button class="action-btn" id="action-btn"></button>
                     <button class="action-btn complete-btn" id="complete-btn" style="display:none;">完成</button>
@@ -604,24 +593,11 @@
             const actionBtn = document.getElementById('action-btn');
             const completeBtn = document.getElementById('complete-btn');
             const progressBar = document.getElementById('progress');
-            const stepInstruction = document.getElementById('step-instruction');
             const gifs = document.querySelectorAll('.step-gif');
             const modalOverlay = document.getElementById('modal-overlay');
             const modalCloseBtn = document.getElementById('modal-close-btn');
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
-            
-            const stepInstructions = [
-                "点击'开始制作'按钮，准备椰奶基底",
-                "将香甜的椰奶倒入碗中，形成清补凉的基底",
-                "加入软糯的红豆，丰富清补凉的口感",
-                "放入清凉解暑的绿豆，增加清爽感",
-                "加入健康养生的薏米，提升营养价值",
-                "撒入Q弹的西米，增添咀嚼乐趣",
-                "放入新鲜水果块，增加果香和色彩",
-                "加入椰果和花生，丰富层次感",
-                "最后撒上芝麻和葡萄干，完成清补凉制作"
-            ];
             
             let currentStep = 0;
             const totalSteps = 8;
@@ -660,7 +636,6 @@
             
             function updateAll(){
                 updateProgress();
-                updateStepInstruction();
                 updateGIF();
                 updateActionButton();
             }
@@ -674,10 +649,6 @@
                     if(n < currentStep+1) s.classList.add('completed');
                     else if(n === currentStep+1) s.classList.add('active');
                 });
-            }
-            
-            function updateStepInstruction(){
-                stepInstruction.textContent = stepInstructions[currentStep];
             }
             
             function updateGIF(){
