@@ -15,12 +15,10 @@
         
         body {
             background-color: #fdf6e3;
-            overflow: hidden;
             height: 100vh;
-            touch-action: manipulation;
+            /* 去掉禁止滚动，更自然 */
         }
         
-        /* 背景图容器 - 全屏背景 */
         .background-container {
             position: fixed;
             top: 0;
@@ -32,17 +30,11 @@
             background-color: #fdf6e3;
         }
         
-        /* 全屏背景图片样式 */
         .background-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-        }
-        
-        /* 移除半透明遮罩层 */
-        .background-overlay {
-            display: none;
         }
         
         .container {
@@ -72,16 +64,12 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
-            /* 移除毛玻璃和透明效果，改为实色背景 */
-            background-color: #ffffff;
+            background-color: #fff;
             padding: 25px 20px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            z-index: 15;
-            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             border: 1px solid #e0e0e0;
-            /* 移除 backdrop-filter 滤镜 */
-            animation: float 5s ease-in-out infinite;
+            animation: float 4s ease-in-out infinite; /* 更快更轻 */
         }
         
         .title {
@@ -89,7 +77,6 @@
             color: #d35400;
             margin-bottom: 25px;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             font-weight: bold;
             position: relative;
         }
@@ -122,20 +109,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
-            color: white;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
             overflow: hidden;
             flex-shrink: 0;
-            position: relative;
         }
-        
-        /* 移除食材的渐变遮罩 */
-        .ingredient::after {
-            display: none;
+
+        /* 食材轻微呼吸，不死板 */
+        .ingredient.show {
+            animation: breathe 2.5s infinite alternate ease-in-out;
         }
         
         .ingredient-img {
@@ -143,19 +127,16 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            z-index: 1;
         }
         
         .loading-bar-container {
             width: 100%;
             height: 18px;
-            /* 改为实色背景 */
             background-color: #f5f5f5;
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             border: 1px solid #e0e0e0;
         }
         
@@ -169,7 +150,6 @@
             overflow: hidden;
         }
         
-        /* 保留进度条的流光效果（如需移除可删除此样式） */
         .loading-bar::after {
             content: "";
             position: absolute;
@@ -177,13 +157,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 2s infinite;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
         }
         
         @keyframes shimmer {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
+        }
+
+        /* 浮动动画更轻盈 */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); } 
+        }
+
+        /* 食材轻微呼吸动画 */
+        @keyframes breathe {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-3px) scale(1.03); }
         }
         
         .loading-text {
@@ -192,8 +185,6 @@
             margin-bottom: 20px;
             text-align: center;
             font-weight: 500;
-            /* 移除文字阴影 */
-            text-shadow: none;
         }
         
         .enter-btn {
@@ -207,7 +198,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
-            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.5);
+            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.3);
             font-weight: bold;
             min-height: 55px;
             min-width: 200px;
@@ -215,130 +206,50 @@
             overflow: hidden;
         }
         
-        /* 移除按钮的渐变遮罩 */
-        .enter-btn::after {
-            display: none;
-        }
-        
-        .enter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.6);
-        }
-        
         .enter-btn:active {
             transform: scale(0.96);
-            box-shadow: 0 3px 8px rgba(211, 84, 0, 0.4);
         }
         
-        /* 响应式设计 */
+        .loading-content, .enter-btn, .ingredient {
+            user-select: none;
+        }
+
+        /* 响应式适配 */
         @media (max-width: 768px) {
-            .loading-content {
-                max-width: 90%;
-                padding: 20px 15px;
-            }
+            .loading-content { max-width: 90%; padding: 20px 15px; }
         }
         
         @media (max-width: 480px) {
-            .title {
-                font-size: 2.2rem;
-                margin-bottom: 20px;
-            }
-            
-            .ingredient {
-                width: 55px;
-                height: 55px;
-                font-size: 1.5rem;
-            }
-            
-            .loading-content {
-                padding: 20px 15px;
-                /* 移除手机端的模糊效果 */
-            }
-            
-            .enter-btn {
-                padding: 14px 35px;
-                font-size: 1.2rem;
-                min-height: 50px;
-                min-width: 180px;
-            }
-            
-            .ingredients-container {
-                gap: 10px;
-            }
+            .title { font-size: 2.2rem; margin-bottom: 20px; }
+            .ingredient { width: 55px; height: 55px; }
+            .enter-btn { padding: 14px 35px; font-size: 1.2rem; min-height: 50px; min-width: 180px; }
+            .ingredients-container { gap: 10px; }
         }
         
         @media (max-width: 360px) {
-            .title {
-                font-size: 2rem;
-            }
-            
-            .ingredient {
-                width: 50px;
-                height: 50px;
-                font-size: 1.3rem;
-            }
-            
-            .ingredients-container {
-                gap: 8px;
-            }
-            
-            .loading-content {
-                padding: 18px 12px;
-            }
-        }
-        
-        /* 防止长按菜单 */
-        .loading-content, .enter-btn, .ingredient {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none;
-        }
-        
-        /* 浮动动画 */
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-            100% { transform: translateY(0); } 
-        }
-        
-        /* 提高可访问性 */
-        .enter-btn:focus {
-            outline: 3px solid rgba(230, 126, 34, 0.5);
-            outline-offset: 3px;
+            .title { font-size: 2rem; }
+            .ingredient { width: 50px; height: 50px; }
+            .ingredients-container { gap: 8px; }
+            .loading-content { padding: 18px 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- 背景图容器 -->
     <div class="background-container">
-        <img src="assets/images/111.png" alt="海南清补凉手绘背景" class="background-image">
-        <div class="background-overlay"></div>
+        <img src="assets/images/55.png" alt="背景" class="background-image">
     </div>
     
     <div class="container">
-        <!-- 加载页面 -->
         <div id="loading-page">
             <div class="loading-content">
                 <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
-                    <div class="ingredient">
-                        <img src="assets/images/椰子.png" alt="红豆" class="ingredient-img" loading="lazy">
-                    </div>
-                    <div class="ingredient">
-                        <img src="assets/images/芒果.png" alt="绿豆" class="ingredient-img" loading="lazy">
-                    </div>
-                    <div class="ingredient">
-                        <img src="assets/images/绿豆.png" alt="薏米" class="ingredient-img" loading="lazy">
-                    </div>
-                    <div class="ingredient">
-                        <img src="assets/images/通心粉.png" alt="西米" class="ingredient-img" loading="lazy">
-                    </div>
-                    <div class="ingredient">
-                        <img src="assets/images/芋圆.png" alt="花生" class="ingredient-img" loading="lazy">
-                    </div>
+                    <div class="ingredient"><img src="assets/images/椰子.png" alt="" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/芒果.png" alt="" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/绿豆.png" alt="" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/通心粉.png" alt="" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/芋圆.png" alt="" class="ingredient-img"></div>
                 </div>
                 
                 <div class="loading-bar-container">
@@ -346,32 +257,15 @@
                 </div>
                 
                 <div class="loading-text">加载中...</div>
-                <button class="enter-btn" id="enter-btn" aria-label="进入海南清补凉介绍页面">品尝海南清补凉</button>
+                <button class="enter-btn" id="enter-btn">品尝海南清补凉</button>
             </div>
         </div>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 先预加载背景图片
-            const bgImage = new Image();
-            bgImage.src = 'assets/images/主题.png';
-            
-            bgImage.onload = function() {
-                console.log('背景图片加载成功');
-                startMainLoading();
-            };
-            
-            bgImage.onerror = function() {
-                console.warn('背景图片加载失败，使用备用背景');
-                const warningMsg = document.createElement('div');
-                warningMsg.style.cssText = 'position:fixed; top:10px; left:10px; background:rgba(255,0,0,0.1); color:#c00; padding:5px; border-radius:3px; font-size:12px; z-index:100;';
-                warningMsg.textContent = '背景图片加载失败，路径: assets/images/主题.png';
-                document.body.appendChild(warningMsg);
-                
-                startMainLoading();
-            };
-            
+            startMainLoading();
+
             function startMainLoading() {
                 const loadingPage = document.getElementById('loading-page');
                 const enterBtn = document.getElementById('enter-btn');
@@ -379,7 +273,6 @@
                 const loadingText = document.querySelector('.loading-text');
                 const ingredients = document.querySelectorAll('.ingredient');
                 
-                // 模拟加载过程
                 let progress = 0;
                 const loadingInterval = setInterval(() => {
                     progress += 10;
@@ -391,67 +284,35 @@
                             loadingText.textContent = "加载完成！准备品尝美味...";
                             enterBtn.style.opacity = "1";
                             enterBtn.style.transform = "translateY(0)";
-                            enterBtn.focus();
                         }, 500);
                     }
                     
                     loadingBar.style.width = progress + "%";
                     
-                    // 食材图标随进度显示
-                    ingredients.forEach((ingredient, index) => {
+                    ingredients.forEach((ing, index) => {
                         if (progress >= 20 * (index + 1)) {
-                            ingredient.style.opacity = "1";
-                            ingredient.style.transform = "translateY(0)";
+                            ing.style.opacity = "1";
+                            ing.style.transform = "translateY(0)";
+                            ing.classList.add("show"); // 加个呼吸动画
                         }
                     });
                 }, 200);
                 
-                // 点击进入按钮
                 enterBtn.addEventListener('click', function() {
-                    this.style.transform = "scale(0.95)";
-                    
                     loadingPage.style.opacity = "0";
                     loadingPage.style.pointerEvents = "none";
                     
                     setTimeout(() => {
-                        window.location.href = './page/page01.html';
+                        window.location.href = 'page/page01.html';
                     }, 800);
                 });
                 
-                // 键盘支持
-                enterBtn.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-                
-                // 防止双击缩放
-                let lastTouchEnd = 0;
-                document.addEventListener('touchend', function (event) {
-                    const now = (new Date()).getTime();
-                    if (now - lastTouchEnd <= 300) {
-                        event.preventDefault();
-                    }
-                    lastTouchEnd = now;
-                }, false);
-                
-                // 触摸反馈
                 enterBtn.addEventListener('touchstart', function() {
                     this.style.transform = "scale(0.95)";
                 });
                 
                 enterBtn.addEventListener('touchend', function() {
                     this.style.transform = "scale(1)";
-                });
-                
-                // 鼠标悬停效果
-                enterBtn.addEventListener('mouseenter', function() {
-                    this.style.transform = "translateY(-2px)";
-                });
-                
-                enterBtn.addEventListener('mouseleave', function() {
-                    this.style.transform = "translateY(0)";
                 });
             }
         });

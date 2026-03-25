@@ -43,7 +43,6 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            position: fixed;
         }
 
         body {
@@ -59,7 +58,7 @@
         .container {
             width: 100%;
             height: calc(100vh - 16px);
-            background: rgba(255, 255, 255, 1);
+            background: #fff;
             border-radius: 16px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
@@ -85,10 +84,7 @@
         .header::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 2%, transparent 10%);
             pointer-events: none;
         }
@@ -97,7 +93,6 @@
             font-size: var(--header-font-size);
             margin-bottom: 6px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            position: relative;
             font-weight: 600;
             line-height: 1.3;
             z-index: 1;
@@ -106,7 +101,6 @@
         .header .subtitle {
             font-size: var(--subtitle-font-size);
             opacity: 0.95;
-            position: relative;
             line-height: 1.3;
             z-index: 1;
         }
@@ -127,32 +121,24 @@
             overflow: hidden;
         }
 
-        /* 图片背景容器 - 移除了遮罩层相关样式 */
         .chart-background {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
-            overflow: hidden;
             border-radius: 12px;
-            /* 移除了透明度，保留图片原有效果 */
         }
 
         .chart-background img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             object-position: center;
-            /* 移除了滤镜效果，保留原图 */
         }
 
         #sunburst-chart {
             position: relative;
             z-index: 1;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
         }
 
         .info-panel {
@@ -239,17 +225,14 @@
             font-size: 0.75rem;
         }
 
-        /* 浮动操作按钮 */
         .fab-container {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
+            bottom: 15px; right: 15px;
             z-index: 100;
         }
 
         .fab-main {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
             color: white;
@@ -261,7 +244,6 @@
             transition: all 0.3s ease;
             border: none;
             font-size: 20px;
-            position: relative;
             z-index: 101;
         }
 
@@ -272,8 +254,7 @@
 
         .fab-menu {
             position: absolute;
-            bottom: 60px;
-            right: 0;
+            bottom: 60px; right: 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -290,8 +271,7 @@
         }
 
         .fab-item {
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             border-radius: 50%;
             background: white;
             color: var(--primary-brown);
@@ -332,11 +312,9 @@
             opacity: 1;
         }
 
-        /* 交互提示 */
         .interaction-hint {
             position: absolute;
-            bottom: 10px;
-            left: 50%;
+            bottom: 10px; left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.7);
             color: white;
@@ -350,11 +328,10 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
+            0%,100% { opacity: 0.7; }
             50% { opacity: 1; }
         }
 
-        /* 响应式调整 */
         @media (orientation: landscape) {
             :root {
                 --header-font-size: 1.1rem;
@@ -363,14 +340,7 @@
                 --chart-padding: 12px;
                 --info-padding: 12px;
             }
-            
-            .container {
-                height: calc(100vh - 15px);
-            }
-            
-            .info-panel {
-                max-height: 35vh;
-            }
+            .info-panel { max-height: 35vh; }
         }
 
         @media (max-height: 700px) {
@@ -380,10 +350,7 @@
                 --header-padding: 12px 10px;
                 --detail-padding: 10px;
             }
-            
-            .header {
-                min-height: 65px;
-            }
+            .header { min-height: 65px; }
         }
 
         @media (max-height: 600px) {
@@ -395,19 +362,9 @@
                 --info-padding: 10px 8px 12px;
                 --info-title-size: 0.95rem;
             }
-            
-            .header {
-                min-height: 60px;
-            }
-            
-            .info-panel {
-                max-height: 35vh;
-            }
-            
-            .detail-item {
-                margin-bottom: 8px;
-                max-height: 28vh;
-            }
+            .header { min-height: 60px; }
+            .info-panel { max-height: 35vh; }
+            .detail-item { max-height: 28vh; }
         }
 
         @media (max-height: 500px) {
@@ -419,23 +376,8 @@
                 --info-padding: 8px;
                 --detail-font-size: 0.75rem;
             }
-            
-            .container {
-                height: calc(100vh - 12px);
-            }
-            
-            .header {
-                min-height: 55px;
-            }
-            
-            .info-panel {
-                max-height: 30vh;
-            }
-            
-            .detail-item {
-                padding: 8px;
-                max-height: 25vh;
-            }
+            .info-panel { max-height: 30vh; }
+            .detail-item { max-height: 25vh; padding:8px; }
         }
     </style>
 </head>
@@ -448,13 +390,9 @@
 
         <div class="content">
             <div class="chart-container">
-                <!-- 图片背景容器 -->
                 <div class="chart-background" id="chartBackground">
-                    <!-- 在这里替换成你的图片URL -->
-                    <img src="../assets/images/.png" alt="农业背景" id="backgroundImage">
+                    <img alt="农业背景" id="backgroundImage">
                 </div>
-                
-                <!-- ECharts图表 -->
                 <div id="sunburst-chart"></div>
                 <div class="interaction-hint">点击图表查看详情</div>
             </div>
@@ -472,13 +410,12 @@
         </div>
     </div>
 
-    <!-- 浮动操作按钮 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain" aria-label="菜单">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">
+            <a href="page0.html" class="fab-item">
                 菜单
                 <span class="fab-label">返回菜单</span>
             </a>
@@ -486,7 +423,6 @@
     </div>
 
     <script>
-        // 初始化ECharts实例
         const chartDom = document.getElementById('sunburst-chart');
         const myChart = echarts.init(chartDom, null, {
             renderer: 'canvas',
@@ -494,71 +430,27 @@
             devicePixelRatio: Math.min(window.devicePixelRatio, 2)
         });
         
-        // 农业数据
         const agricultureData = {
             name: '第一产业',
-            itemStyle: {
-                color: '#8B4513'
-            },
+            itemStyle: { color: '#8B4513' },
             children: [
-                {
-                    name: '椰农',
-                    value: 3200,
-                    income: 3850,
-                    localRate: '95%',
-                    detail: '主要负责椰子种植和采收，采用生态种植技术，工作地点主要在海南、广东等热带乡村地区。',
-                    comparison: '较传统种植收入提升45%',
-                    icon: '🥥',
-                    itemStyle: { color: '#CD853F' }
-                },
-                {
-                    name: '豆类种植',
-                    value: 2800,
-                    income: 4200,
-                    localRate: '92%',
-                    detail: '种植红豆、绿豆等核心原料，采用"公司+合作社+农户"模式，统一技术标准和收购。',
-                    comparison: '较传统种植收入提升55%',
-                    icon: '🫘',
-                    itemStyle: { color: '#D2691E' }
-                },
-                {
-                    name: '杂粮种植',
-                    value: 1800,
-                    income: 4000,
-                    localRate: '90%',
-                    detail: '种植薏米、西米等特色杂粮，产品附加值高，带动山区农民增收致富。',
-                    comparison: '较传统种植收入提升60%',
-                    icon: '🌾',
-                    itemStyle: { color: '#B8860B' }
-                },
-                {
-                    name: '水果种植',
-                    value: 1500,
-                    income: 4800,
-                    localRate: '88%',
-                    detail: '种植西瓜、菠萝、芒果等搭配水果，实现四季轮作，提高土地利用率。',
-                    comparison: '较传统种植收入提升65%',
-                    icon: '🍉',
-                    itemStyle: { color: '#DA8A67' }
-                }
+                { name: '椰农', value: 3200, income: 3850, localRate: '95%', detail: '主要负责椰子种植和采收，采用生态种植技术，工作地点主要在海南、广东等热带乡村地区。', comparison: '较传统种植收入提升45%', icon: '🥥', itemStyle: { color: '#CD853F' } },
+                { name: '豆类种植', value: 2800, income: 4200, localRate: '92%', detail: '种植红豆、绿豆等核心原料，采用"公司+合作社+农户"模式，统一技术标准和收购。', comparison: '较传统种植收入提升55%', icon: '🫘', itemStyle: { color: '#D2691E' } },
+                { name: '杂粮种植', value: 1800, income: 4000, localRate: '90%', detail: '种植薏米、西米等特色杂粮，产品附加值高，带动山区农民增收致富。', comparison: '较传统种植收入提升60%', icon: '🌾', itemStyle: { color: '#B8860B' } },
+                { name: '水果种植', value: 1500, income: 4800, localRate: '88%', detail: '种植西瓜、菠萝、芒果等搭配水果，实现四季轮作，提高土地利用率。', comparison: '较传统种植收入提升65%', icon: '🍉', itemStyle: { color: '#DA8A67' } }
             ]
         };
 
-        // 图表配置
         const option = {
-            backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'item',
                 formatter: (params) => {
-                    if (!params.data.value) return `<div style="font-weight: bold; font-size: 12px; color: #8B4513;">${params.name}</div>`;
-                    
+                    if (!params.data.value) return `<div style="font-weight:bold;font-size:12px;color:#8B4513;">${params.name}</div>`;
                     return `
-                        <div style="font-weight: bold; color: #8B4513; margin-bottom: 5px; font-size: 12px;">
-                            ${params.data.icon || '🌱'} ${params.name}
-                        </div>
-                        <div style="font-size: 11px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
-                        <div style="font-size: 11px;">💰 月均收入: ${params.data.income}元</div>
-                        <div style="font-size: 11px;">🏠 本地就业率: ${params.data.localRate}</div>
+                        <div style="font-weight:bold;color:#8B4513;margin-bottom:5px;font-size:12px;">${params.data.icon} ${params.name}</div>
+                        <div style="font-size:11px;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
+                        <div style="font-size:11px;">💰 月均收入: ${params.data.income}元</div>
+                        <div style="font-size:11px;">🏠 本地就业率: ${params.data.localRate}</div>
                     `;
                 },
                 confine: true,
@@ -568,182 +460,61 @@
                 type: 'sunburst',
                 data: [agricultureData],
                 radius: ['15%', '80%'],
-                itemStyle: {
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    opacity: 0.9
-                },
-                label: {
-                    rotate: 'radial',
-                    color: '#333',
-                    fontSize: 10,
-                    fontWeight: 'bold',
-                    textBorderColor: 'white',
-                    textBorderWidth: 2,
-                    overflow: 'truncate',
-                    width: 60
-                },
-                emphasis: {
-                    focus: 'ancestor',
-                    itemStyle: {
-                        shadowBlur: 8,
-                        shadowColor: 'rgba(0, 0, 0, 0.2)',
-                        opacity: 1
-                    }
-                },
-                levels: [
-                    {},
-                    {
-                        r0: '15%',
-                        r: '40%',
-                        itemStyle: { borderWidth: 3 },
-                        label: {
-                            rotate: 'tangential',
-                            fontSize: 12,
-                            color: 'white',
-                            fontWeight: 'bold'
-                        }
-                    },
-                    {
-                        r0: '40%',
-                        r: '80%',
-                        label: { align: 'right', fontSize: 10 }
-                    }
-                ]
+                itemStyle: { borderWidth: 2, borderColor: '#fff', opacity: 0.9 },
+                label: { rotate: 'radial', color: '#333', fontSize: 10, fontWeight: 'bold', textBorderColor: '#fff', textBorderWidth: 2, overflow: 'truncate', width: 60 },
+                emphasis: { focus: 'ancestor', itemStyle: { shadowBlur: 8, shadowColor: 'rgba(0,0,0,0.2)', opacity:1 } },
+                levels: [{},{r0:'15%',r:'40%',itemStyle:{borderWidth:3},label:{rotate:'tangential',fontSize:12,color:'#fff',fontWeight:'bold'}},{r0:'40%',r:'80%',label:{align:'right',fontSize:10}}]
             }
         };
 
-        // 图表点击事件
         myChart.on('click', function(params) {
             const detailContent = document.getElementById('detail-content');
-            
             if (params.data.value) {
                 const incomePercent = Math.min(100, (params.data.income / 6000) * 100);
-                
                 detailContent.innerHTML = `
                     <div class="detail-item">
                         <h3><span>${params.data.icon}</span>${params.name}</h3>
-                        <div class="income-text">
-                            <span>就业人数:</span>
-                            <span class="highlight">${params.data.value.toLocaleString()}人</span>
-                        </div>
-                        <div class="income-text">
-                            <span>月均收入:</span>
-                            <span class="highlight">${params.data.income}元</span>
-                        </div>
-                        <div class="income-bar">
-                            <div class="income-fill" style="width: ${incomePercent}%"></div>
-                        </div>
-                        <div class="income-text">
-                            <span>本地就业率:</span>
-                            <span class="highlight">${params.data.localRate}</span>
-                        </div>
-                        <div class="income-text">
-                            <span>收入提升:</span>
-                            <span class="comparison">${params.data.comparison}</span>
-                        </div>
-                        <p style="margin-top: 8px; font-size: var(--small-font-size); color: var(--text-light); line-height: 1.4;">
-                            ${params.data.detail}
-                        </p>
-                    </div>
-                `;
+                        <div class="income-text"><span>就业人数:</span><span class="highlight">${params.data.value.toLocaleString()}人</span></div>
+                        <div class="income-text"><span>月均收入:</span><span class="highlight">${params.data.income}元</span></div>
+                        <div class="income-bar"><div class="income-fill" style="width:${incomePercent}%"></div></div>
+                        <div class="income-text"><span>本地就业率:</span><span class="highlight">${params.data.localRate}</span></div>
+                        <div class="income-text"><span>收入提升:</span><span class="comparison">${params.data.comparison}</span></div>
+                        <p style="margin-top:8px;font-size:var(--small-font-size);color:var(--text-light);line-height:1.4;">${params.data.detail}</p>
+                    </div>`;
             } else if (params.data.children) {
-                const totalEmployment = params.data.children.reduce((sum, child) => sum + child.value, 0);
-                const avgIncome = Math.round(params.data.children.reduce((sum, child) => sum + child.income * child.value, 0) / totalEmployment);
-                
+                const total = params.data.children.reduce((s,c)=>s+c.value,0);
+                const avg = Math.round(params.data.children.reduce((s,c)=>s+c.income*c.value,0)/total);
                 detailContent.innerHTML = `
                     <div class="detail-item">
                         <h3><span>🌱</span>第一产业就业概况</h3>
-                        <div class="income-text">
-                            <span>总就业人数:</span>
-                            <span class="highlight">${totalEmployment.toLocaleString()}人</span>
-                        </div>
-                        <div class="income-text">
-                            <span>平均月收入:</span>
-                            <span class="highlight">${avgIncome}元</span>
-                        </div>
-                        <div class="income-text" style="margin-top: 8px; font-weight: bold; font-size: 0.8rem;">主要农业岗位:</div>
-                        <div style="margin-top: 6px;">
-                            ${params.data.children.map(child => `
-                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: var(--small-font-size);">
-                                    <span>${child.icon} ${child.name}</span>
-                                    <span style="color: #8B4513; font-weight: bold;">${child.value}人</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                        <div class="income-text"><span>总就业人数:</span><span class="highlight">${total.toLocaleString()}人</span></div>
+                        <div class="income-text"><span>平均月收入:</span><span class="highlight">${avg}元</span></div>
+                        <div style="margin-top:8px;font-weight:bold;font-size:0.8rem;">主要农业岗位:</div>
+                        <div style="margin-top:6px;">${params.data.children.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:var(--small-font-size);"><span>${c.icon} ${c.name}</span><span style="color:#8B4513;font-weight:bold;">${c.value}人</span></div>`).join('')}</div>
+                    </div>`;
             }
         });
 
-        // 应用配置
         myChart.setOption(option);
 
-        // 浮动操作按钮功能
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
-        fabMain.addEventListener('click', function(e) {
+        fabMain.addEventListener('click', e => {
             e.stopPropagation();
             fabMenu.classList.toggle('open');
         });
 
-        document.addEventListener('click', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
+        document.addEventListener('click', () => fabMenu.classList.remove('open'));
 
-        // 响应式调整
-        function resizeChart() {
-            myChart.resize();
-        }
+        window.addEventListener('resize', () => myChart.resize());
 
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化图表大小
-            setTimeout(resizeChart, 100);
-            window.addEventListener('resize', resizeChart);
-            
-            // 防缩放处理
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', function(e) {
-                const now = Date.now();
-                if (now - lastTouchEnd < 300) e.preventDefault();
-                lastTouchEnd = now;
-            }, { passive: false });
-            
-            // 加载自定义背景图片
-            loadCustomBackground();
-        });
-
-        // 加载自定义背景图片函数
-        function loadCustomBackground() {
-            // 在这里设置你的图片URL
-            const customImageUrl = "../assets/images/888.png";
-            
-            // 你也可以使用本地图片，将图片放在同一目录下，使用相对路径：
-            // const customImageUrl = './my-background.jpg';
-            
-            const backgroundImage = document.getElementById('backgroundImage');
-            
-            // 创建一个新的图片对象来预加载
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(()=>myChart.resize(),100);
             const img = new Image();
-            
-            img.onload = function() {
-                // 图片加载成功后设置到页面
-                backgroundImage.src = customImageUrl;
-                console.log('背景图片加载成功');
-            };
-            
-            img.onerror = function() {
-                console.warn('自定义背景图片加载失败，使用默认图片');
-                // 可以在这里设置一个备用图片URL
-                backgroundImage.src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80';
-            };
-            
-            img.src = customImageUrl;
-        }
+            img.onload = () => document.getElementById('backgroundImage').src = "../assets/images/888.png";
+            img.src = "../assets/images/888.png";
+        });
     </script>
 </body>
 </html>

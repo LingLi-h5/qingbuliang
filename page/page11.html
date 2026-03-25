@@ -2,9 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>轻松分享，传递美味与文化</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,8 +12,6 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         body {
@@ -24,12 +20,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0;
-            touch-action: manipulation;
-            /* 禁止滚动 */
             overflow: hidden;
-            position: fixed;
-            width: 100%;
         }
         
         .container {
@@ -40,10 +31,7 @@
             align-items: center;
             position: relative;
             padding: 10px;
-            /* 完全禁止滚动 */
-            overflow: hidden !important;
-            overflow-y: hidden !important;
-            overflow-x: hidden !important;
+            overflow: hidden;
         }
 
         .container::before {
@@ -59,7 +47,6 @@
             background-repeat: no-repeat;
             z-index: 0;
             pointer-events: none;
-
         }
 
         .title {
@@ -296,6 +283,7 @@
             pointer-events: all;
         }
 
+        /* ✅ 这里已经恢复你原来的字体样式 */
         .fab-item {
             width: 52px;
             height: 52px;
@@ -401,7 +389,6 @@
         });
 
         shareBtn.addEventListener('click', () => {
-            if (!selectedCard) return;
             let content = '';
             switch(selectedCard){
                 case 'card1': content = '清补凉历史长卷'; break;

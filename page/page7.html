@@ -18,6 +18,7 @@
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             overflow: hidden;
             height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -134,10 +135,9 @@
             border: 1px solid #e0e0e0;
         }
         
+        /* 移除激活状态的橙色样式，保持默认白色 */
         .step.active .step-icon {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #5a3e36;
-            box-shadow: 0 2px 8px rgba(255, 154, 158, 0.4);
+            /* 清空原有样式，不显示橙色 */
         }
         
         .step.completed .step-icon {
@@ -145,17 +145,12 @@
             color: white;
         }
         
+        /* 放大步骤文字 */
         .step-title {
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: #5a3e36;
             line-height: 1.1;
-        }
-        
-        .step-desc {
-            font-size: 0.55rem;
-            color: #8c7369;
-            line-height: 1;
         }
         
         .demo-area {
@@ -166,15 +161,12 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            box-shadow: none;
             margin-top: 8px;
-            border: none;
         }
         
-        /* 核心：固定高度，彻底禁止自动占位 */
         .gif-container {
             flex: 1;
-            max-height: 450px; /* 这个高度 = 原来GIF高度 + 被你删掉的文字高度 */
+            max-height: 450px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -217,7 +209,6 @@
         .action-btn {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             color: #5a3e36;
-            border: none;
             padding: 12px 20px;
             font-size: 0.9rem;
             border-radius: 20px;
@@ -388,108 +379,31 @@
             background: #f5e3d4;
         }
 
-        /* 响应式适配：不同屏幕高度下微调GIF容器高度 */
         @media (max-width: 768px) {
-            .fab-container {
-                bottom: 25px;
-                right: 25px;
-            }
-            
-            .fab-main {
-                width: 58px;
-                height: 58px;
-                font-size: 24px;
-            }
-            
-            .fab-item {
-                width: 60px;
-                height: 60px;
-                font-size: 14px;
-            }
-            
-            .gif-container {
-                height: 240px;
-            }
+            .fab-container { bottom: 25px; right: 25px; }
+            .fab-main { width: 58px; height: 58px; font-size: 24px; }
+            .fab-item { width: 60px; height: 60px; font-size: 14px; }
         }
 
         @media (max-width: 480px) {
-            .fab-container {
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .fab-main {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-            }
-            
-            .fab-item {
-                width: 55px;
-                height: 55px;
-                font-size: 13px;
-            }
-            
-            .gif-container {
-                height: 200px;
-            }
+            .fab-container { bottom: 20px; right: 20px; }
+            .fab-main { width: 52px; height: 52px; font-size: 22px; }
+            .fab-item { width: 55px; height: 55px; font-size: 13px; }
         }
 
         @media (max-height: 600px) {
-            header {
-                padding: 12px 8px;
-            }
-            
-            h1 {
-                font-size: 1.2rem;
-            }
-            
-            .subtitle {
-                font-size: 0.7rem;
-            }
-            
-            .step-icon {
-                width: 28px;
-                height: 28px;
-                font-size: 0.75rem;
-            }
-            
-            .step-title {
-                font-size: 0.6rem;
-            }
-            
-            .step-desc {
-                font-size: 0.5rem;
-            }
-            
-            .demo-area {
-                padding: 12px;
-            }
-            
-            .action-btn {
-                padding: 10px 16px;
-                font-size: 0.8rem;
-            }
-            
-            .gif-container {
-                height: 220px;
-            }
+            header { padding: 12px 8px; }
+            h1 { font-size: 1.2rem; }
+            .subtitle { font-size: 0.7rem; }
+            .step-icon { width: 28px; height: 28px; font-size: 0.75rem; }
+            .step-title { font-size: 0.7rem; }
+            .demo-area { padding: 12px; }
+            .action-btn { padding: 10px 16px; font-size: 0.8rem; }
         }
 
         @media (max-height: 500px) {
-            .main-content {
-                padding: 8px;
-            }
-            
-            .action-btn {
-                padding: 8px 14px;
-                font-size: 0.75rem;
-            }
-            
-            .gif-container {
-                height: 180px;
-                margin-bottom: 8px;
-            }
+            .main-content { padding: 8px; }
+            .action-btn { padding: 8px 14px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -508,57 +422,50 @@
                 <div class="steps">
                     <div class="step active" data-step="1">
                         <div class="step-icon">1</div>
-                        <div class="step-title">准备基底</div>
-                        <div class="step-desc">椰奶</div>
+                        <div class="step-title">添加椰奶</div>
                     </div>
                     <div class="step" data-step="2">
                         <div class="step-icon">2</div>
                         <div class="step-title">添加红豆</div>
-                        <div class="step-desc">丰富口感</div>
                     </div>
                     <div class="step" data-step="3">
                         <div class="step-icon">3</div>
                         <div class="step-title">加入绿豆</div>
-                        <div class="step-desc">清凉解暑</div>
                     </div>
                     <div class="step" data-step="4">
                         <div class="step-icon">4</div>
-                        <div class="step-title">放入薏米</div>
-                        <div class="step-desc">健康养生</div>
+                        <div class="step-title">放入水果</div>
                     </div>
                     <div class="step" data-step="5">
                         <div class="step-icon">5</div>
-                        <div class="step-title">添加西米</div>
-                        <div class="step-desc">Q弹口感</div>
+                        <div class="step-title">添加配料</div>
                     </div>
                     <div class="step" data-step="6">
                         <div class="step-icon">6</div>
-                        <div class="step-title">放入水果</div>
-                        <div class="step-desc">新鲜果味</div>
+                        <div class="step-title">加入薄荷</div>
                     </div>
                     <div class="step" data-step="7">
                         <div class="step-icon">7</div>
-                        <div class="step-title">加入配料</div>
-                        <div class="step-desc">椰果花生</div>
+                        <div class="step-title">薄荷点缀</div>
                     </div>
                     <div class="step" data-step="8">
                         <div class="step-icon">8</div>
-                        <div class="step-title">最后点缀</div>
-                        <div class="step-desc">完成制作</div>
+                        <div class="step-title">完美呈现</div>
                     </div>
                 </div>
             </div>
             
             <div class="demo-area">
                 <div class="gif-container">
-                    <img src="https://media.giphy.com/media/3o7TKt41vcwZzJdQ9y/giphy.gif" class="step-gif" id="gif-1">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-2">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-3">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-4">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-5">
-                    <img src="https://media.giphy.com/media/l0HlGSD6Q0eaeQvI4/giphy.gif" class="step-gif" id="gif-6">
-                    <img src="https://media.giphy.com/media/3o7abGQa0aRsohveX6/giphy.gif" class="step-gif" id="gif-7">
-                    <img src="https://media.giphy.com/media/26gJ1g1GQaJ9hQlKM/giphy.gif" class="step-gif" id="gif-8">
+                    <img src="../assets/images/second_10-84573eb31c.gif" class="step-gif" id="gif-0">
+                    <img src="../assets/images/second_01-994117d703.gif" class="step-gif" id="gif-1">
+                    <img src="../assets/images/second_03-c75041c97c.gif" class="step-gif" id="gif-2">
+                    <img src="../assets/images/second_04-8150dfece2.gif" class="step-gif" id="gif-3">
+                    <img src="../assets/images/second_05-33624a5639.gif" class="step-gif" id="gif-4">
+                    <img src="../assets/images/second_06-9876b58186.gif" class="step-gif" id="gif-5">
+                    <img src="../assets/images/second_07-fe8c5c736e.gif" class="step-gif" id="gif-6">
+                    <img src="../assets/images/second_08-96d69c90b9.gif" class="step-gif" id="gif-7">
+                    <img src="../assets/images/second_09-571881628c.gif" class="step-gif" id="gif-8">
                 </div>
                 
                 <div class="button-group">
@@ -653,9 +560,7 @@
             
             function updateGIF(){
                 gifs.forEach(g => g.classList.remove('active'));
-                if(currentStep > 0 && currentStep <= totalSteps){
-                    document.getElementById(`gif-${currentStep}`).classList.add('active');
-                }
+                document.getElementById(`gif-${currentStep}`).classList.add('active');
             }
             
             function updateActionButton(){

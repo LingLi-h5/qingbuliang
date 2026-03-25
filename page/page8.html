@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>海南清补凉美食地图</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,7 +11,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -23,7 +22,6 @@
             align-items: center;
             padding: 12px;
             color: #5a3921;
-            touch-action: manipulation;
             position: relative;
         }
 
@@ -53,7 +51,6 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: 0;
-            pointer-events: none;
         }
 
         .container {
@@ -119,8 +116,6 @@
             z-index: 10;
             animation: pulse 2s infinite;
             transform: translate(-50%, -50%);
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         .location:active {
@@ -354,20 +349,6 @@
             background: #f5e3d4;
         }
 
-        .fab-label {
-            position: absolute;
-            right: 65px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
         /* 手机极致适配 */
         @media (max-width: 480px) {
             .container { max-width: 100%; }
@@ -422,14 +403,8 @@
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">
-                菜单
-                <span class="fab-label">返回菜单</span>
-            </a>
-            <a href="page9.html" class="fab-item">
-                下页
-                <span class="fab-label">下一页</span>
-            </a>
+            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page9.html" class="fab-item">下页</a>
         </div>
     </div>
 
@@ -504,14 +479,6 @@
                 createShopMarker(shop, mapContainer);
             });
 
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.location') && !e.target.closest('.location-info')) {
-                    document.querySelectorAll('.location-info').forEach(info => {
-                        info.classList.remove('active');
-                    });
-                }
-            });
-
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
@@ -522,6 +489,9 @@
 
             document.addEventListener('click', function() {
                 fabMenu.classList.remove('open');
+                document.querySelectorAll('.location-info').forEach(info => {
+                    info.classList.remove('active');
+                });
             });
         });
 

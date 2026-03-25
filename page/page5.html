@@ -14,7 +14,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 禁止页面滚动 + 固定竖屏手机独占 */
         html, body {
             overflow: hidden;
             height: 100vh;
@@ -22,11 +21,10 @@
             position: fixed;
             touch-action: manipulation;
             overscroll-behavior: none;
-            -webkit-overflow-scrolling: none;
         }
 
         body {
-            background-image: url('../assets/images/9999.png');
+            background-image: url('../assets/images/3.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -103,7 +101,6 @@
             justify-content: center;
         }
 
-        /* 食材框 */
         .ingredient {
             background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -151,7 +148,6 @@
             width: 100%;
         }
 
-        /* 功效框 */
         .effect {
             background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
             color: white;
@@ -177,11 +173,6 @@
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
         }
 
-        .effect.matched {
-            background: linear-gradient(135deg, #556B2F 0%, #6B8E23 50%, #8FBC8F 100%);
-            box-shadow: 0 4px 15px rgba(107, 142, 35, 0.4);
-        }
-
         .effect-text {
             font-weight: bold;
             font-size: 0.95rem;
@@ -203,7 +194,6 @@
             80% { transform: translateY(-2px); }
         }
 
-        /* 连线 */
         .connection-line {
             position: absolute;
             background: linear-gradient(to right, #8B4513, #CD853F);
@@ -221,7 +211,6 @@
             opacity: 1;
         }
 
-        /* 弹窗 */
         .message {
             position: fixed;
             top: 50%;
@@ -324,7 +313,6 @@
             transform: scale(0.95);
         }
 
-        /* 进度条 */
         .progress {
             width: 100%;
             max-width: 240px;
@@ -370,7 +358,6 @@
             font-size: 0.85rem;
         }
 
-        /* 浮动按钮 */
         .fab-container {
             position: fixed;
             bottom: 25px;
@@ -440,12 +427,10 @@
             background: #f5e3d4;
         }
 
-        /* 手机端隐藏标签 */
         .fab-label {
             display: none;
         }
 
-        /* 仅竖屏手机响应式 */
         @media (max-width: 480px) {
             .game-area {
                 min-height: 380px;
@@ -525,7 +510,6 @@
     </div>
 
     <script>
-        // 浮动按钮
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
@@ -539,7 +523,6 @@
             }
         });
 
-        // 游戏数据
         const ingredientsData = [
             {id:1,name:"绿豆",effect:"清热解毒",description:"匹配成功！绿豆，清凉解暑，是清热解毒的天然良药。",details:{season:"夏季最佳",pairing:"与薏米、百合搭配更佳",nutrition:"富含蛋白质、膳食纤维和多种维生素"}},
             {id:2,name:"薏米",effect:"健脾祛湿",description:"匹配成功！薏米，利水渗湿，是健脾祛湿的养生佳品。",details:{season:"夏季最佳",pairing:"与绿豆、赤小豆搭配更佳",nutrition:"富含蛋白质、维生素B群和矿物质"}},
@@ -556,13 +539,11 @@
 
         const effects = [...new Set(ingredientsData.map(item => item.effect))];
 
-        // 游戏状态
         let matchedPairs = 0;
         const totalPairs = ingredientsData.length;
         let selectedIngredient = null;
         let startTime, score = 0, timerInterval;
 
-        // DOM
         const ingredientsArea = document.getElementById('ingredientsArea');
         const effectsArea = document.getElementById('effectsArea');
         const progressBar = document.getElementById('progressBar');
@@ -576,7 +557,6 @@
         const scoreElement = document.getElementById('score');
         const restartBtn = document.getElementById('restartBtn');
 
-        // 初始化
         function initGame() {
             ingredientsArea.innerHTML = '';
             effectsArea.innerHTML = '';
@@ -588,7 +568,6 @@
             updateScore();
             startTimer();
 
-            // 创建食材
             fixedShuffledIngredients.forEach(ingredient => {
                 const el = document.createElement('div');
                 el.className = 'ingredient';
@@ -598,7 +577,6 @@
                 ingredientsArea.appendChild(el);
             });
 
-            // 创建功效
             effects.forEach(effect => {
                 const el = document.createElement('div');
                 el.className = 'effect';
@@ -613,7 +591,6 @@
             restartBtn.onclick = () => { completionMessage.style.display = 'none'; initGame(); };
         }
 
-        // 点击食材
         function handleIngredientClick() {
             if (this.classList.contains('matched')) return;
             document.querySelectorAll('.ingredient.selected').forEach(i => i.classList.remove('selected'));
@@ -621,13 +598,11 @@
             selectedIngredient = this;
         }
 
-        // 点击功效
         function handleEffectClick() {
             if (!selectedIngredient || this.classList.contains('matched')) return;
             
             const ingredient = ingredientsData.find(x => x.id == selectedIngredient.dataset.id);
             if (ingredient.effect === this.dataset.effect) {
-                // 正确
                 this.classList.add('correct');
                 setTimeout(() => this.classList.remove('correct'), 400);
                 
@@ -654,7 +629,6 @@
 
                 if (matchedPairs === totalPairs) finishGame();
             } else {
-                // 错误
                 messageTitle.textContent = "再想想哦";
                 messageContent.innerHTML = `<p>${ingredient.name}的特长不是${this.dataset.effect}。</p>`;
                 message.style.display = 'block';
@@ -665,7 +639,6 @@
             }
         }
 
-        // 连线（手机端精准计算）
         function createConnectionLine(ing, eff) {
             const line = document.createElement('div');
             line.className = 'connection-line';
@@ -691,7 +664,6 @@
             setTimeout(() => line.classList.add('show'), 50);
         }
 
-        // 计时器
         function startTimer() {
             startTime = new Date();
             clearInterval(timerInterval);
@@ -700,7 +672,6 @@
             }, 1000);
         }
 
-        // 结束
         function finishGame() {
             clearInterval(timerInterval);
             setTimeout(() => completionMessage.style.display = 'block', 800);
@@ -716,16 +687,7 @@
             scoreElement.textContent = score;
         }
 
-        // 启动
         window.addEventListener('DOMContentLoaded', initGame);
-
-        // 手机端防缩放
-        let lastTouch = 0;
-        document.addEventListener('touchstart', e => e.touches.length > 1 && e.preventDefault());
-        document.addEventListener('touchend', e => {
-            if (Date.now() - lastTouch < 350) e.preventDefault();
-            lastTouch = Date.now();
-        });
     </script>
 </body>
 </html>

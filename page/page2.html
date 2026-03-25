@@ -2,9 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>清补凉在中国分布的可视化地图</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,8 +12,6 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         html, body {
@@ -23,7 +19,6 @@
             height: 100%;
             overflow: hidden;
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            touch-action: manipulation;
         }
 
         .container {
@@ -44,10 +39,10 @@
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
-            background: transparent !important;
+            background: transparent;
         }
 
-        /* 手机端专用背景图 */
+        /* 保留你有效的背景图 */
         #map::before {
             content: '';
             position: absolute;
@@ -61,16 +56,6 @@
             background-repeat: no-repeat;
             z-index: 0;
             pointer-events: none;
-
-        }
-
-        /* ECharts 手机端适配 */
-        #map > div:first-child {
-            position: relative;
-            z-index: 1 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: transparent !important;
         }
 
         .title {
@@ -95,7 +80,6 @@
             color: #666;
         }
 
-        /* 手机端图例 */
         .custom-legend {
             position: absolute;
             bottom: 12%;
@@ -125,7 +109,6 @@
             width: 14px;
             height: 14px;
             border-radius: 3px;
-            flex-shrink: 0;
         }
 
         .legend-text {
@@ -134,7 +117,6 @@
             color: #333;
         }
 
-        /* 手机端浮动按钮 */
         .fab-container {
             position: fixed;
             bottom: 25px;
@@ -197,14 +179,13 @@
             text-decoration: none;
         }
 
-        /* 手机端极致适配 */
         @media (max-width: 480px) {
             .title h1 { font-size: 1.15rem; }
             .title p { font-size: 0.8rem; }
             .custom-legend { padding: 8px 12px; gap: 8px 12px; bottom: 10%; }
             .legend-text { font-size: 10px; }
-            .fab-main { width: 52px; height: 52px; }
-            .fab-item { width: 52px; height: 52px; font-size: 12px; }
+            .fab-main, .fab-item { width: 52px; height: 52px; }
+            .fab-item { font-size: 12px; }
         }
     </style>
 </head>
@@ -236,6 +217,7 @@
         </div>
     </div>
 
+    <!-- 页面跳转按钮 100% 保留 -->
     <div class="fab-container">
         <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
@@ -287,20 +269,20 @@
             {name: '宁夏', value: 2, description: '几乎无分布'}
         ];
 
-        // 手机端初始化ECharts
         const myChart = echarts.init(document.getElementById('map'));
 
         const option = {
             backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'item',
-                formatter: ({data, name}) => data ? 
-                    `<div style="font-size:12px;line-height:1.4">
-                        <b style="font-size:13px">${name}</b><br/>
-                        <span style="color:#666">普及度: ${data.value}%</span><br/>
-                        <span style="color:#888;font-size:11px">${data.description}</span>
-                    </div>` : 
-                    `<b>${name}</b><br/>暂无数据`,
+                formatter: params => {
+                    if (!params.data) return `<b>${params.name}</b><br/>暂无数据`;
+                    return `<div style="font-size:12px;line-height:1.4">
+                        <b style="font-size:13px">${params.name}</b><br/>
+                        <span style="color:#666">普及度: ${params.value}%</span><br/>
+                        <span style="color:#888;font-size:11px">${params.data.description}</span>
+                    </div>`;
+                },
                 backgroundColor: 'rgba(255,255,255,0.95)',
                 borderColor: '#8B4513',
                 textStyle: { color: '#333' },
@@ -337,7 +319,7 @@
 
         myChart.setOption(option);
 
-        // 手机端按钮交互
+        // 按钮交互完全保留
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
 
@@ -352,9 +334,7 @@
             fabMain.classList.remove('active');
         });
 
-        // 手机端自适应
         window.addEventListener('resize', () => myChart.resize());
-        window.addEventListener('load', () => setTimeout(() => myChart.resize(), 200));
     </script>
 </body>
 </html>

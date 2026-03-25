@@ -61,7 +61,7 @@
         }
 
         .dialogue-container {
-            background-image: url('../assets/images/background.png');
+            background-image: url('assets/images/background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -171,7 +171,6 @@
             animation: fadeIn 0.3s ease-out;
             min-height: 50px;
             touch-action: manipulation;
-            -webkit-appearance: none;
         }
 
         .choice-btn:active {
@@ -263,15 +262,8 @@
             font-size: 1rem;
             transition: all 0.2s ease;
             box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
-            margin-top: 12px;
-            animation: fadeIn 0.5s ease-out;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
             margin: 12px auto 0;
             min-height: 46px;
-            -webkit-appearance: none;
         }
 
         .fab-container {
@@ -298,7 +290,6 @@
             position: relative;
             z-index: 101;
             touch-action: manipulation;
-            -webkit-appearance: none;
         }
 
         .fab-menu {
@@ -342,11 +333,7 @@
             border: 1px solid #e0e0e0;
         }
 
-        .fab-label {
-            display: none;
-        }
-
-        /* 仅竖屏手机适配 */
+        /* 竖屏手机适配 */
         @media (max-width: 480px) {
             body { padding: 10px; }
             .dialogue-container { min-height: 340px; padding: 15px; }
@@ -388,14 +375,14 @@
                 通过这次互动，你了解了清补凉的养生智慧<br>
                 以及苏东坡对这份岭南美食的赞叹。
             </p>
-            <button class="restart-btn" id="restartBtn">
+            <button type="button" class="restart-btn" id="restartBtn">
                 <i class="fas fa-redo"></i> 重新开始
             </button>
         </div>
     </div>
 
     <div class="fab-container">
-        <button class="fab-main" id="fabMain">
+        <button type="button" class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
@@ -545,8 +532,7 @@
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
-            fabMain.addEventListener('click', function(e) {
-                e.stopPropagation();
+            fabMain.addEventListener('click', function() {
                 fabMenu.classList.toggle('open');
             });
 
@@ -587,6 +573,7 @@
 
             dialogue.choices.forEach(choice => {
                 const button = document.createElement('button');
+                button.type = 'button';
                 button.className = 'choice-btn';
                 button.innerHTML = `<i class="fas fa-comment"></i>${choice.text}`;
                 button.addEventListener('click', function() {

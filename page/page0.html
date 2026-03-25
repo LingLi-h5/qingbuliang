@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="x5-orientation" content="portrait">
-    <meta name="screen-orientation" content="portrait">
     <title>清补凉文化探索</title>
     <style>
         :root {
@@ -18,10 +16,11 @@
             --accent-4: #DEB887;
             --light-beige: #ffecd2;
             --white: #ffffff;
-            --shadow-color: rgba(139, 69, 19, 0.15);
-            --shadow-active: rgba(139, 69, 19, 0.2);
+            --shadow-color: rgba(139, 69, 19, 0.12);
+            --shadow-active: rgba(139, 69, 19, 0.18);
             --overlay-bg: rgba(0,0,0,0.7);
-            --card-gap: 20px;
+            --card-gap: 18px;
+            --bounce-spring: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -30,28 +29,23 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         body {
             background-image: url('../assets/images/100.png');
             background-size: cover;
-            background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: var(--light-beige);
-            
-            position: fixed;
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            touch-action: manipulation;
-            overflow: hidden;
+            /* 背景大幅度微动，超级明显 */
+            animation: bgFloat 12s ease-in-out infinite alternate;
         }
 
         .container {
@@ -60,86 +54,100 @@
             text-align: center;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .header {
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease;
+            margin-bottom: 12px;
+            animation: fadeInDown 0.7s var(--bounce-spring);
         }
 
         .header h1 {
             color: var(--primary-brown);
             font-size: 2.4rem;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: 700;
-            text-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+            text-shadow: 0 1px 6px rgba(139, 69, 19, 0.08);
+            letter-spacing: 1px;
+            /* 标题大幅度浮动！一眼可见 */
+            animation: titleFloat 2.5s ease-in-out infinite alternate;
         }
 
         .header p {
             color: var(--secondary-brown);
             font-size: 1.1rem;
             font-weight: 400;
-            opacity: 0.9;
+            opacity: 0.85;
+            letter-spacing: 0.3px;
         }
 
         .menu-cards {
             display: flex;
             flex-direction: column;
             gap: var(--card-gap);
-            margin-bottom: 30px;
+            margin-bottom: 12px;
         }
 
         .card {
             background: var(--white);
-            border-radius: 24px;
+            border-radius: 26px;
             padding: 0;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 12px 40px var(--shadow-color);
-            border: 1px solid #e0e0e0;
+            transition: all 0.4s var(--bounce-spring);
+            box-shadow: 0 8px 24px var(--shadow-color);
             overflow: hidden;
             position: relative;
             cursor: pointer;
-            animation: fadeInUp 0.8s ease;
+            animation: fadeInUp 0.7s var(--bounce-spring);
             animation-fill-mode: both;
+            transform: translateY(0);
+        }
+
+        /* 卡片悬浮：超级明显！上浮 + 放大 + 强阴影 */
+        .card:hover {
+            transform: translateY(-14px) scale(1.06);
+            box-shadow: 0 22px 50px rgba(139, 69, 19, 0.25);
         }
 
         .card:active {
-            transform: scale(0.96);
-            box-shadow: 0 6px 20px var(--shadow-active);
+            transform: translateY(-2px) scale(0.94);
+            box-shadow: 0 6px 16px var(--shadow-active);
         }
 
         .card-content {
-            padding: 25px;
+            padding: 24px 26px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             position: relative;
             z-index: 2;
         }
 
         .card-icon {
-            width: 70px;
-            height: 70px;
+            width: 68px;
+            height: 68px;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
-            padding: 8px;
+            transition: all 0.3s var(--bounce-spring);
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.15);
+            padding: 10px;
         }
 
         .icon-img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--bounce-spring);
         }
 
+        /* 点击图标：旋转+缩放超级明显！超活泼 */
         .card:active .icon-img {
-            transform: scale(0.95);
+            transform: scale(0.75) rotate(18deg);
         }
 
         .card-icon.history {
@@ -169,71 +177,72 @@
 
         .card-text h3 {
             color: var(--primary-brown);
-            font-size: 1.3rem;
-            margin-bottom: 6px;
+            font-size: 1.28rem;
+            margin-bottom: 5px;
             font-weight: 600;
+            letter-spacing: 0.2px;
         }
 
         .card-text p {
             color: var(--secondary-brown);
             font-size: 0.9rem;
-            line-height: 1.4;
-            opacity: 0.8;
+            line-height: 1.45;
+            opacity: 0.78;
         }
 
         .footer {
             color: var(--primary-brown);
             font-size: 0.85rem;
             font-weight: 400;
-            opacity: 0.7;
-            animation: fadeInUp 0.8s ease 0.2s both;
+            opacity: 0.65;
+            animation: fadeInUp 0.7s var(--bounce-spring) 0.2s both;
+            padding: 10px 0;
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 标题浮动：强化版 */
+        @keyframes titleFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* 背景流动：强化版 */
+        @keyframes bgFloat {
+            0% { background-position: center 0%; }
+            100% { background-position: center 15%; }
         }
 
         .menu-button {
             position: fixed;
-            top: 25px;
-            left: 25px;
+            top: 22px;
+            left: 22px;
             background: var(--white);
             color: var(--primary-brown);
-            width: 55px;
-            height: 55px;
+            width: 52px;
+            height: 52px;
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 1.3rem;
-            box-shadow: 0 8px 25px var(--shadow-color);
+            font-size: 1.25rem;
+            box-shadow: 0 6px 20px var(--shadow-color);
             z-index: 1000;
-            transition: all 0.3s ease;
-            border: 1px solid #e0e0e0;
+            transition: all 0.3s var(--bounce-spring);
         }
 
         .menu-button:active {
-            transform: scale(0.9);
-            background: #f5f5f5;
+            transform: scale(0.92);
+            background: #f8f8f8;
         }
 
         @media (max-width: 768px) {
@@ -244,18 +253,11 @@
                 font-size: clamp(0.9rem, 3vw, 1.1rem);
             }
             .card-content {
-                padding: clamp(15px, 4vw, 25px);
+                padding: clamp(20px, 4vw, 24px);
             }
             .card-icon {
-                width: clamp(50px, 10vw, 70px);
-                height: clamp(50px, 10vw, 70px);
-            }
-        }
-
-        @media (max-width: 320px) {
-            .card-content {
-                padding: 20px;
-                gap: 15px;
+                width: clamp(52px, 10vw, 68px);
+                height: clamp(52px, 10vw, 68px);
             }
         }
     </style>
@@ -324,26 +326,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 卡片动画
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, i) => {
                 card.style.animationDelay = `${i * 0.1}s`;
             });
 
-            // 图标失败兜底
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.onerror = function() {
                     const p = this.parentElement;
                     p.innerHTML = '<span style="color:white; font-size:22px; font-weight:bold">图</span>';
                 };
             });
-
-            // 锁定竖屏
-            try {
-                if (screen.orientation && screen.orientation.lock) {
-                    screen.orientation.lock('portrait');
-                }
-            } catch (e) {}
         });
     </script>
 </body>
