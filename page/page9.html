@@ -61,6 +61,16 @@
             padding: 5px 0;
             position: relative;
             z-index: 2;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: pageIn 1.2s 0.2s ease-out forwards;
+        }
+        
+        @keyframes pageIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         header {
@@ -95,6 +105,9 @@
             border: 1px solid #e0e0e0;
             font-weight: 500;
             line-height: 1.5;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: cardIn 1s 0.6s ease-out forwards;
         }
         
         .gesture-hints {
@@ -107,6 +120,16 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
             width: 100%;
             border: 1px solid #e0e0e0;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: cardIn 1s 0.9s ease-out forwards;
+        }
+        
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .gesture-item {
@@ -133,6 +156,12 @@
             margin: 10px 0;
             border: 2px solid #8B4513;
             touch-action: none;
+            animation: breathe 5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes breathe {
+            from { transform: scale(0.995); }
+            to { transform: scale(1.005); }
         }
         
         #model-canvas {
@@ -175,8 +204,13 @@
             font-weight: 500;
             box-shadow: 0 2px 8px rgba(139,69,19,0.4);
             flex: 1;
+            transition: all 0.3s;
         }
         .control-btn:active { transform: scale(0.98); }
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139,69,19,0.35);
+        }
 
         .fab-container {
             position: fixed;
@@ -207,7 +241,7 @@
             gap: 18px;
             opacity: 0;
             transform: translateY(20px);
-            transition: 0.3s;
+            transition: 0.4s;
             pointer-events: none;
         }
         .fab-menu.open {

@@ -48,6 +48,7 @@
             background-repeat: no-repeat;
             z-index: 0;
             pointer-events: none;
+            opacity:1;
         }
 
         .title {
@@ -57,12 +58,15 @@
             color: #333;
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
             margin: 10px 0 25px;
+            /* 更强的入场动画：弹跳+淡入 */
+            animation: fadeInBounce 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
 
         .title h1 {
             font-size: 1.4rem;
             margin-bottom: 10px;
             font-weight: 600;
+            color: #8B4513;
         }
 
         .title p {
@@ -86,52 +90,74 @@
         .value-card {
             background: rgba(255, 255, 255, 0.95);
             padding: 20px 16px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255,255,255,0.3);
             display: flex;
             align-items: flex-start;
             gap: 15px;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            /* 卡片更强入场：放大+滑入 */
+            transform: translateY(80px) scale(0.8);
+            animation: zoomSlideUp 1.1s cubic-bezier(0.17, 0.67, 0.23, 0.99) forwards;
         }
 
+        .value-card:nth-child(1){animation-delay: 0.2s;}
+        .value-card:nth-child(2){animation-delay: 0.4s;}
+        .value-card:nth-child(3){animation-delay: 0.6s;}
+        .value-card:nth-child(4){animation-delay: 0.8s;}
+
+        /* 点击动态效果 超强版 */
         .value-card:active {
-            transform: scale(0.98);
+            transform: scale(0.92) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+            background: rgba(255,248,240,0.98) !important;
+            border-color: #8B4513;
+        }
+
+        /* 悬浮效果（手机触摸也生效） */
+        .value-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(139, 69, 19, 0.15);
         }
 
         .value-icon {
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.25);
+            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.25);
+            transition: transform 0.2s ease;
+        }
+
+        /* 点击时图标也动 */
+        .value-card:active .value-icon {
+            transform: scale(0.9);
         }
 
         .value-icon i {
             color: white;
-            font-size: 20px;
-        }
-
-        .value-content {
-            flex: 1;
+            font-size: 22px;
         }
 
         .value-content h3 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #8B4513;
             margin-bottom: 6px;
             font-weight: 600;
         }
 
         .value-content p {
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             color: #555;
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
         .fab-container {
@@ -139,18 +165,20 @@
             bottom: 25px;
             right: 20px;
             z-index: 100;
+            opacity: 0;
+            animation: fadeIn 1s ease 1.2s forwards;
         }
 
         .fab-main {
-            width: 56px;
-            height: 56px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.35);
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -191,7 +219,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
             transition: all 0.2s ease;
             text-decoration: none;
             font-size: 13px;
@@ -202,88 +230,197 @@
             transform: scale(0.95);
         }
 
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: none;
+        }
+        .video-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .video-modal video {
+            max-width: 100%;
+            max-height: 80vh;
+            outline: none;
+            border-radius: 12px;
+        }
+        .video-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 46px;
+            height: 46px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #8B4513;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* 更强的标题动画：弹跳淡入 */
+        @keyframes fadeInBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(10px) scale(1.03);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 卡片超强动画：放大 + 滑上 + 弹性结束 */
+        @keyframes zoomSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(80px) scale(0.8);
+            }
+            80% {
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @media (max-width: 480px) {
             .title h1 { font-size: 1.3rem; }
             .title p { font-size: 0.95rem; }
             .value-card { padding: 16px 14px; }
-            .value-icon { width: 44px; height: 44px; }
+            .value-icon { width: 46px; height: 46px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="title">
-            <h1>分享美好，传承清补凉文化</h1>
-            <p>每一份分享，都是文化的传递。清补凉不仅仅是一碗甜品，更是千年食疗智慧、地域人文与舌尖记忆的凝结。通过分享，我们可以：</p>
+
+<div class="container">
+    <div class="title">
+        <h1>分享美好，传承清补凉文化</h1>
+        <p>每一份分享，都是文化的传递。清补凉不仅仅是一碗甜品，更是千年食疗智慧、地域人文与舌尖记忆的凝结。通过分享，我们可以：</p>
+    </div>
+
+    <div class="core-values">
+        <div class="value-card" data-video="../assets/images/清补凉.mp4">
+            <div class="value-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <div class="value-content">
+                <h3>传递养生智慧</h3>
+                <p>让更多人了解食材的药用价值与搭配理念，延续“药食同源”的中华饮食哲学。</p>
+            </div>
         </div>
 
-        <div class="core-values">
-            <div class="value-card">
-                <div class="value-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <div class="value-content">
-                    <h3>传递养生智慧</h3>
-                    <p>让更多人了解食材的药用价值与搭配理念，延续“药食同源”的中华饮食哲学。</p>
-                </div>
+        <div class="value-card" data-video="video2.mp4">
+            <div class="value-icon">
+                <i class="fas fa-map-marked-alt"></i>
             </div>
-
-            <div class="value-card">
-                <div class="value-icon">
-                    <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <div class="value-content">
-                    <h3>推广地域文化</h3>
-                    <p>将海南的清补凉故事带到更远的地方，成为一张行走的“文化名片”。</p>
-                </div>
+            <div class="value-content">
+                <h3>推广地域文化</h3>
+                <p>将海南的清补凉故事带到更远的地方，成为一张行走的“文化名片”。</p>
             </div>
+        </div>
 
-            <div class="value-card">
-                <div class="value-icon">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="value-content">
-                    <h3>联结情感记忆</h3>
-                    <p>一碗清补凉，承载的是夏日的清凉、家乡的滋味与共享的温情。</p>
-                </div>
+        <div class="value-card" data-video="video3.mp4">
+            <div class="value-icon">
+                <i class="fas fa-heart"></i>
             </div>
+            <div class="value-content">
+                <h3>联结情感记忆</h3>
+                <p>一碗清补凉，承载的是夏日的清凉、家乡的滋味与共享的温情。</p>
+            </div>
+        </div>
 
-            <div class="value-card">
-                <div class="value-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="value-content">
-                    <h3>激发互动探索</h3>
-                    <p>邀请朋友一起体验H5中的制作、游戏与历史，共同感受数字文化的魅力。</p>
-                </div>
+        <div class="value-card" data-video="video4.mp4">
+            <div class="value-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="value-content">
+                <h3>激发互动探索</h3>
+                <p>邀请朋友一起体验H5中的制作、游戏与历史，共同感受数字文化的魅力。</p>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
-        <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">菜单</a>
-            <a href="page11.html" class="fab-item">下页</a>
-        </div>
+<div class="video-modal" id="videoModal">
+    <div class="video-close" id="videoClose">
+        <i class="fas fa-times"></i>
     </div>
+    <video id="videoPlayer" controls></video>
+</div>
 
-    <script>
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        
-        fabMain.addEventListener('click', (e) => {
-            e.stopPropagation();
-            fabMenu.classList.toggle('open');
-            fabMain.classList.toggle('active');
-        });
+<div class="fab-container">
+    <button class="fab-main" id="fabMain">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu">
+        <a href="page0.html" class="fab-item">菜单</a>
+        <a href="page11.html" class="fab-item">下页</a>
+    </div>
+</div>
 
-        document.addEventListener('click', () => {
-            fabMenu.classList.remove('open');
-            fabMain.classList.remove('active');
+<script>
+    const fabMain = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    fabMain.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fabMenu.classList.toggle('open');
+        fabMain.classList.toggle('active');
+    });
+    document.addEventListener('click', () => {
+        fabMenu.classList.remove('open');
+        fabMain.classList.remove('active');
+    });
+
+    const videoModal = document.getElementById('videoModal');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoClose = document.getElementById('videoClose');
+    const cards = document.querySelectorAll('.value-card');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const src = card.dataset.video;
+            
+            setTimeout(() => {
+                videoPlayer.src = src;
+                videoModal.classList.add('show');
+                videoPlayer.play();
+            }, 200);
         });
-    </script>
+    });
+
+    function closeModal() {
+        videoModal.classList.remove('show');
+        videoPlayer.pause();
+        videoPlayer.src = '';
+    }
+
+    videoClose.addEventListener('click', closeModal);
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) closeModal();
+    });
+</script>
 </body>
 </html>

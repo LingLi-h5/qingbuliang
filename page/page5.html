@@ -14,6 +14,20 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* === 整页高级入场动画：淡入 + 缓慢上浮 === */
+        body {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: pageEnter 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pageEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         html, body {
             overflow: hidden;
             height: 100vh;
@@ -104,13 +118,13 @@
         .ingredient {
             background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            border-radius: 28px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
             min-height: 68px;
             text-align: center;
@@ -127,8 +141,9 @@
         .ingredient.selected {
             border: 3px solid #FFD700;
             background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
-            transform: scale(1.03);
+            transform: scale(1.08);
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
+            animation: selectBounce 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .ingredient.matched {
@@ -136,6 +151,7 @@
             background: linear-gradient(135deg, #556B2F 0%, #6B8E23 50%, #8FBC8F 100%);
             box-shadow: 0 4px 15px rgba(107, 142, 35, 0.4);
             cursor: default;
+            animation: matchSuccess 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .ingredient-name {
@@ -152,14 +168,14 @@
             background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            border-radius: 28px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 68px;
             box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             text-align: center;
             width: 100%;
             max-width: 115px;
@@ -168,9 +184,10 @@
 
         .effect.selected {
             border: 3px solid #FFD700;
-            transform: scale(1.03);
+            transform: scale(1.08);
             background: linear-gradient(135deg, #CD853F 0%, #DEB887 50%, #F5DEB3 100%);
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
+            animation: selectBounce 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .effect-text {
@@ -185,13 +202,19 @@
         }
 
         .effect.correct {
-            animation: bounce 0.4s ease;
+            animation: matchSuccess 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        @keyframes bounce {
-            0%, 20%, 60%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-5px); }
-            80% { transform: translateY(-2px); }
+        @keyframes selectBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1.08); }
+        }
+
+        @keyframes matchSuccess {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(46, 139, 87, 0); }
+            50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(46, 139, 87, 0.6); }
+            100% { transform: scale(1.05); box-shadow: 0 4px 15px rgba(107, 142, 35, 0.4); }
         }
 
         .connection-line {
@@ -202,111 +225,135 @@
             z-index: 10;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.4s;
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.5);
         }
 
         .connection-line.show {
             opacity: 1;
         }
 
+        /* 弹窗：缩小 + 深橘色边框 */
         .message {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(0.8);
             background: #ffffff;
             padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 8px 28px rgba(139, 69, 19, 0.25);
             z-index: 100;
             display: none;
-            max-width: 88%;
-            width: 280px;
+            max-width: 85%;
+            width: 240px;
             text-align: center;
-            border: 1px solid #e0e0e0;
+            border: 2px solid #E65C00;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .message.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .message h3 {
             color: #8B4513;
             margin-bottom: 8px;
             font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .message p {
             line-height: 1.4;
             margin-bottom: 8px;
             font-size: 0.85rem;
+            color: #654321;
         }
 
         .ingredient-details {
             text-align: left;
-            background: #f8f8f8;
+            background: rgba(255, 255, 255, 0.7);
             padding: 8px;
-            border-radius: 6px;
+            border-radius: 10px;
             margin-top: 8px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #FFC799;
         }
 
         .ingredient-details p {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-size: 0.8rem;
-            line-height: 1.3;
+            line-height: 1.35;
+            color: #7a5439;
         }
 
         .message button {
             background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
             color: white;
             border: none;
-            padding: 8px 22px;
+            padding: 8px 20px;
             border-radius: 50px;
             cursor: pointer;
             font-size: 0.9rem;
+            font-weight: 500;
             transition: all 0.25s ease;
-            margin-top: 8px;
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
         }
 
         .message button:active {
             transform: scale(0.95);
         }
 
+        /* 完成弹窗：缩小 + 深橘色边框 */
         .completion-message {
             display: none;
             background: #ffffff;
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 32px rgba(139, 69, 19, 0.3);
+            max-width: 85%;
             margin: auto;
             text-align: center;
-            border: 1px solid #e0e0e0;
+            border: 2px solid #E65C00;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .completion-message.active {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .completion-message h2 {
             color: #8B4513;
             margin-bottom: 10px;
             font-size: 1.2rem;
+            font-weight: 600;
         }
 
         .completion-message p {
-            line-height: 1.4;
+            line-height: 1.45;
             margin-bottom: 12px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            color: #654321;
         }
 
         .restart-btn {
             background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
             color: white;
             border: none;
-            padding: 9px 24px;
+            padding: 8px 22px;
             font-size: 0.95rem;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 4px 14px rgba(139, 69, 19, 0.35);
             transition: all 0.25s ease;
-            margin: 5px;
+            margin: 6px;
+            font-weight: 500;
         }
 
         .restart-btn:active {
@@ -587,8 +634,17 @@
             });
 
             updateProgress();
-            messageButton.onclick = () => message.style.display = 'none';
-            restartBtn.onclick = () => { completionMessage.style.display = 'none'; initGame(); };
+            messageButton.onclick = () => {
+                message.classList.remove('active');
+                setTimeout(()=>message.style.display='none',300);
+            };
+            restartBtn.onclick = () => { 
+                completionMessage.classList.remove('active');
+                setTimeout(()=>{
+                    completionMessage.style.display = 'none';
+                    initGame();
+                },300);
+            };
         }
 
         function handleIngredientClick() {
@@ -604,7 +660,7 @@
             const ingredient = ingredientsData.find(x => x.id == selectedIngredient.dataset.id);
             if (ingredient.effect === this.dataset.effect) {
                 this.classList.add('correct');
-                setTimeout(() => this.classList.remove('correct'), 400);
+                setTimeout(() => this.classList.remove('correct'), 600);
                 
                 messageTitle.textContent = "匹配成功！";
                 messageContent.innerHTML = `
@@ -615,6 +671,7 @@
                         <p><strong>营养:</strong> ${ingredient.details.nutrition}</p>
                     </div>`;
                 message.style.display = 'block';
+                setTimeout(()=>message.classList.add('active'),50);
 
                 selectedIngredient.classList.remove('selected');
                 selectedIngredient.classList.add('matched');
@@ -632,6 +689,7 @@
                 messageTitle.textContent = "再想想哦";
                 messageContent.innerHTML = `<p>${ingredient.name}的特长不是${this.dataset.effect}。</p>`;
                 message.style.display = 'block';
+                setTimeout(()=>message.classList.add('active'),50);
                 score = Math.max(0, score - 50);
                 updateScore();
                 selectedIngredient.classList.remove('selected');
@@ -661,7 +719,7 @@
             line.style.transform = `rotate(${angle}deg)`;
             gameArea.appendChild(line);
 
-            setTimeout(() => line.classList.add('show'), 50);
+            setTimeout(() => line.classList.add('show'), 80);
         }
 
         function startTimer() {
@@ -674,7 +732,11 @@
 
         function finishGame() {
             clearInterval(timerInterval);
-            setTimeout(() => completionMessage.style.display = 'block', 800);
+            document.querySelectorAll('.connection-line').forEach(line => line.remove());
+            setTimeout(() => {
+                completionMessage.style.display='block';
+                setTimeout(()=>completionMessage.classList.add('active'),50);
+            }, 800);
         }
 
         function updateProgress() {

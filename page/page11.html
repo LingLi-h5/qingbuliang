@@ -30,7 +30,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
-            padding: 10px;
+            padding: 12px;
             overflow: hidden;
         }
 
@@ -57,19 +57,22 @@
             z-index: 10;
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
             padding: 10px;
-            margin: 15px 0 20px;
+            margin: 20px 0 24px;
+            opacity: 0;
+            animation: bounceIn 0.75s ease forwards;
+            animation-delay: 0.1s;
         }
 
         .title h1 {
-            font-size: 1.3rem;
-            margin-bottom: 6px;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
         .title p {
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             color: #666;
-            line-height: 1.4;
+            line-height: 1.5;
             max-width: 90%;
             margin: 0 auto;
         }
@@ -77,20 +80,23 @@
         .share-cards {
             position: relative;
             z-index: 10;
-            width: 92%;
+            width: 94%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 26px;
+            opacity: 0;
+            animation: bounceIn 0.75s ease forwards;
+            animation-delay: 0.25s;
         }
 
         .share-card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 16px 14px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            padding: 18px 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             cursor: pointer;
             transition: all 0.25s ease;
             position: relative;
@@ -118,6 +124,7 @@
         .share-card.active {
             border: 2px solid #8B4513;
             background: #fff9f5;
+            box-shadow: 0 4px 18px rgba(139, 69, 19, 0.15);
         }
 
         .share-card.active::after {
@@ -125,9 +132,9 @@
         }
 
         .share-card h3 {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #8B4513;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -135,46 +142,49 @@
         }
 
         .share-card h3 i {
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .share-card p {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #555;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .share-channels {
             position: relative;
             z-index: 10;
-            width: 92%;
-            margin-bottom: 20px;
+            width: 94%;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: bounceIn 0.75s ease forwards;
+            animation-delay: 0.4s;
         }
 
         .share-channels h3 {
             font-size: 1rem;
             color: #333;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             text-align: center;
             font-weight: 600;
         }
 
         .channels-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             justify-items: center;
         }
 
         .channel-item {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
@@ -185,7 +195,7 @@
         }
 
         .channel-item i {
-            font-size: 20px;
+            font-size: 22px;
             color: #8B4513;
         }
 
@@ -194,7 +204,7 @@
             bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: #555;
             white-space: nowrap;
         }
@@ -202,15 +212,15 @@
         .main-share-btn {
             position: relative;
             z-index: 10;
-            width: 88%;
-            height: 46px;
+            width: 90%;
+            height: 50px;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             border: none;
-            border-radius: 23px;
-            font-size: 0.95rem;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: 600;
-            box-shadow: 0 5px 18px rgba(139, 69, 19, 0.35);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.28);
             cursor: pointer;
             transition: all 0.25s ease;
             margin-bottom: 20px;
@@ -218,6 +228,9 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            opacity: 0;
+            animation: bounceIn 0.75s ease forwards;
+            animation-delay: 0.55s;
         }
 
         .main-share-btn:active {
@@ -232,7 +245,7 @@
         }
 
         .main-share-btn i {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
         .fab-container {
@@ -243,15 +256,15 @@
         }
 
         .fab-main {
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B451E, #D2691E);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.35);
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -266,7 +279,7 @@
 
         .fab-menu {
             position: absolute;
-            bottom: 65px;
+            bottom: 68px;
             right: 0;
             display: flex;
             flex-direction: column;
@@ -283,7 +296,6 @@
             pointer-events: all;
         }
 
-        /* ✅ 这里已经恢复你原来的字体样式 */
         .fab-item {
             width: 52px;
             height: 52px;
@@ -293,7 +305,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
@@ -303,6 +315,21 @@
 
         .fab-item:active {
             transform: scale(0.9);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.4) translateY(30px);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) translateY(-6px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
     </style>
 </head>
@@ -349,15 +376,11 @@
                     <i class="fas fa-book-open"></i>
                     <span>小红书</span>
                 </div>
-                <div class="channel-item" id="save">
-                    <i class="fas fa-download"></i>
-                    <span>保存相册</span>
-                </div>
             </div>
         </div>
 
         <button class="main-share-btn" id="shareBtn" disabled>
-            <i class="fas fa-paper-plane"></i> 生成并分享
+            <i class="fas fa-paper-plane"></i> 复制链接并分享
         </button>
     </div>
 
@@ -379,6 +402,13 @@
         const fabMenu = document.getElementById('fabMenu');
         let selectedCard = null;
 
+        const SHARE_LINK = "https://lingli-h5.github.io/qingbuliang/";
+        const shareTexts = {
+            card1: "清补凉历史长卷：从秦汉药食到现代甜品，一碗清补凉穿越千年时光，快来一起探索！",
+            card2: "我亲手做了一碗地道海南清补凉！超详细沉浸式教程，你也来试试～",
+            card3: "在清补凉食材功效闯关游戏中拿到高分啦！你敢来挑战我的记录吗？"
+        };
+
         shareCards.forEach(card => {
             card.addEventListener('click', () => {
                 shareCards.forEach(c => c.classList.remove('active'));
@@ -388,24 +418,29 @@
             });
         });
 
-        shareBtn.addEventListener('click', () => {
-            let content = '';
-            switch(selectedCard){
-                case 'card1': content = '清补凉历史长卷'; break;
-                case 'card2': content = '清补凉制作成果'; break;
-                case 'card3': content = '食材功效闯关成绩单'; break;
-            }
-            alert(`已选择：${content}\n正在生成分享内容…`);
-        });
+        function copyToShare() {
+            const text = shareTexts[selectedCard];
+            const fullContent = `${text}\n\n${SHARE_LINK}`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = fullContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            alert("✅ 分享内容已复制！\n\n打开微信/微博/QQ/小红书，粘贴给好友即可～\n好友点击链接就能直接打开页面！");
+        }
+
+        shareBtn.addEventListener('click', copyToShare);
 
         channelItems.forEach(item => {
             item.addEventListener('click', () => {
                 if (!selectedCard) {
-                    alert('请先选择要分享的内容！');
+                    alert("请先选择要分享的内容哦～");
                     return;
                 }
-                const name = item.querySelector('span').textContent;
-                alert(`即将分享至【${name}】`);
+                copyToShare();
             });
         });
 

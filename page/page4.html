@@ -11,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -30,7 +31,6 @@
             position: relative;
         }
 
-        /* 公共卡片样式 */
         .card {
             background-color: #ffffff;
             border-radius: 16px;
@@ -121,7 +121,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             box-shadow: 0 6px 18px rgba(139, 69, 19, 0.2);
             z-index: 100;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -130,9 +130,9 @@
         }
 
         .ingredient.selected {
-            border: 3px solid #8B4513;
-            transform: scale(1.08);
-            box-shadow: 0 10px 24px rgba(139, 69, 19, 0.4);
+            transform: scale(1.3);
+            border: 3px solid #fff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
         }
 
         .ingredient img {
@@ -144,33 +144,37 @@
 
         .ingredient-in-bowl {
             position: absolute;
-            width: 62px;
-            height: 62px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 85px;
+            height: 85px;
             z-index: 3;
-            opacity: 0;
-            transition: opacity 0.3s ease;
             top: 40%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 18px;
-            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.3);
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: white;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+            border: 3px solid #fff;
+            background: #fff;
+            transform: translate(-50%, -50%) scale(0);
         }
 
         .ingredient-in-bowl.active {
-            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
         }
 
         .ingredient-in-bowl img {
-            width: 82%;
-            height: 82%;
-            object-fit: contain;
-            border-radius: 14px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        @keyframes flyToBowl {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+        }
+
+        .flying {
+            animation: flyToBowl 0.8s forwards ease-out;
         }
 
         .info-card {
@@ -224,16 +228,6 @@
             line-height: 1.45;
         }
 
-        @keyframes flyToBowl {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.25) translate(var(--tx), var(--ty)); opacity: 0.85; }
-            100% { transform: scale(1) translate(0, 0); opacity: 0; }
-        }
-
-        .flying {
-            animation: flyToBowl 0.9s forwards ease;
-        }
-
         .instructions {
             margin-top: 12px;
             text-align: center;
@@ -244,7 +238,6 @@
             line-height: 1.4;
         }
 
-        /* 食材定位与颜色 */
         .mung-bean { background: linear-gradient(135deg, #8B4513, #D2691E); top: 10%; left: 5%; }
         .coconut { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 5%; }
         .jobstears { background: linear-gradient(135deg, #A0522D, #CD853F); bottom: 20%; left: 10%; }
@@ -253,7 +246,6 @@
         .taro-ball { background: linear-gradient(135deg, #8B0000, #A52A2A); top: 40%; right: 15%; }
         .mango { background: linear-gradient(135deg, #A0522D, #DEB887); bottom: 10%; right: 25%; }
 
-        /* 悬浮按钮 */
         .fab-container {
             position: fixed;
             bottom: 24px;
@@ -319,28 +311,15 @@
             z-index: 200;
         }
 
-        /* 响应式 */
         @media (max-width: 480px) {
             body { padding: 10px; }
             .bowl-container { height: 250px; }
             .bowl-wrapper { width: 190px; height: 190px; }
-            .ingredient, .ingredient-in-bowl { width: 56px; height: 56px; border-radius: 16px; }
+            .ingredient { width: 56px; height: 56px; border-radius: 16px; }
+            .ingredient-in-bowl { width: 75px; height: 75px; }
             .fab-container { bottom: 20px; right: 20px; }
             .fab-main { width: 56px; height: 56px; font-size: 22px; }
             .fab-item { width: 58px; height: 58px; font-size: 14px; }
-        }
-
-        @media (max-width: 380px) {
-            .bowl-container { height: 230px; }
-            .bowl-wrapper { width: 170px; height: 170px; }
-            .ingredient, .ingredient-in-bowl { width: 50px; height: 50px; border-radius: 14px; }
-            .header h1 { font-size: 1.5rem; }
-            .info-card { padding: 14px; }
-        }
-
-        @media (max-width: 340px) {
-            .ingredient, .ingredient-in-bowl { width: 46px; height: 46px; border-radius: 12px; }
-            .bowl-wrapper { width: 155px; height: 155px; }
         }
     </style>
 </head>
@@ -407,136 +386,42 @@
         const ingredients = document.querySelectorAll('.ingredient');
         const infoCard = document.getElementById('info-card');
         const bowlWrapper = document.getElementById('bowlWrapper');
-        
-        // 悬浮菜单
-        fabMain.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            fabMenu.classList.toggle('open');
-        });
 
-        document.addEventListener('touchstart', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
-
-        // 食材数据
-        const ingredientData = {
-            'mung-bean': {
-                name: '绿豆',
-                description: '绿豆是一种常见的豆类食材，富含蛋白质、膳食纤维和多种维生素。',
-                benefits: [
-                    '清热解毒，消暑止渴',
-                    '降低血脂和胆固醇',
-                    '促进肠道蠕动，改善便秘',
-                    '富含抗氧化物质，延缓衰老'
-                ],
-                usage: '可煮粥、做汤、制作绿豆沙等甜品。夏季常用来制作绿豆汤解暑。'
-            },
-            'coconut': {
-                name: '椰子',
-                description: '椰子是清补凉的核心食材，椰肉和椰汁都富含营养，是热带特色食材。',
-                benefits: [
-                    '生津止渴，清凉解暑',
-                    '补充电解质，缓解脱水',
-                    '富含中链脂肪酸，易被人体吸收',
-                    '椰肉富含膳食纤维，促进肠道健康'
-                ],
-                usage: '椰汁可直接饮用，椰肉可切块加入清补凉，也可制作椰奶、椰蓉等。'
-            },
-            'jobstears': {
-                name: '薏米',
-                description: '薏米又称薏苡仁，是传统的药食同源食材，具有很高的营养价值。',
-                benefits: [
-                    '利水渗湿，健脾止泻',
-                    '美白肌肤，减少色斑',
-                    '增强免疫力，抗肿瘤',
-                    '降血糖，适合糖尿病患者'
-                ],
-                usage: '可煮粥、炖汤，或与其它谷物一起烹饪，是清补凉的经典配料。'
-            },
-            'macaroni': {
-                name: '通心粉',
-                description: '通心粉是清补凉的特色配料之一，由小麦粉制成，口感Q弹有嚼劲。',
-                benefits: [
-                    '提供碳水化合物，补充能量',
-                    '含有蛋白质和少量维生素',
-                    '易于消化，适合肠胃虚弱者',
-                    '增加清补凉的口感层次'
-                ],
-                usage: '提前煮熟后加入清补凉中，搭配椰汁食用口感更佳。'
-            },
-            'red-date': {
-                name: '红枣',
-                description: '红枣是鼠李科植物枣的成熟果实，营养丰富，被誉为"天然维生素丸"。',
-                benefits: [
-                    '补中益气，养血安神',
-                    '富含维生素C，增强免疫力',
-                    '改善贫血，提升血色',
-                    '中和清补凉的凉性，调和性味'
-                ],
-                usage: '去核后加入清补凉，可增加甜味，无需额外加糖。'
-            },
-            'taro-ball': {
-                name: '芋圆',
-                description: '芋圆由芋头和红薯粉制成，是清补凉的经典甜品配料，口感软糯Q弹。',
-                benefits: [
-                    '提供丰富的膳食纤维',
-                    '芋头富含黏液蛋白，增强免疫力',
-                    '低脂肪低热量，饱腹感强',
-                    '富含钾元素，调节体内电解质'
-                ],
-                usage: '煮熟后加入清补凉，冷藏后食用口感更佳，是清补凉的颜值担当。'
-            },
-            'mango': {
-                name: '芒果',
-                description: '芒果是热带水果之王，果肉香甜多汁，是清补凉的热门水果配料。',
-                benefits: [
-                    '富含维生素A和C，保护视力',
-                    '芒果酮酸具有抗氧化作用',
-                    '促进肠道蠕动，帮助消化',
-                    '补充水分和多种矿物质'
-                ],
-                usage: '去皮切块后加入清补凉，与椰汁搭配风味独特，果香浓郁。'
-            }
-        };
-
-        let currentIngredient = null;
-
-        // 食材点击事件
         ingredients.forEach(ingredient => {
             ingredient.addEventListener('touchstart', function(e) {
                 e.preventDefault();
                 const ingredientId = this.dataset.id;
-                if (currentIngredient === ingredientId) return;
                 
-                currentIngredient = ingredientId;
-                updateInfoCard(ingredientData[ingredientId]);
+                ingredients.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+
+                infoCard.classList.remove('active');
+                setTimeout(() => {
+                    updateInfoCard({
+                        'mung-bean': {name:'绿豆',description:'绿豆是常见豆类食材，富含蛋白质、膳食纤维和多种维生素。',benefits:['清热解毒，消暑止渴','降低血脂和胆固醇','促进肠道蠕动，改善便秘','延缓衰老'],usage:'可煮粥、做汤、制作绿豆沙等甜品。'},
+                        'coconut': {name:'椰子',description:'椰子是清补凉核心食材，椰肉和椰汁营养丰富，热带特色食材。',benefits:['生津止渴，清凉解暑','补充电解质','富含易吸收脂肪酸','促进肠道健康'],usage:'椰汁可直接饮用，椰肉可切块加入清补凉。'},
+                        'jobstears': {name:'薏米',description:'薏米又称薏苡仁，传统药食同源食材，营养价值高。',benefits:['利水渗湿，健脾止泻','美白肌肤','增强免疫力','降血糖'],usage:'可煮粥、炖汤，是清补凉经典配料。'},
+                        'macaroni': {name:'通心粉',description:'清补凉特色配料，小麦粉制成，口感Q弹。',benefits:['补充能量','含蛋白质维生素','易于消化','增加口感层次'],usage:'煮熟后加入清补凉，搭配椰汁食用。'},
+                        'red-date': {name:'红枣',description:'红枣营养丰富，被誉为天然维生素丸。',benefits:['补中益气，养血安神','增强免疫力','改善贫血','调和性味'],usage:'去核加入清补凉，增加自然甜味。'},
+                        'taro-ball': {name:'芋圆',description:'芋头+红薯粉制成，口感软糯Q弹。',benefits:['膳食纤维丰富','增强免疫力','低热量饱腹感强','调节电解质'],usage:'煮熟冷藏后加入清补凉，口感最佳。'},
+                        'mango': {name:'芒果',description:'热带水果之王，香甜多汁。',benefits:['保护视力','抗氧化','促进消化','补充矿物质'],usage:'切块加入清补凉，果香浓郁。'}
+                    }[ingredientId]);
+                }, 350);
+                
                 flyToBowl(this, ingredientId);
             });
         });
 
-        // 更新详情卡片
         function updateInfoCard(data) {
-            infoCard.innerHTML = `
-                <h2>${data.name}</h2>
-                <p>${data.description}</p>
-                <h3>主要功效：</h3>
-                <ul>${data.benefits.map(b => `<li>${b}</li>`).join('')}</ul>
-                <h3>食用方法：</h3>
-                <p>${data.usage}</p>
-            `;
-            infoCard.classList.add('active');
+            infoCard.innerHTML = `<h2>${data.name}</h2><p>${data.description}</p><h3>主要功效：</h3><ul>${data.benefits.map(b => `<li>${b}</li>`).join('')}</ul><h3>食用方法：</h3><p>${data.usage}</p>`;
+            setTimeout(() => {
+                infoCard.classList.add('active');
+            }, 250);
         }
 
-        // 飞入动画
-        function flyToBowl(element, ingredientId) {
-            ingredients.forEach(ing => ing.classList.remove('selected'));
-            element.classList.add('selected');
-            
+        function flyToBowl(element, id) {
             const bowlRect = bowlWrapper.getBoundingClientRect();
             const ingRect = element.getBoundingClientRect();
-            
             const tx = bowlRect.left + bowlRect.width/2 - ingRect.left - ingRect.width/2;
             const ty = bowlRect.top + bowlRect.height/2 - ingRect.top - ingRect.height/2;
             
@@ -546,15 +431,18 @@
             
             setTimeout(() => {
                 bowlWrapper.querySelector('.ingredient-in-bowl')?.remove();
-                
-                const bowlIng = document.createElement('div');
-                bowlIng.className = 'ingredient-in-bowl active';
-                bowlIng.innerHTML = `<img src="${element.querySelector('img').src}" alt="${ingredientData[ingredientId].name}">`;
-                
-                bowlWrapper.appendChild(bowlIng);
+                const el = document.createElement('div');
+                el.className = 'ingredient-in-bowl active';
+                el.innerHTML = `<img src="${element.querySelector('img').src}" alt="">`;
+                bowlWrapper.appendChild(el);
                 element.classList.remove('flying');
-            }, 900);
+            }, 700);
         }
+
+        fabMain.addEventListener('touchstart', e => {
+            e.preventDefault();
+            fabMenu.classList.toggle('open');
+        });
     </script>
 </body>
 </html>

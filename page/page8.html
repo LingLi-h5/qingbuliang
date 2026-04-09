@@ -23,6 +23,18 @@
             padding: 12px;
             color: #5a3921;
             position: relative;
+            
+            /* 开场镜头模糊变清晰 */
+            filter: blur(6px);
+            opacity: 0;
+            animation: pageCameraIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pageCameraIn {
+            to {
+                filter: blur(0);
+                opacity: 1;
+            }
         }
 
         .page-bg-container {
@@ -53,17 +65,47 @@
             z-index: 0;
         }
 
+        /* 夏日微风光斑流动 */
+        .page-bg-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255,255,255,0.15) 50%,
+                transparent 100%
+            );
+            animation: windLight 8s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes windLight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
         .container {
             width: 100%;
             max-width: 480px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            animation: containerBounceIn 1s 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes containerBounceIn {
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
         .header {
             margin-bottom: 12px;
             padding: 10px 5px;
-            animation: fadeInDown 1s ease;
             text-align: center;
         }
 
@@ -71,14 +113,27 @@
             color: #8B4513;
             font-size: 1.5rem;
             margin-bottom: 6px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
             font-weight: 600;
+            transform: translateY(-10px);
+            opacity: 0;
+            animation: titlePop 0.8s 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .header p {
             color: #654321;
             font-size: 0.85rem;
             line-height: 1.4;
+            opacity: 0;
+            animation: fadeIn 0.8s 0.9s forwards;
+        }
+
+        @keyframes titlePop {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         .map-container {
@@ -89,16 +144,35 @@
             background: url("../assets/images/地图.png") no-repeat center center;
             background-size: cover;
             border-radius: 14px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
             overflow: visible;
             margin-bottom: 16px;
-            z-index: 2;
+            z-index: 3;
+            
+            transform: scale(0.85);
+            opacity: 0;
+            animation: mapPopBounce 1.1s 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes mapPopBounce {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .hainan-map {
             position: relative;
             width: 100%;
             height: 100%;
+            animation: mapBreathe 4s ease-in-out infinite alternate;
+        }
+
+        /* Q弹呼吸感 */
+        @keyframes mapBreathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
         }
 
         .location {
@@ -112,14 +186,57 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 3px 8px rgba(139, 69, 19, 0.4);
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 10;
-            animation: pulse 2s infinite;
             transform: translate(-50%, -50%);
+            
+            /* 标记掉落动画 */
+            opacity: 0;
+            transform: translate(-50%, -100px);
+            animation: markerDrop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
+        /* 每个标记错开时间掉下来 */
+        .location:nth-child(1)  { animation-delay: 1.2s; }
+        .location:nth-child(3)  { animation-delay: 1.3s; }
+        .location:nth-child(5)  { animation-delay: 1.4s; }
+        .location:nth-child(7)  { animation-delay: 1.5s; }
+        .location:nth-child(9)  { animation-delay: 1.6s; }
+        .location:nth-child(11) { animation-delay: 1.7s; }
+
+        @keyframes markerDrop {
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* 点击波纹 */
+        .location::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: scale(0);
+            opacity: 0;
+        }
+        .location:active::after {
+            animation: ripple 0.4s linear forwards;
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        .location:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
         .location:active {
-            transform: translate(-50%, -50%) scale(1.15);
+            transform: translate(-50%, -50%) scale(0.95);
         }
 
         .location i {
@@ -129,23 +246,29 @@
 
         .location-info {
             position: absolute;
-            background: rgba(255, 255, 255, 1);
-            border-radius: 12px;
+            background: #fff;
+            border-radius: 14px;
             padding: 14px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             width: 85vw;
             max-width: 330px;
             z-index: 999;
             display: none;
-            animation: fadeInUp 0.3s ease;
             border: 1px solid rgba(139, 69, 19, 0.2);
             left: 50%;
-            transform: translateX(-50%);
             bottom: 10px;
+            transform: translateX(-50%) scale(0.8);
+            transform-origin: bottom center;
         }
 
         .location-info.active {
             display: block;
+            animation: infoPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* 弹窗嘭一下弹出 */
+        @keyframes infoPop {
+            to { transform: translateX(-50%) scale(1); }
         }
 
         .info-header {
@@ -156,32 +279,18 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #e0e0e0;
         }
-
-        .shop-name {
-            font-size: 1.05rem;
-            color: #8B4513;
-            font-weight: bold;
-        }
-
+        .shop-name { font-size: 1.05rem; color: #8B4513; font-weight: bold; }
         .rating {
-            display: flex;
-            align-items: center;
             background: #ffd700;
             padding: 3px 6px;
             border-radius: 15px;
             color: #8B4513;
             font-weight: bold;
             font-size: 0.75rem;
+            display: flex;
+            align-items: center;
         }
-
-        .rating i {
-            margin-right: 3px;
-            font-size: 0.7rem;
-        }
-
-        .info-details {
-            text-align: left;
-        }
+        .rating i { margin-right: 3px; font-size: 0.7rem; }
 
         .detail-item {
             margin-bottom: 7px;
@@ -190,24 +299,15 @@
             font-size: 0.85rem;
             line-height: 1.4;
         }
-
         .detail-item i {
             color: #8B4513;
             margin-right: 8px;
             margin-top: 2px;
             width: 14px;
-            font-size: 0.85rem;
         }
-
-        .detail-label {
-            font-weight: bold;
-            color: #654321;
-            margin-right: 4px;
-            flex-shrink: 0;
-        }
-
+        .detail-label { font-weight: bold; color: #654321; margin-right: 4px; }
         .specialty {
-            background: rgba(255, 236, 210, 0.5);
+            background: rgba(255,236,210,0.5);
             padding: 6px 10px;
             border-radius: 6px;
             margin-top: 4px;
@@ -215,28 +315,31 @@
         }
 
         .instructions {
-            background-color: #ffffff;
+            background: #fff;
             border-radius: 22px;
             padding: 20px 16px;
-            width: 100%;
-            margin: 0 auto 10px auto;
-            text-align: left;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+            margin-bottom: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
             border: 1px solid #e0e0e0;
             position: relative;
             z-index: 2;
+            
+            transform: translateY(30px) scale(0.9);
+            opacity: 0;
+            animation: guideCardIn 0.8s 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes guideCardIn {
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         .instructions h2 {
             color: #d35400;
-            margin-bottom: 16px;
             text-align: center;
             font-size: 1.3rem;
             font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
             position: relative;
         }
-
         .instructions h2::after {
             content: "";
             position: absolute;
@@ -248,39 +351,32 @@
             background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
             border-radius: 2px;
         }
-
-        .instructions ul {
-            padding-left: 20px;
-        }
-
+        .instructions ul { padding-left: 20px; }
         .instructions li {
             margin-bottom: 10px;
             line-height: 1.5;
             font-size: 0.9rem;
             color: #5a3921;
+            opacity: 0;
+            animation: liSlideIn 0.5s ease forwards;
         }
+        .instructions li:nth-child(1) { animation-delay: 2.0s; }
+        .instructions li:nth-child(2) { animation-delay: 2.1s; }
+        .instructions li:nth-child(3) { animation-delay: 2.2s; }
+        @keyframes liSlideIn { to { opacity: 1; } }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px) translateX(-50%); }
-            to { opacity: 1; transform: translateY(0) translateX(-50%); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.7); }
-            70% { box-shadow: 0 0 0 7px rgba(139, 69, 19, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0); }
-        }
-
+        /* 悬浮按钮 */
         .fab-container {
             position: fixed;
             bottom: 22px;
             right: 20px;
             z-index: 1000;
+            opacity: 0;
+            animation: fabJumpIn 0.7s 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes fabJumpIn {
+            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.5); }
         }
 
         .fab-main {
@@ -292,18 +388,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(139,69,19,0.4);
             border: none;
             font-size: 22px;
-            position: relative;
-            z-index: 101;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
         }
-
-        .fab-main:active {
-            transform: scale(1.08);
-        }
+        .fab-main:active { transform: scale(0.93); }
 
         .fab-menu {
             position: absolute;
@@ -313,11 +404,10 @@
             flex-direction: column;
             gap: 14px;
             opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            transition: all 0.35s ease;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
         }
-
         .fab-menu.open {
             opacity: 1;
             transform: translateY(0) scale(1);
@@ -333,224 +423,126 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             font-size: 13px;
             font-weight: 600;
-            position: relative;
-            text-align: center;
-            padding: 4px;
+            text-decoration: none;
+            transition: all 0.25s ease;
         }
+        .fab-item:active { transform: scale(0.95); background: #f5e3d4; }
 
-        .fab-item:active {
-            transform: scale(1.1);
-            background: #f5e3d4;
-        }
-
-        /* 手机极致适配 */
+        /* 适配 */
         @media (max-width: 480px) {
-            .container { max-width: 100%; }
             .map-container { min-height: 290px; }
             .location { width: 34px; height: 34px; }
-            .location i { font-size: 0.95rem; }
             .instructions { padding: 18px 14px; border-radius: 20px; }
-            .instructions h2 { font-size: 1.2rem; }
-            .instructions li { font-size: 0.85rem; }
             .location-info { width: 88vw; }
         }
-
         @media (max-width: 360px) {
             .map-container { min-height: 260px; }
             .location { width: 30px; height: 30px; }
-            .location i { font-size: 0.85rem; }
-            .fab-main { width: 52px; height: 52px; }
-            .fab-item { width: 50px; height: 50px; }
-        }
-
-        @media (max-height: 550px) and (orientation: landscape) {
-            .map-container { height: 60vh; min-height: 240px; }
-            .instructions { padding: 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="page-bg-container"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>海南清补凉美食地图</h1>
-            <p>探索海南岛最地道的清补凉美味，点击地图标记发现美食店铺</p>
-        </div>
-        
-        <div class="map-container">
-            <div class="hainan-map" id="hainanMap"></div>
-        </div>
-        
-        <div class="instructions">
-            <h2>探索指南</h2>
-            <ul>
-                <li><strong>点击地图标记</strong> - 查看店铺详细信息，包括招牌推荐和用户评分</li>
-                <li><strong>寻找最佳店铺</strong> - 金色标记表示评分4.7以上的高口碑店铺</li>
-                <li><strong>探索全岛美味</strong> - 从海口到三亚，发现各地特色清补凉</li>
-            </ul>
-        </div>
+<div class="page-bg-container"></div>
+
+<div class="container">
+    <div class="header">
+        <h1>海南清补凉美食地图</h1>
+        <p>探索海南岛最地道的清补凉美味，点击地图标记发现美食店铺</p>
     </div>
-
-    <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
-        <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">菜单</a>
-            <a href="page9.html" class="fab-item">下页</a>
-        </div>
+    
+    <div class="map-container">
+        <div class="hainan-map" id="hainanMap"></div>
     </div>
+    
+    <div class="instructions">
+        <h2>探索指南</h2>
+        <ul>
+            <li><strong>点击地图标记</strong> - 查看店铺详细信息，包括招牌推荐和用户评分</li>
+            <li><strong>寻找最佳店铺</strong> - 金色标记表示评分4.7以上的高口碑店铺</li>
+            <li><strong>探索全岛美味</strong> - 从海口到三亚，发现各地特色清补凉</li>
+        </ul>
+    </div>
+</div>
 
-    <script>
-        const shops = [
-            {
-                id: 1,
-                name: "老彭记清补凉",
-                position: { x: 45, y: 65 },
-                rating: 4.8,
-                price: "15-25元",
-                address: "海口市美兰区海府路12号",
-                specialty: ["椰子水清补凉", "椰奶清补凉", "冰淇淋清补凉"],
-                description: "海口老字号，传承三代人的手艺，椰子水清甜爽口。"
-            },
-            {
-                id: 2,
-                name: "旺溪清补凉",
-                position: { x: 60, y: 40 },
-                rating: 4.7,
-                price: "12-20元",
-                address: "文昌市文城镇东风路88号",
-                specialty: ["芋圆清补凉", "红豆沙清补凉", "传统椰奶清补凉"],
-                description: "文昌人气店铺，芋圆Q弹有嚼劲，深受当地人喜爱。"
-            },
-            {
-                id: 3,
-                name: "甜蜜蜜清补凉",
-                position: { x: 30, y: 50 },
-                rating: 4.5,
-                price: "10-18元",
-                address: "琼海市嘉积镇人民路56号",
-                specialty: ["芒果清补凉", "百香果清补凉", "招牌椰奶清补凉"],
-                description: "创新口味清补凉，水果系列特别受年轻人欢迎。"
-            },
-            {
-                id: 4,
-                name: "老街清补凉",
-                position: { x: 40, y: 30 },
-                rating: 4.6,
-                price: "8-15元",
-                address: "万宁市万城镇解放路102号",
-                specialty: ["传统红糖清补凉", "绿豆清补凉", "桂圆红枣清补凉"],
-                description: "坚持传统制作工艺，红糖清补凉甜而不腻。"
-            },
-            {
-                id: 5,
-                name: "海风清补凉",
-                position: { x: 20, y: 70 },
-                rating: 4.9,
-                price: "18-30元",
-                address: "三亚市吉阳区滨海路205号",
-                specialty: ["豪华海鲜清补凉", "椰皇清补凉", "冰沙清补凉"],
-                description: "高端清补凉体验，用料讲究，环境优雅。"
-            },
-            {
-                id: 6,
-                name: "阿婆清补凉",
-                position: { x: 55, y: 55 },
-                rating: 4.4,
-                price: "6-12元",
-                address: "儋州市那大镇文化路34号",
-                specialty: ["传统清补凉", "冬瓜薏清补凉", "莲子清补凉"],
-                description: "三十年老店，价格亲民，味道纯正。"
-            }
-        ];
+<div class="fab-container">
+    <button class="fab-main" id="fabMain">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu">
+        <a href="page0.html" class="fab-item">菜单</a>
+        <a href="page9.html" class="fab-item">下页</a>
+    </div>
+</div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const mapContainer = document.getElementById('hainanMap');
-            
-            shops.forEach(shop => {
-                createShopMarker(shop, mapContainer);
-            });
+<script>
+const shops = [
+    {id:1,name:"老彭记清补凉",position:{x:45,y:65},rating:4.8,price:"15-25元",address:"海口市美兰区海府路12号",specialty:["椰子水清补凉","椰奶清补凉","冰淇淋清补凉"],description:"海口老字号，传承三代人的手艺，椰子水清甜爽口。"},
+    {id:2,name:"旺溪清补凉",position:{x:60,y:40},rating:4.7,price:"12-20元",address:"文昌市文城镇东风路88号",specialty:["芋圆清补凉","红豆沙清补凉","传统椰奶清补凉"],description:"文昌人气店铺，芋圆Q弹有嚼劲，深受当地人喜爱。"},
+    {id:3,name:"甜蜜蜜清补凉",position:{x:30,y:50},rating:4.5,price:"10-18元",address:"琼海市嘉积镇人民路56号",specialty:["芒果清补凉","百香果清补凉","招牌椰奶清补凉"],description:"创新口味清补凉，水果系列特别受年轻人欢迎。"},
+    {id:4,name:"老街清补凉",position:{x:40,y:30},rating:4.6,price:"8-15元",address:"万宁市万城镇解放路102号",specialty:["传统红糖清补凉","绿豆清补凉","桂圆红枣清补凉"],description:"坚持传统制作工艺，红糖清补凉甜而不腻。"},
+    {id:5,name:"海风清补凉",position:{x:20,y:70},rating:4.9,price:"18-30元",address:"三亚市吉阳区滨海路205号",specialty:["豪华海鲜清补凉","椰皇清补凉","冰沙清补凉"],description:"高端清补凉体验，用料讲究，环境优雅。"},
+    {id:6,name:"阿婆清补凉",position:{x:55,y:55},rating:4.4,price:"6-12元",address:"儋州市那大镇文化路34号",specialty:["传统清补凉","冬瓜薏清补凉","莲子清补凉"],description:"三十年老店，价格亲民，味道纯正。"}
+];
 
-            const fabMain = document.getElementById('fabMain');
-            const fabMenu = document.getElementById('fabMenu');
-            
-            fabMain.addEventListener('click', function(e) {
-                e.stopPropagation();
-                fabMenu.classList.toggle('open');
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const mapContainer = document.getElementById('hainanMap');
+    shops.forEach(shop => createShopMarker(shop, mapContainer));
 
-            document.addEventListener('click', function() {
-                fabMenu.classList.remove('open');
-                document.querySelectorAll('.location-info').forEach(info => {
-                    info.classList.remove('active');
-                });
-            });
-        });
+    const fabMain = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    
+    fabMain.addEventListener('click', e => {
+        e.stopPropagation();
+        fabMenu.classList.toggle('open');
+    });
 
-        function createShopMarker(shop, container) {
-            const marker = document.createElement('div');
-            marker.className = 'location';
-            marker.style.left = `${shop.position.x}%`;
-            marker.style.top = `${shop.position.y}%`;
-            
-            if (shop.rating >= 4.7) {
-                marker.innerHTML = '<i class="fas fa-crown"></i>';
-                marker.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
-            } else {
-                marker.innerHTML = '<i class="fas fa-utensils"></i>';
-            }
-            
-            const infoWindow = document.createElement('div');
-            infoWindow.className = 'location-info';
-            infoWindow.innerHTML = `
-                <div class="info-header">
-                    <div class="shop-name">${shop.name}</div>
-                    <div class="rating">
-                        <i class="fas fa-star"></i> ${shop.rating}
-                    </div>
-                </div>
-                <div class="info-details">
-                    <div class="detail-item">
-                        <i class="fas fa-tag"></i>
-                        <span class="detail-label">人均:</span> ${shop.price}
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="detail-label">地址:</span> ${shop.address}
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-utensil-spoon"></i>
-                        <span class="detail-label">招牌推荐:</span>
-                    </div>
-                    <div class="specialty">
-                        ${shop.specialty.map(item => `<div>• ${item}</div>`).join('')}
-                    </div>
-                    <div class="detail-item" style="margin-top:8px;">
-                        <i class="fas fa-info-circle"></i>
-                        <span>${shop.description}</span>
-                    </div>
-                </div>
-            `;
-            
-            marker.addEventListener('click', function(e) {
-                e.stopPropagation();
-                document.querySelectorAll('.location-info').forEach(info => {
-                    info.classList.remove('active');
-                });
-                infoWindow.classList.add('active');
-            });
-            
-            container.appendChild(marker);
-            container.appendChild(infoWindow);
-        }
-    </script>
+    document.addEventListener('click', () => {
+        fabMenu.classList.remove('open');
+        document.querySelectorAll('.location-info').forEach(i => i.classList.remove('active'));
+    });
+});
+
+function createShopMarker(shop, container) {
+    const marker = document.createElement('div');
+    marker.className = 'location';
+    marker.style.left = shop.position.x + '%';
+    marker.style.top = shop.position.y + '%';
+
+    if (shop.rating >= 4.7) {
+        marker.innerHTML = '<i class="fas fa-crown"></i>';
+        marker.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+    } else {
+        marker.innerHTML = '<i class="fas fa-utensils"></i>';
+    }
+
+    const infoWindow = document.createElement('div');
+    infoWindow.className = 'location-info';
+    infoWindow.innerHTML = `
+        <div class="info-header">
+            <div class="shop-name">${shop.name}</div>
+            <div class="rating"><i class="fas fa-star"></i>${shop.rating}</div>
+        </div>
+        <div class="info-details">
+            <div class="detail-item"><i class="fas fa-tag"></i><span class="detail-label">人均:</span>${shop.price}</div>
+            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">地址:</span>${shop.address}</div>
+            <div class="detail-item"><i class="fas fa-utensil-spoon"></i><span class="detail-label">招牌推荐:</span></div>
+            <div class="specialty">${shop.specialty.map(s=>`<div>• ${s}</div>`).join('')}</div>
+            <div class="detail-item" style="margin-top:8px;"><i class="fas fa-info-circle"></i><span>${shop.description}</span></div>
+        </div>`;
+
+    marker.addEventListener('click', e => {
+        e.stopPropagation();
+        document.querySelectorAll('.location-info').forEach(i=>i.classList.remove('active'));
+        infoWindow.classList.add('active');
+    });
+
+    container.appendChild(marker);
+    container.appendChild(infoWindow);
+}
+</script>
 </body>
 </html>
