@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>清补凉第一产业 - 乡村振兴就业分析</title>
+    <title>清补凉亚硝酸盐变化曲线</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,7 +30,6 @@
             --info-padding: 12px 12px 15px;
             --detail-padding: 12px;
 
-            /* 动画曲线 - 使用你要求的果冻曲线 */
             --bounce-curve: cubic-bezier(0.2, 0.9, 0.4, 1.2);
             --ease-curve: cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -57,12 +56,10 @@
             justify-content: center;
             padding: var(--container-padding);
             touch-action: manipulation;
-            /* 页面整体淡入 */
             opacity: 0;
             animation: pageFadeIn 0.8s var(--ease-curve) forwards;
         }
 
-        /* 页面整体入场：淡入+轻微上浮 */
         @keyframes pageFadeIn {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -72,19 +69,16 @@
             width: 100%;
             height: calc(100vh - 16px);
             background: #fff;
-            /* 更大圆角 + 轻盈阴影 */
             border-radius: 24px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            /* 容器弹出动画 */
             opacity: 0;
             transform: scale(0.92);
             animation: containerPop 1s var(--bounce-curve) 0.2s forwards;
         }
 
-        /* 容器Q弹弹出 */
         @keyframes containerPop {
             0% { opacity: 0; transform: scale(0.92); }
             100% { opacity: 1; transform: scale(1); }
@@ -103,7 +97,6 @@
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
-            /* 标题依次入场 */
             opacity: 0;
             transform: translateY(-10px);
             animation: elementFadeUp 0.7s var(--ease-curve) 0.5s forwards;
@@ -147,19 +140,16 @@
             padding: var(--chart-padding);
             position: relative;
             overflow: hidden;
-            /* 图表入场 */
             opacity: 0;
             transform: translateY(15px);
             animation: elementFadeUp 0.7s var(--ease-curve) 0.8s forwards;
         }
 
-        /* 通用元素淡入上浮 */
         @keyframes elementFadeUp {
             0% { opacity: 0; transform: translateY(15px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片弹入入场动画 - 轻微上浮+弹性回弹 */
         @keyframes cardFloatIn {
             0% {
                 opacity: 0;
@@ -171,24 +161,11 @@
             }
         }
 
-        .chart-background {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            border-radius: 16px;
-        }
-
-        .chart-background img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        #sunburst-chart {
+        #line-chart {
             position: relative;
             z-index: 1;
-            width: 100%; height: 100%;
+            width: 100%; 
+            height: 100%;
         }
 
         .info-panel {
@@ -197,7 +174,6 @@
             background: var(--card-gradient);
             border-top: 3px solid var(--secondary-brown);
             max-height: 40vh;
-            /* 信息面板最后入场 */
             opacity: 0;
             transform: translateY(15px);
             animation: elementFadeUp 0.7s var(--ease-curve) 1.1s forwards;
@@ -217,18 +193,15 @@
             margin-bottom: 10px;
             padding: var(--detail-padding);
             background: white;
-            /* 圆角增大到28px + 增强浮起阴影 */
             border-radius: 28px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             border-left: 4px solid var(--light-brown);
-            /* 弹性切换动画 + 卡片弹入动画 */
             transition: all 0.4s var(--bounce-curve);
             animation: cardFloatIn 0.6s var(--bounce-curve) forwards;
             overflow-y: auto;
             max-height: 30vh;
         }
 
-        /* 卡片点击下沉反馈 */
         .detail-item:active {
             transform: scale(0.98);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
@@ -242,21 +215,6 @@
             align-items: center;
             gap: 6px;
             font-weight: 600;
-        }
-
-        .income-bar {
-            height: 8px;
-            background: #f5e8c8;
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 6px 0;
-        }
-
-        .income-fill {
-            height: 100%;
-            background: var(--income-gradient);
-            border-radius: 5px;
-            transition: width 0.8s var(--bounce-curve);
         }
 
         .income-text {
@@ -308,7 +266,6 @@
             z-index: 101;
         }
 
-        /* 按钮柔和点击反馈 */
         .fab-main:active {
             transform: scale(0.92);
             box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
@@ -373,77 +330,27 @@
         .fab-item:hover .fab-label {
             opacity: 1;
         }
-
-        @media (orientation: landscape) {
-            :root {
-                --header-font-size: 1.1rem;
-                --subtitle-font-size: 0.8rem;
-                --header-padding: 12px;
-                --chart-padding: 12px;
-                --info-padding: 12px;
-            }
-            .info-panel { max-height: 35vh; }
-        }
-
-        @media (max-height: 700px) {
-            :root {
-                --header-font-size: 1.1rem;
-                --subtitle-font-size: 0.8rem;
-                --header-padding: 12px 10px;
-                --detail-padding: 10px;
-            }
-            .header { min-height: 65px; }
-        }
-
-        @media (max-height: 600px) {
-            :root {
-                --header-font-size: 1rem;
-                --subtitle-font-size: 0.75rem;
-                --header-padding: 10px 8px;
-                --chart-padding: 10px 8px;
-                --info-padding: 10px 8px 12px;
-                --info-title-size: 0.95rem;
-            }
-            .header { min-height: 60px; }
-            .info-panel { max-height: 35vh; }
-            .detail-item { max-height: 28vh; }
-        }
-
-        @media (max-height: 500px) {
-            :root {
-                --header-font-size: 0.9rem;
-                --subtitle-font-size: 0.7rem;
-                --header-padding: 8px;
-                --chart-padding: 8px;
-                --info-padding: 8px;
-                --detail-font-size: 0.75rem;
-            }
-            .info-panel { max-height: 30vh; }
-            .detail-item { max-height: 25vh; padding:8px; }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌱 清补凉第一产业就业分析</h1>
-            <div class="subtitle">乡村振兴 · 农业带动 · 农民增收</div>
+            <h1>常温 vs 冷藏 · 科学食用时间</h1>
+            <div class="subtitle">清补凉亚硝酸盐变化曲线</div>
         </div>
 
         <div class="content">
             <div class="chart-container">
-                <div class="chart-background" id="chartBackground">
-                    <img alt="农业背景" id="backgroundImage">
-                </div>
-                <div id="sunburst-chart"></div>
+                <div id="line-chart"></div>
             </div>
             <div class="info-panel">
-                <div class="info-title">📊 农业就业详情</div>
+                <div class="info-title">📊 科学食用指南</div>
                 <div id="detail-content">
                     <div class="detail-item">
-                        <h3><span>👆</span>互动指南</h3>
+                        <h3><span>👆</span>点击图表查看详情</h3>
                         <p style="font-size: var(--detail-font-size); line-height: 1.4; color: var(--text-light);">
-                            点击旭日图的各个区域，查看不同农业岗位的就业和收入详细信息，了解清补凉产业如何带动乡村振兴。
+                            红色线=常温放置，蓝色线=冰箱冷藏。曲线越高，亚硝酸盐含量越高。<br>
+                            数据来源：海南热带海洋学院·徐小雄（2017）实测研究。
                         </p>
                     </div>
                 </div>
@@ -464,132 +371,117 @@
     </div>
 
     <script>
-        const chartDom = document.getElementById('sunburst-chart');
+        const chartDom = document.getElementById('line-chart');
         const myChart = echarts.init(chartDom, null, {
             renderer: 'canvas',
             useDirtyRect: false,
             devicePixelRatio: Math.min(window.devicePixelRatio, 2)
         });
-        
-        const agricultureData = {
-            name: '第一产业',
-            itemStyle: { color: '#8B4513' },
-            children: [
-                { name: '椰农', value: 3200, income: 3850, localRate: '95%', detail: '主要负责椰子种植和采收，采用生态种植技术，工作地点主要在海南、广东等热带乡村地区。', comparison: '较传统种植收入提升45%', icon: '🥥', itemStyle: { color: '#CD853F' } },
-                { name: '豆类种植', value: 2800, income: 4200, localRate: '92%', detail: '种植红豆、绿豆等核心原料，采用"公司+合作社+农户"模式，统一技术标准和收购。', comparison: '较传统种植收入提升55%', icon: '🫘', itemStyle: { color: '#D2691E' } },
-                { name: '杂粮种植', value: 1800, income: 4000, localRate: '90%', detail: '种植薏米、西米等特色杂粮，产品附加值高，带动山区农民增收致富。', comparison: '较传统种植收入提升60%', icon: '🌾', itemStyle: { color: '#B8860B' } },
-                { name: '水果种植', value: 1500, income: 4800, localRate: '88%', detail: '种植西瓜、菠萝、芒果等搭配水果，实现四季轮作，提高土地利用率。', comparison: '较传统种植收入提升65%', icon: '🍉', itemStyle: { color: '#DA8A67' } }
+
+        const colors = ['#5A93D7', '#E65A45'];
+        const option = {
+            color: colors,
+            tooltip: {
+                trigger: 'none',
+                axisPointer: { type: 'cross' },
+                backgroundColor: 'rgba(255,255,255,0.98)',
+                borderColor: '#8B4513',
+                borderWidth: 3,
+                textStyle: { color: '#333', fontSize: 14 }
+            },
+            legend: { top: 10, textStyle: { fontSize: 13 } },
+            grid: { top: 70, bottom: 50, left: '10%', right: '10%' },
+            xAxis: {
+                type: 'category',
+                axisTick: { alignWithLabel: true },
+                axisLine: { lineStyle: { color: '#8B4513', width: 2 } },
+                data: ['0h', '2h', '4h', '6h', '8h', '10h']
+            },
+            yAxis: [{ 
+                type: 'value', 
+                name: '亚硝酸盐 (mg/kg)', 
+                nameTextStyle: { color: '#8B4513', fontSize: 12 }, 
+                nameGap: 27 
+            }],
+            series: [
+                {
+                    name: '冰箱冷藏',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: { width: 3 },
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    emphasis: { focus: 'series' },
+                    data: [0.065, 3.648, 6.905, 2.020, 1.042, 0.391],
+                },
+                {
+                    name: '常温放置',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: { width: 3 },
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    emphasis: { focus: 'series' },
+                    data: [0.065, 5.605, 6.415, 4.135, 2.020, 0.228],
+                }
             ]
         };
 
-        const option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: (params) => {
-                    if (!params.data.value) return `<div style="font-weight:bold;font-size:14px;color:#8B4513;">${params.name}</div>`;
-                    return `
-                        <div style="font-weight:bold;color:#8B4513;margin-bottom:6px;font-size:14px;">${params.data.icon} ${params.name}</div>
-                        <div style="font-size:13px;line-height:1.4;">👥 就业人数: ${params.data.value.toLocaleString()}人</div>
-                        <div style="font-size:13px;line-height:1.4;">💰 月均收入: ${params.data.income}元</div>
-                        <div style="font-size:13px;line-height:1.4;">🏠 本地就业率: ${params.data.localRate}</div>
-                    `;
-                },
-                confine: true,
-                textStyle: { fontSize: 13 }
-            },
-            series: {
-                type: 'sunburst',
-                data: [agricultureData],
-                radius: ['15%', '80%'],
-                itemStyle: { borderWidth: 2, borderColor: '#fff', opacity: 0.9 },
-                label: { 
-                    rotate: 'radial', 
-                    color: '#333', 
-                    fontSize: 13,
-                    fontWeight: 'bold', 
-                    textBorderColor: '#fff', 
-                    textBorderWidth: 2,
-                    overflow: 'truncate', 
-                    width: 60 
-                },
-                emphasis: { focus: 'ancestor', itemStyle: { shadowBlur: 8, shadowColor: 'rgba(0,0,0,0.2)', opacity:1 } },
-                // 旭日图展开动画加强
-                animationDuration: 1200,
-                animationDurationUpdate: 800,
-                animationEasing: 'cubicOut',
-                animationEasingUpdate: 'cubicInOut',
-                levels: [
-                    {},
-                    {
-                        r0:'15%',r:'40%',itemStyle:{borderWidth:3},
-                        label:{
-                            rotate:'tangential',
-                            fontSize:14,
-                            color:'#fff',
-                            fontWeight:'bold',
-                            textBorderColor:'#8B4513',
-                            textBorderWidth:2
-                        }
-                    },
-                    {
-                        r0:'40%',r:'80%',
-                        label:{
-                            align:'right',
-                            fontSize:13
-                        }
-                    }
-                ]
-            }
-        };
-
-        myChart.on('click', function(params) {
-            const detailContent = document.getElementById('detail-content');
-            if (params.data.value) {
-                const incomePercent = Math.min(100, (params.data.income / 6000) * 100);
-                detailContent.innerHTML = `
-                    <div class="detail-item">
-                        <h3><span>${params.data.icon}</span>${params.name}</h3>
-                        <div class="income-text"><span>就业人数:</span><span class="highlight">${params.data.value.toLocaleString()}人</span></div>
-                        <div class="income-text"><span>月均收入:</span><span class="highlight">${params.data.income}元</span></div>
-                        <div class="income-bar"><div class="income-fill" style="width:${incomePercent}%"></div></div>
-                        <div class="income-text"><span>本地就业率:</span><span class="highlight">${params.data.localRate}</span></div>
-                        <div class="income-text"><span>收入提升:</span><span class="comparison">${params.data.comparison}</span></div>
-                        <p style="margin-top:8px;font-size:var(--small-font-size);color:var(--text-light);line-height:1.4;">${params.data.detail}</p>
-                    </div>`;
-            } else if (params.data.children) {
-                const total = params.data.children.reduce((s,c)=>s+c.value,0);
-                const avg = Math.round(params.data.children.reduce((s,c)=>s+c.income*c.value,0)/total);
-                detailContent.innerHTML = `
-                    <div class="detail-item">
-                        <h3><span>🌱</span>第一产业就业概况</h3>
-                        <div class="income-text"><span>总就业人数:</span><span class="highlight">${total.toLocaleString()}人</span></div>
-                        <div class="income-text"><span>平均月收入:</span><span class="highlight">${avg}元</span></div>
-                        <div style="margin-top:8px;font-weight:bold;font-size:0.8rem;">主要农业岗位:</div>
-                        <div style="margin-top:6px;">${params.data.children.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:var(--small-font-size);"><span>${c.icon} ${c.name}</span><span style="color:#8B4513;font-weight:bold;">${c.value}人</span></div>`).join('')}</div>
-                    </div>`;
-            }
+        // 核心：真正从左到右画线动画 + 等待页面完全加载
+        window.addEventListener('load', () => {
+            // 等待页面所有动画全部结束（2.2秒）
+            setTimeout(() => {
+                myChart.setOption(option);
+                
+                // 从左到右绘制曲线（两条线同时画）
+                setTimeout(() => {
+                    myChart.setOption({
+                        series: [
+                            {
+                                animation: true,
+                                animationDuration: 2500,
+                                animationEasing: 'linear',
+                                animationDelay: 0
+                            },
+                            {
+                                animation: true,
+                                animationDuration: 2500,
+                                animationEasing: 'linear',
+                                animationDelay: 0
+                            }
+                        ]
+                    });
+                }, 100);
+            }, 2200);
         });
 
-        myChart.setOption(option);
+        myChart.on('click', function (params) {
+            if (!params || params.componentType !== 'series') return;
+            const time = params.name;
+            const idx = params.dataIndex;
+            const dataCold = option.series[0].data[idx];
+            const dataRt = option.series[1].data[idx];
+            let tip = time === '4h' ? '<div class="comparison">⚠️ 常温4小时达到峰值，已超标</div>' : '';
+            document.getElementById('detail-content').innerHTML = `
+            <div class="detail-item">
+                <h3><span>⏰</span>${time} 亚硝酸盐含量</h3>
+                <div class="income-text"><span>常温：</span><span class="highlight">${dataRt} mg/kg</span></div>
+                <div class="income-text"><span>冷藏：</span><span class="highlight">${dataCold} mg/kg</span></div>
+                ${tip}
+                <p style="margin-top:8px;font-size:var(--small-font-size);color:var(--text-light);">
+                    🔸 最佳食用：制作后<strong>30分钟内</strong><br>
+                    🔸 冷藏安全：不超过<strong>8小时</strong><br>
+                    🔸 超过时间风险升高，不建议食用
+                </p>
+            </div>`;
+        });
 
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
         
-        fabMain.addEventListener('click', e => {
-            e.stopPropagation();
-            fabMenu.classList.toggle('open');
-        });
-
+        fabMain.addEventListener('click', e => { e.stopPropagation(); fabMenu.classList.toggle('open'); });
         document.addEventListener('click', () => fabMenu.classList.remove('open'));
-
         window.addEventListener('resize', () => myChart.resize());
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(()=>myChart.resize(),100);
-            const img = new Image();
-            img.onload = () => document.getElementById('backgroundImage').src = "../assets/images/888.png";
-            img.src = "../assets/images/888.png";
-        });
     </script>
 </body>
 </html>

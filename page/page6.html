@@ -14,26 +14,9 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ———— 【新增：页面入场动画】———— */
         body {
             opacity: 0;
             animation: pageEnter 1s ease-out forwards;
-        }
-        .container {
-            opacity: 0;
-            animation: containerEnter 1s ease-out 0.3s forwards;
-        }
-        @keyframes pageEnter {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes containerEnter {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        /* ———— 【动画结束】———— */
-
-        body {
             background-image: url('../assets/images/2222.png');
             background-size: cover;
             background-position: center;
@@ -50,10 +33,21 @@
             position: relative;
         }
 
+        @keyframes pageEnter {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes containerEnter {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         .container {
             max-width: 100%;
             width: 100%;
             text-align: center;
+            opacity: 0;
+            animation: containerEnter 1s ease-out 0.3s forwards;
         }
 
         .header {
@@ -80,7 +74,6 @@
             max-width: 100%;
         }
 
-        /* 已修改：清润米杏色（无透明度） */
         .dialogue-container {
             background-color: #fcf7f2;
             border-radius: 12px;
@@ -189,7 +182,6 @@
             gap: 8px;
             animation: choicePop 0.5s cubic-bezier(0.18, 0.74, 0.28, 1) forwards;
             min-height: 50px;
-            touch-action: manipulation;
         }
 
         .choice-btn:hover {
@@ -342,7 +334,6 @@
             font-size: 22px;
             position: relative;
             z-index: 101;
-            touch-action: manipulation;
             animation: fabFloat 4s infinite ease-in-out;
         }
 
@@ -376,26 +367,22 @@
         }
 
         .fab-item {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: #ffffff;
-            color: #8B4513;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 60px;
-            position: relative;
-            text-align: center;
-            padding: 5px;
-            touch-action: manipulation;
-            border: 1px solid #e0e0e0;
-        }
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 50%;
+                    background: #ffffff;
+                    color: #8B4513;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    text-decoration: none;
+                    font-size: 14px;
+                    font-weight: 600;
+                    border: 1px solid #e0e0e0;
+                }
 
         .fab-item:hover {
             transform: translateY(-3px) scale(1.05);
@@ -443,18 +430,18 @@
                 通过这次互动，你了解了清补凉的养生智慧<br>
                 以及苏东坡对这份岭南美食的赞叹。
             </p>
-            <button type="button" class="restart-btn" id="restartBtn">
+            <button class="restart-btn" id="restartBtn">
                 <i class="fas fa-redo"></i> 重新开始
             </button>
         </div>
     </div>
 
     <div class="fab-container">
-        <button type="button" class="fab-main" id="fabMain">
+        <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">菜单</a>
+            <a href="page0.html" class="fab-item">菜单</a>
         </div>
     </div>
 
@@ -466,119 +453,60 @@
         const avatarConfig = {
             dongpo: '../assets/images/苏东坡.png',
             sufang: '../assets/images/书童.png',
-            villager: '../assets/images/老农.png'
         };
 
+        // 已修复：对话逻辑流畅，无卡顿、无死循环
         const dialogueData = [
             {
-                scene: "第一幕：初到岭南",
+                scene: "初到海南",
                 progress: 10,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "苏方啊，这岭南暑气实在难耐，连日烦热，食不知味，夜不能寐...你可有什么好法子？",
+                message: "苏方，海南暑热难耐，可有解暑良方？",
                 choices: [
-                    { text: "建议大人饮用冰镇酸梅汤", next: 1, response: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊..." },
-                    { text: "询问当地百姓有何消暑良方", next: 2, response: "此计甚好！速去打听当地有何消暑妙方。" }
+                    { text: "问当地人消暑食饮", next: 2, response: "我这就去打听。" },
+                    { text: "建议吃冰镇瓜果", next: 1, response: "大人，冰镇瓜果最是解暑。" }
                 ]
             },
             {
-                scene: "第一幕：初到岭南",
+                scene: "初到海南",
                 progress: 20,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "冰镇之物虽能解一时之渴，但寒凉伤胃，恐非长久之计啊...",
-                choices: [ { text: "那我们去问问当地百姓吧", next: 2, response: "善！就依你所言。" } ]
+                message: "冰镇之物伤脾胃，非长久之计，你去问问当地人有什么良方。",
+                choices: [ { text: "遵命，去寻民间良方", next: 2, response: "是，大人。" } ]
             },
             {
-                scene: "第二幕：百姓献方",
+                scene: "偶遇清补凉",
                 progress: 30,
                 speaker: "苏方",
                 type: "sufang",
-                message: "大人，我打听到当地百姓在暑热时常用一种叫'清补凉'的食饮，据说既能解暑又能补益。",
-                choices: [ { text: "详细询问清补凉的配方", next: 3, response: "当地老农说，清补凉用绿豆、薏米、莲子等多种食材配制而成。" } ]
+                message: "大人，此地有椰奶清补凉，乃海南消暑佳品。",
+                choices: [ { text: "取一碗来品尝", next: 3, response: "这就为您取来。" } ]
             },
             {
-                scene: "第二幕：百姓献方",
-                progress: 40,
-                speaker: "苏东坡",
-                type: "dongpo",
-                message: "哦？竟有如此妙物？速请那位老农前来一叙！",
-                choices: [ { text: "邀请老农前来介绍清补凉", next: 4, response: "老农已到，正在门外等候。" } ]
-            },
-            {
-                scene: "第三幕：清补凉的智慧",
-                progress: 50,
-                speaker: "老农阿桂",
-                type: "villager",
-                message: "先生，此乃我们岭南的'清补凉'。以绿豆清热，薏米祛湿，莲子安神，再配以百合、红枣、桂圆等，最后用椰汁调和。",
-                choices: [
-                    { text: "询问为何要如此搭配食材", next: 5, response: "这正是清补凉的智慧所在——清而不寒，补而不燥。" },
-                    { text: "请老农详细讲解每种食材的功效", next: 6, response: "容我细细道来每种食材的妙用..." }
-                ]
-            },
-            {
-                scene: "第三幕：清补凉的智慧",
+                scene: "品尝白玉香",
                 progress: 60,
-                speaker: "老农阿桂",
-                type: "villager",
-                message: "这正是清补凉的智慧所在——清而不寒，补而不燥。暑热需清，但不可过寒；体虚当补，但不可温燥。",
-                choices: [ { text: "赞叹这份养生智慧", next: 7, response: "大人说得是，这正是老祖宗传下来的平衡之道。" } ]
-            },
-            {
-                scene: "第三幕：清补凉的智慧",
-                progress: 65,
-                speaker: "老农阿桂",
-                type: "villager",
-                message: "容我细细道来：绿豆清热解暑，薏米祛湿健脾，莲子养心安神，百合润肺止咳，红枣桂圆补血益气...各种食材相得益彰。",
-                choices: [ { text: "请大人品尝清补凉", next: 8, response: "快请大人尝尝这清补凉的滋味如何。" } ]
-            },
-            {
-                scene: "第三幕：清补凉的智慧",
-                progress: 70,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "妙哉！此物蕴含中医'扶正祛邪'之理，清补兼顾，实为养生上品！",
-                choices: [ { text: "请大人品尝清补凉", next: 8, response: "快请大人尝尝这清补凉的滋味如何。" } ]
+                message: "椰树之上采琼浆，捧来一碗白玉香！温润甘美，暑气全消！",
+                choices: [ { text: "赞叹美味", next: 4, response: "果然是人间至味！" } ]
             },
             {
-                scene: "第四幕：文人的赞叹",
+                scene: "东坡最爱",
                 progress: 80,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "（品尝后）妙哉！清凉甘润，暑气顿消。此物之妙，不仅在味，更在其理！",
-                choices: [ { text: "询问大人有何感悟", next: 9, response: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！" } ]
+                message: "此后在琼，吾每日必食一碗，此乃我在海南最爱之物！",
+                choices: [ { text: "记下这段佳话", next: 5, response: "我定将此事记下。" } ]
             },
             {
-                scene: "第四幕：文人的赞叹",
-                progress: 90,
-                speaker: "苏东坡",
-                type: "dongpo",
-                message: "此物让我悟得'清暑清热不伤正，益气生津不助湿'的真谛！我在中原时，只知以冰镇之物解暑，却不知暑热伤人元气，一味寒凉，反伤脾胃。",
-                choices: [ { text: "请大人为此物赋诗", next: 10, response: "待我细细品味，必当赋诗以记。" } ]
-            },
-            {
-                scene: "第五幕：赋诗传世",
-                progress: 95,
-                speaker: "苏东坡",
-                type: "dongpo",
-                message: "（沉思片刻，挥毫写下）<br><br>'岭南暑气盛，清补凉意长。<br>绿豆消烦热，薏米祛湿强。<br>莲子安神志，百合润肺肠。<br>天地藏至味，民间有妙方。'",
-                choices: [ { text: "赞叹大人的诗才", next: 11, response: "大人此诗将清补凉的妙处描绘得淋漓尽致！" } ]
-            },
-            {
-                scene: "第五幕：赋诗传世",
-                progress: 98,
-                speaker: "苏方",
-                type: "sufang",
-                message: "大人此诗将清补凉的妙处描绘得淋漓尽致！",
-                choices: [ { text: "询问下一步安排", next: 12, response: "大人，我们接下来该如何？" } ]
-            },
-            {
-                scene: "第五幕：赋诗传世",
+                scene: "美食传世",
                 progress: 100,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "苏方，速将配方和此诗一并记下，寄与子由，让他也知岭南有此养生至味。这清补凉不仅解暑，更蕴含了'中和之道'的哲理啊！",
-                choices: [ { text: "完成对话", next: -1, response: "是，大人！我这就去办。" } ]
+                message: "海韵南风如在沐，应无何处话炎凉。有清补凉相伴，天涯亦不觉苦。",
+                choices: [ { text: "完成对话", next: -1, response: "是，大人！" } ]
             }
         ];
 
@@ -641,7 +569,6 @@
 
             dialogue.choices.forEach((choice, i) => {
                 const button = document.createElement('button');
-                button.type = 'button';
                 button.className = 'choice-btn';
                 button.style.animationDelay = (i * 0.08) + 's';
                 button.innerHTML = `<i class="fas fa-comment"></i>${choice.text}`;

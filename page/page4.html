@@ -326,7 +326,7 @@
 <body>
     <div class="header card">
         <h1>清补凉食材互动展示</h1>
-        <p>点击食材图标，了解各种养生食材的功效与作用</p>
+        <p>清补凉补而不滋腻，清而不伤正，四季皆宜，按体质选料更养生</p>
     </div>
 
     <div class="container">
@@ -346,28 +346,28 @@
                     <img src="../assets/images/薏米.png" alt="薏米">
                 </div>
                 <div class="ingredient macaroni" data-id="macaroni">
-                    <img src="../assets/images/通心粉.png" alt="通心粉">
+                    <img src="../assets/images/通心粉.png" alt="莲子">
                 </div>
                 <div class="ingredient red-date" data-id="red-date">
                     <img src="../assets/images/红枣.png" alt="红枣">
                 </div>
                 <div class="ingredient taro-ball" data-id="taro-ball">
-                    <img src="../assets/images/芋圆.png" alt="芋圆">
+                    <img src="../assets/images/芋圆.png" alt="芋头">
                 </div>
                 <div class="ingredient mango" data-id="mango">
-                    <img src="../assets/images/芒果.png" alt="芒果">
+                    <img src="../assets/images/芒果.png" alt="苹果">
                 </div>
             </div>
         </div>
 
         <div class="info-card card" id="info-card">
             <h2>选择一种食材</h2>
-            <p>点击上方的食材图标，了解其营养功效和食用方法。</p>
+            <p>点击上方食材，查看清补凉正宗用料与体质适配说明。</p>
         </div>
     </div>
 
     <div class="instructions card">
-        <p>👆 点击任意食材开始探索</p>
+        <p>👆 点击食材查看正宗清补凉养生知识</p>
     </div>
 
     <div class="fab-container">
@@ -398,13 +398,48 @@
                 infoCard.classList.remove('active');
                 setTimeout(() => {
                     updateInfoCard({
-                        'mung-bean': {name:'绿豆',description:'绿豆是常见豆类食材，富含蛋白质、膳食纤维和多种维生素。',benefits:['清热解毒，消暑止渴','降低血脂和胆固醇','促进肠道蠕动，改善便秘','延缓衰老'],usage:'可煮粥、做汤、制作绿豆沙等甜品。'},
-                        'coconut': {name:'椰子',description:'椰子是清补凉核心食材，椰肉和椰汁营养丰富，热带特色食材。',benefits:['生津止渴，清凉解暑','补充电解质','富含易吸收脂肪酸','促进肠道健康'],usage:'椰汁可直接饮用，椰肉可切块加入清补凉。'},
-                        'jobstears': {name:'薏米',description:'薏米又称薏苡仁，传统药食同源食材，营养价值高。',benefits:['利水渗湿，健脾止泻','美白肌肤','增强免疫力','降血糖'],usage:'可煮粥、炖汤，是清补凉经典配料。'},
-                        'macaroni': {name:'通心粉',description:'清补凉特色配料，小麦粉制成，口感Q弹。',benefits:['补充能量','含蛋白质维生素','易于消化','增加口感层次'],usage:'煮熟后加入清补凉，搭配椰汁食用。'},
-                        'red-date': {name:'红枣',description:'红枣营养丰富，被誉为天然维生素丸。',benefits:['补中益气，养血安神','增强免疫力','改善贫血','调和性味'],usage:'去核加入清补凉，增加自然甜味。'},
-                        'taro-ball': {name:'芋圆',description:'芋头+红薯粉制成，口感软糯Q弹。',benefits:['膳食纤维丰富','增强免疫力','低热量饱腹感强','调节电解质'],usage:'煮熟冷藏后加入清补凉，口感最佳。'},
-                        'mango': {name:'芒果',description:'热带水果之王，香甜多汁。',benefits:['保护视力','抗氧化','促进消化','补充矿物质'],usage:'切块加入清补凉，果香浓郁。'}
+                        'mung-bean': {
+                            name:'绿豆',
+                            description:'绿豆为清补凉经典清热食材，适合血热体质选用。',
+                            benefits:['清热凉血，消暑生津','适合夏季高温燥热体质','清而不伤正，不寒凉伤胃','搭配土茯苓、马蹄效果更佳'],
+                            usage:'清补凉中直接煮制，适合血热、易上火人群。'
+                        },
+                        'coconut': {
+                            name:'椰子',
+                            description:'椰子为清补凉核心食材，适合阳虚、阴虚体质均可选用。',
+                            benefits:['养阴生津，改善口干','温和不寒凉，不伤阳气','适合大便干结、阴虚消瘦人群','搭配枸杞、生姜更温和'],
+                            usage:'椰肉切粒煮制，为阴虚体质清补凉标配用料。'
+                        },
+                        'jobstears': {
+                            name:'薏米',
+                            description:'薏米为清补凉祛湿食材，适合痰湿、湿热体质选用。',
+                            benefits:['利水渗湿，健脾化痰','适合痰湿体质、舌苔厚腻','搭配茯苓、赤小豆增强祛湿','老少皆宜，四季可用'],
+                            usage:'需提前煮30分钟，为祛湿清补凉必放食材。'
+                        },
+                        'macaroni': {
+                            name:'莲子',
+                            description:'莲子为清补凉健脾食材，适合气虚体质，甲状腺疾病者慎用。',
+                            benefits:['健脾益气，改善乏力','适合气虚、易出汗人群','搭配淮山、苹果更温和','慢病患者需遵体质选用'],
+                            usage:'与淮山、花生同煮，为气虚清补凉常用配料。'
+                        },
+                        'red-date': {
+                            name:'红枣',
+                            description:'红枣为清补凉养血食材，适合血虚体质，可替代部分糖分。',
+                            benefits:['养血安神，改善面色','适合血虚、形体偏胖人群','搭配荔枝肉、红豆效果更佳','天然甜味，减少加糖'],
+                            usage:'去核后加入，适合血虚体质清补凉配方。'
+                        },
+                        'taro-ball': {
+                            name:'芋头',
+                            description:'芋头为清补凉杂粮食材，甲状腺、胆囊疾病者不宜食用。',
+                            benefits:['补充膳食纤维，增加饱腹感','质地温和，适配多数体质','消化偏弱人群少量食用','搭配西米口感更佳'],
+                            usage:'切块煮制，消化不佳者慎用。'
+                        },
+                        'mango': {
+                            name:'苹果',
+                            description:'苹果为清补凉平和食材，适合气虚体质，搭配淮山健脾。',
+                            benefits:['健脾益气，温和调理','适合乏力、气短、易出汗人群','不寒凉、不滋腻，四季可用','老人儿童均可食用'],
+                            usage:'切块与淮山、莲子同煮，为气虚清补凉经典配方。'
+                        }
                     }[ingredientId]);
                 }, 350);
                 
@@ -413,7 +448,7 @@
         });
 
         function updateInfoCard(data) {
-            infoCard.innerHTML = `<h2>${data.name}</h2><p>${data.description}</p><h3>主要功效：</h3><ul>${data.benefits.map(b => `<li>${b}</li>`).join('')}</ul><h3>食用方法：</h3><p>${data.usage}</p>`;
+            infoCard.innerHTML = `<h2>${data.name}</h2><p>${data.description}</p><h3>体质适配：</h3><ul>${data.benefits.map(b => `<li>${b}</li>`).join('')}</ul><h3>清补凉用法：</h3><p>${data.usage}</p>`;
             setTimeout(() => {
                 infoCard.classList.add('active');
             }, 250);

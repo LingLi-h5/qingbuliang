@@ -105,6 +105,7 @@
             flex-direction: column;
             gap: 12px;
             justify-content: center;
+            transform: translateY(-50px);
         }
 
         .effects-area {
@@ -113,6 +114,7 @@
             flex-direction: column;
             gap: 12px;
             justify-content: center;
+            transform: translateY(-50px);
         }
 
         .ingredient {
@@ -185,7 +187,7 @@
         .effect.selected {
             border: 3px solid #FFD700;
             transform: scale(1.08);
-            background: linear-gradient(135deg, #CD853F 0%, #DEB887 50%, #F5DEB3 100%);
+            background: linear-gradient(135deg, #CD853F 0%, #DEB887 50%, #F5DEB3 10%);
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
             animation: selectBounce 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
@@ -234,7 +236,7 @@
             opacity: 1;
         }
 
-        /* 弹窗：缩小 + 深橘色边框 */
+        /* 弹窗：加强外发光 */
         .message {
             position: fixed;
             top: 50%;
@@ -243,7 +245,7 @@
             background: #ffffff;
             padding: 15px;
             border-radius: 24px;
-            box-shadow: 0 8px 28px rgba(139, 69, 19, 0.25);
+            box-shadow: 0 8px 60px rgba(139, 69, 19, 0.5); /* 发光加大 */
             z-index: 100;
             display: none;
             max-width: 85%;
@@ -307,38 +309,41 @@
             transform: scale(0.95);
         }
 
-        /* 完成弹窗：缩小 + 深橘色边框 */
+        /* 完成弹窗：加强外发光 */
         .completion-message {
             display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
             background: #ffffff;
-            padding: 20px;
-            border-radius: 24px;
-            box-shadow: 0 10px 32px rgba(139, 69, 19, 0.3);
-            max-width: 85%;
-            margin: auto;
+            padding: 18px;
+            border-radius: 22px;
+            box-shadow: 0 15px 70px rgba(139, 69, 19, 0.55); /* 发光更大 */
+            max-width: 80%;
+            width: 280px;
             text-align: center;
             border: 2px solid #E65C00;
             opacity: 0;
-            transform: scale(0.8);
             transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .completion-message.active {
             opacity: 1;
-            transform: scale(1);
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .completion-message h2 {
             color: #8B4513;
             margin-bottom: 10px;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 600;
         }
 
         .completion-message p {
             line-height: 1.45;
             margin-bottom: 12px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #654321;
         }
 
@@ -364,7 +369,7 @@
             width: 100%;
             max-width: 240px;
             margin: 10px auto;
-            background-color: #f5f5f5;
+            background-color: #f5f5f;
             border-radius: 6px;
             height: 10px;
             overflow: hidden;
@@ -511,7 +516,7 @@
     <div class="container">
         <div class="header">
             <h1>清补凉食材功效连线</h1>
-            <p>这些食材小精灵都有什么本领？请帮它们找到自己的家！</p>
+            <p>一碗清补凉，藏着海南药食同源的智慧。帮食材找到对应的养生功效吧！</p>
         </div>
         
         <div class="instructions">
@@ -526,7 +531,7 @@
         <div class="progress">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-        <div class="progress-text" id="progressText">匹配进度: 0/6</div>
+        <div class="progress-text" id="progressText">匹配进度: 0/4</div>
         
         <div class="game-area">
             <div class="ingredients-area" id="ingredientsArea"></div>
@@ -540,8 +545,8 @@
         </div>
         
         <div class="completion-message" id="completionMessage">
-            <h2>恭喜你！你已经掌握了清补凉的养生密码！</h2>
-            <p>你已成功帮助所有食材找到它们的功效，现在你已经是清补凉养生小达人了！</p>
+            <h2>恭喜你！解锁清补凉养生智慧</h2>
+            <p>清补凉始于秦代药膳，经苏东坡赞誉、南洋文化交融，成为海南药食同源代表。你已掌握传统清凉哲学，成为海岛美食小达人！</p>
             <button class="restart-btn" id="restartBtn">再玩一次</button>
         </div>
     </div>
@@ -570,18 +575,17 @@
             }
         });
 
+        // 最终食材：绿豆、薏米、冬瓜薏、红枣（已删除花生）
         const ingredientsData = [
-            {id:1,name:"绿豆",effect:"清热解毒",description:"匹配成功！绿豆，清凉解暑，是清热解毒的天然良药。",details:{season:"夏季最佳",pairing:"与薏米、百合搭配更佳",nutrition:"富含蛋白质、膳食纤维和多种维生素"}},
-            {id:2,name:"薏米",effect:"健脾祛湿",description:"匹配成功！薏米，利水渗湿，是健脾祛湿的养生佳品。",details:{season:"夏季最佳",pairing:"与绿豆、赤小豆搭配更佳",nutrition:"富含蛋白质、维生素B群和矿物质"}},
-            {id:3,name:"桂圆",effect:"补心安神",description:"匹配成功！桂圆，补血养心，是补心安神的滋补圣品。",details:{season:"四季皆宜",pairing:"与红枣、枸杞搭配更佳",nutrition:"富含葡萄糖、蔗糖、蛋白质和多种维生素"}},
-            {id:4,name:"红枣",effect:"补气养血",description:"匹配成功！红枣，补中益气，是补气养血的天然维生素丸。",details:{season:"四季皆宜",pairing:"与桂圆、枸杞搭配更佳",nutrition:"富含维生素C、维生素P和环磷酸腺苷"}},
-            {id:5,name:"银耳",effect:"滋阴润肺",description:"匹配成功！银耳，滋阴润燥，是润肺养颜的滋补佳品。",details:{season:"秋季最佳",pairing:"与莲子、枸杞搭配更佳",nutrition:"富含胶质蛋白、多糖体和多种氨基酸"}},
-            {id:6,name:"枸杞",effect:"明目补肾",description:"匹配成功！枸杞，滋补肝肾，是明目益精的养生宝贝。",details:{season:"四季皆宜",pairing:"与红枣、桂圆搭配更佳",nutrition:"富含枸杞多糖、胡萝卜素和多种微量元素"}}
+            {id:1,name:"绿豆",effect:"清热解暑",description:"匹配成功！绿豆是清补凉核心食材，清热解暑，应对海南暑湿气候。",details:{history:"自古用于防暑药膳，清补凉基础配料",feature:"软糯沙绵，清凉降火",effect:"清热解暑，缓解燥热"}},
+            {id:2,name:"薏米",effect:"健脾利湿",description:"匹配成功！薏米利水渗湿、健脾祛湿，适配海南湿润气候的养生需求。",details:{history:"传统养生食材，清补凉必备",feature:"嚼劲适中，麦香浓郁",effect:"健脾利湿，调理身体"}},
+            {id:3,name:"冬瓜薏",effect:"清爽口感",description:"匹配成功！冬瓜薏清脆爽口，为清补凉提供独特口感层次。",details:{history:"海南本地特色配料，市井清补凉标配",feature:"清脆爽口，嚼劲十足",effect:"提升口感，平衡甜腻"}},
+            {id:4,name:"红枣",effect:"自然甜味",description:"匹配成功！红枣提供天然香甜，温和滋养，是清补凉平衡风味的关键。",details:{history:"传统滋补食材，清补凉天然甜味来源",feature:"香甜软糯，温和不腻",effect:"增加自然甜味，温和滋养"}},
         ];
 
+        // 随机排序
         const fixedShuffledIngredients = [
-            ingredientsData[2], ingredientsData[0], ingredientsData[4],
-            ingredientsData[1], ingredientsData[5], ingredientsData[3]
+            ingredientsData[1], ingredientsData[0], ingredientsData[3], ingredientsData[2]
         ];
 
         const effects = [...new Set(ingredientsData.map(item => item.effect))];
@@ -590,6 +594,7 @@
         const totalPairs = ingredientsData.length;
         let selectedIngredient = null;
         let startTime, score = 0, timerInterval;
+        let isGameFinished = false;
 
         const ingredientsArea = document.getElementById('ingredientsArea');
         const effectsArea = document.getElementById('effectsArea');
@@ -612,6 +617,7 @@
             matchedPairs = 0;
             score = 0;
             selectedIngredient = null;
+            isGameFinished = false;
             updateScore();
             startTimer();
 
@@ -636,7 +642,15 @@
             updateProgress();
             messageButton.onclick = () => {
                 message.classList.remove('active');
-                setTimeout(()=>message.style.display='none',300);
+                setTimeout(()=>{
+                    message.style.display='none';
+                    if(isGameFinished){
+                        setTimeout(()=>{
+                            completionMessage.style.display='block';
+                            setTimeout(()=>completionMessage.classList.add('active'),50);
+                        },300);
+                    }
+                },300);
             };
             restartBtn.onclick = () => { 
                 completionMessage.classList.remove('active');
@@ -666,9 +680,9 @@
                 messageContent.innerHTML = `
                     <p>${ingredient.description}</p>
                     <div class="ingredient-details">
-                        <p><strong>季节:</strong> ${ingredient.details.season}</p>
-                        <p><strong>搭配:</strong> ${ingredient.details.pairing}</p>
-                        <p><strong>营养:</strong> ${ingredient.details.nutrition}</p>
+                        <p><strong>历史:</strong> ${ingredient.details.history}</p>
+                        <p><strong>特点:</strong> ${ingredient.details.feature}</p>
+                        <p><strong>功效:</strong> ${ingredient.details.effect}</p>
                     </div>`;
                 message.style.display = 'block';
                 setTimeout(()=>message.classList.add('active'),50);
@@ -684,10 +698,13 @@
                 updateScore();
                 selectedIngredient = null;
 
-                if (matchedPairs === totalPairs) finishGame();
+                if (matchedPairs === totalPairs) {
+                    isGameFinished = true;
+                    finishGame(); 
+                }
             } else {
                 messageTitle.textContent = "再想想哦";
-                messageContent.innerHTML = `<p>${ingredient.name}的特长不是${this.dataset.effect}。</p>`;
+                messageContent.innerHTML = `<p>${ingredient.name}不是用来${this.dataset.effect}的哦。</p>`;
                 message.style.display = 'block';
                 setTimeout(()=>message.classList.add('active'),50);
                 score = Math.max(0, score - 50);
@@ -733,10 +750,6 @@
         function finishGame() {
             clearInterval(timerInterval);
             document.querySelectorAll('.connection-line').forEach(line => line.remove());
-            setTimeout(() => {
-                completionMessage.style.display='block';
-                setTimeout(()=>completionMessage.classList.add('active'),50);
-            }, 800);
         }
 
         function updateProgress() {
