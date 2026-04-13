@@ -347,8 +347,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    // ====================== 【仅优化灯光】 ======================
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(10, 10, 5);
     scene.add(dirLight);
 
@@ -358,8 +359,17 @@ document.addEventListener('DOMContentLoaded', () => {
     controls.rotateSpeed = 0.7;
 
     const loader = new THREE.GLTFLoader();
-    loader.load('../assets/images/3.glb', (gltf) => {
+    loader.load('../assets/images/精灵.glb', (gltf) => {
         const model = gltf.scene;
+
+        // ====================== 【仅优化材质】 ======================
+        model.traverse((child) => {
+            if (child.isMesh && child.material) {
+                child.material.metalness = 0.1;
+                child.material.roughness = 0.4;
+            }
+        });
+
         scene.add(model);
         loading.style.display = 'none';
 
