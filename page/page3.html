@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>清补凉亚硝酸盐变化曲线</title>
     <!-- 引入图表库 -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="../js/echarts.min.js"></script>
     <!-- 引入图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -31,21 +31,7 @@
             justify-content: center;
             align-items: center;
             padding: 8px;
-            /* 整页入场动画 */
-            animation: pageEnter 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        /* 页面入场动画核心 */
-        @keyframes pageEnter {
-            0% {
-                opacity: 0;
-                transform: translateY(-30px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            /* 已删除入场动画 */
         }
 
         /* 主容器 */

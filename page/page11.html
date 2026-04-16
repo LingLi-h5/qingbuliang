@@ -22,11 +22,9 @@
             align-items: center;
             overflow: hidden;
             opacity: 0;
-            /* 从下往上入场动画 */
             animation: pageIn 1s ease-out forwards;
         }
 
-        /* 从下往上滑入 + 淡入 */
         @keyframes pageIn {
             0% {
                 opacity: 0;
@@ -142,11 +140,11 @@
             text-align: center;
         }
 
+        /* 关键修改：缩小微信QQ间距 */
         .channels-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            justify-items: center;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* 间距从10px改成30px，紧凑好看 */
         }
 
         .channel-item {
@@ -256,128 +254,190 @@
             font-size: 12px;
             font-weight: 600;
         }
+
+        /* 二维码模态框 - 已优化 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 18px;
+            text-align: center;
+            width: 85%;
+            max-width: 340px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            object-fit: contain;
+            margin: 15px auto;
+            display: block;
+        }
+
+        .close-btn {
+            margin-top: 15px;
+            padding: 8px 25px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="title">
-            <h1>轻松分享，传递美味与文化</h1>
-            <p>选择您想分享的内容，一键发送至社交平台，邀请好友一起探索清补凉的世界。</p>
-        </div>
 
-        <div class="share-cards">
-            <div class="share-card" id="card1">
-                <h3><i class="fas fa-scroll"></i> 清补凉历史长卷</h3>
-                <p>“从秦汉药食到现代甜品，一碗清补凉穿越千年时光。点击探索完整时间轴 →”</p>
-            </div>
+<!-- 二维码弹窗（已删除标题） -->
+<div class="modal" id="qrcodeModal">
+    <div class="modal-content">
+        <img src="../assets/images/二维码.png" alt="二维码">
+        <p>扫描二维码打开清补凉页面</p>
+        <button class="close-btn" onclick="closeModal()">关闭</button>
+    </div>
+</div>
 
-            <div class="share-card" id="card2">
-                <h3><i class="fas fa-bowl-food"></i> 我的清补凉制作成果</h3>
-                <p>“亲手制作了一碗地道海南清补凉！你也来试试这个沉浸式制作教程吧 →”</p>
-            </div>
-
-            <div class="share-card" id="card3">
-                <h3><i class="fas fa-trophy"></i> 食材功效闯关成绩单</h3>
-                <p>“在清补凉功效匹配游戏中获得XX分！你能挑战更高分吗？快来试试 →”</p>
-            </div>
-        </div>
-
-        <div class="share-channels">
-            <h3>选择分享平台</h3>
-            <div class="channels-grid">
-                <div class="channel-item" id="wechat">
-                    <i class="fab fa-weixin"></i>
-                    <span>微信</span>
-                </div>
-                <div class="channel-item" id="weibo">
-                    <i class="fab fa-weibo"></i>
-                    <span>微博</span>
-                </div>
-                <div class="channel-item" id="qq">
-                    <i class="fab fa-qq"></i>
-                    <span>QQ</span>
-                </div>
-                <div class="channel-item" id="xiaohongshu">
-                    <i class="fas fa-book-open"></i>
-                    <span>小 红书</span>
-                </div>
-            </div>
-        </div>
-
-        <button class="main-share-btn" id="shareBtn" disabled>
-            <i class="fas fa-paper-plane"></i> 复制链接并分享
-        </button>
+<div class="container">
+    <div class="title">
+        <h1>轻松分享，传递美味与文化</h1>
+        <p>选择您想分享的内容，一键发送至社交平台，邀请好友一起探索清补凉的世界。</p>
     </div>
 
-    <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
-        <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">菜单</a> 
-            <a href="page12.html" class="fab-item">下页</a>
+    <div class="share-cards">
+        <div class="share-card" id="card1">
+            <h3><i class="fas fa-scroll"></i> 清补凉历史</h3>
+            <p>“从秦汉药食到现代甜品，一碗清补凉穿越千年时光。点击探索完整时间轴 →”</p>
+        </div>
+
+        <div class="share-card" id="card2">
+            <h3><i class="fas fa-bowl-food"></i> 清补凉制作</h3>
+            <p>“亲手制作了一碗地道海南清补凉！你也来试试这个沉浸式制作教程吧 →”</p>
+        </div>
+
+        <!-- 第三个卡片：扫码分享 -->
+        <div class="share-card" id="card3">
+            <h3><i class="fas fa-qrcode"></i> 扫码分享</h3>
+            <p>“扫描二维码，快速访问页面并分享给好友 →”</p>
         </div>
     </div>
 
-    <script>
-        const shareCards = document.querySelectorAll('.share-card');
-        const shareBtn = document.getElementById('shareBtn');
-        const channelItems = document.querySelectorAll('.channel-item');
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        let selectedCard = null;
+    <div class="share-channels">
+        <h3>分享平台</h3>
+        <div class="channels-grid">
+            <!-- 只保留：微信 + QQ -->
+            <div class="channel-item" id="wechat">
+                <i class="fab fa-weixin"></i>
+                <span>微信</span>
+            </div>
+            <div class="channel-item" id="qq">
+                <i class="fab fa-qq"></i>
+                <span>QQ</span>
+            </div>
+        </div>
+    </div>
 
-        const SHARE_LINK = "https://lingli-h5.github.io/qingbuliang/";
-        const shareTexts = {
-            card1: "清补凉历史长卷：从秦汉药食到现代甜品，一碗清补凉穿越千年时光，快来一起探索！",
-            card2: "我亲手做了一碗地道海南清补凉！超详细沉浸式教程，你也来试试～",
-            card3: "在清补凉食材功效闯关游戏中拿到高分啦！你敢来挑战我的记录吗？"
-        };
+    <button class="main-share-btn" id="shareBtn" disabled>
+        <i class="fas fa-paper-plane"></i> 复制链接并分享
+    </button>
+</div>
 
-        shareCards.forEach(card => {
-            card.addEventListener('click', () => {
-                shareCards.forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                selectedCard = card.id;
+<div class="fab-container">
+    <button class="fab-main" id="fabMain">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu">
+        <a href="page0.html" class="fab-item">菜单</a> 
+        <a href="page12.html" class="fab-item">下页</a>
+    </div>
+</div>
+
+<script>
+    const shareCards = document.querySelectorAll('.share-card');
+    const shareBtn = document.getElementById('shareBtn');
+    const channelItems = document.querySelectorAll('.channel-item');
+    const fabMain = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    const qrcodeModal = document.getElementById('qrcodeModal');
+    let selectedCard = null;
+
+    const SHARE_LINK = "https://lingli-h5.github.io/qingbuliang/";
+    const shareTexts = {
+        card1: "清补凉历史长卷：从秦汉药食到现代甜品，一碗清补凉穿越千年时光，快来一起探索！",
+        card2: "我亲手做了一碗地道海南清补凉！超详细沉浸式教程，你也来试试～",
+        card3: ""
+    };
+
+    shareCards.forEach(card => {
+        card.addEventListener('click', () => {
+            shareCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            selectedCard = card.id;
+
+            if (selectedCard === 'card3') {
+                // 扫码：弹出二维码，禁用分享按钮
+                openModal();
+                shareBtn.disabled = true;
+            } else {
+                // 正常分享：启用按钮
                 shareBtn.disabled = false;
-            });
+            }
         });
+    });
 
-        function copyToShare() {
-            const text = shareTexts[selectedCard];
-            const fullContent = text + "\n\n" + SHARE_LINK;
+    function openModal() {
+        qrcodeModal.style.display = "flex";
+    }
 
-            const textarea = document.createElement('textarea');
-            textarea.value = fullContent;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
+    function closeModal() {
+        qrcodeModal.style.display = "none";
+    }
 
-            alert("✅ 分享内容已复制！");
-        }
+    function copyToShare() {
+        if (!selectedCard || selectedCard === 'card3') return;
+        const text = shareTexts[selectedCard];
+        const fullContent = text + "\n\n" + SHARE_LINK;
+        const textarea = document.createElement('textarea');
+        textarea.value = fullContent;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert("✅ 分享内容已复制！");
+    }
 
-        shareBtn.addEventListener('click', copyToShare);
+    shareBtn.addEventListener('click', copyToShare);
 
-        channelItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (!selectedCard) {
-                    alert("请先选择要分享的内容");
-                    return;
-                }
-                copyToShare();
-            });
+    channelItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (!selectedCard || selectedCard === 'card3') {
+                alert("请选择分享内容");
+                return;
+            }
+            copyToShare();
         });
+    });
 
-        fabMain.addEventListener('click', (e) => {
-            e.stopPropagation();
-            fabMenu.classList.toggle('open');
-        });
+    fabMain.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fabMenu.classList.toggle('open');
+    });
 
-        document.addEventListener('click', () => {
-            fabMenu.classList.remove('open');
-        });
-    </script>
+    document.addEventListener('click', () => {
+        fabMenu.classList.remove('open');
+    });
+</script>
 </body>
 </html>
