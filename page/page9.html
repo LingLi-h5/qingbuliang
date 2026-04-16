@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>3D模型交互展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -10,12 +10,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: "Microsoft YaHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
+            outline: none;
         }
 
+        /* 整页入场动画核心 */
         body {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             overflow: hidden;
@@ -25,6 +25,22 @@
             align-items: center;
             padding: 10px;
             position: relative;
+            /* 入场动画 */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: pageEnter 0.8s ease-out forwards;
+        }
+
+        /* 定义整页渐入 + 上移动画 */
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .page1-white-box {
@@ -38,7 +54,6 @@
             background: #fff;
             border-radius: 20px;
             box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-            border: 1px solid #e0e0e0;
             z-index: 1;
             pointer-events: none;
         }
@@ -61,16 +76,6 @@
             padding: 5px 0;
             position: relative;
             z-index: 2;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: pageIn 1.2s 0.2s ease-out forwards;
-        }
-        
-        @keyframes pageIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         
         header {
@@ -82,14 +87,12 @@
             color: #8B4513;
             font-size: 1.4rem;
             margin-bottom: 4px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
             font-weight: 600;
         }
         
         .subtitle {
             color: #654321;
             font-size: 0.85rem;
-            opacity: 0.9;
             line-height: 1.3;
         }
         
@@ -102,12 +105,8 @@
             color: #8B4513;
             font-size: 0.9rem;
             width: 100%;
-            border: 1px solid #e0e0e0;
             font-weight: 500;
             line-height: 1.5;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: cardIn 1s 0.6s ease-out forwards;
         }
         
         .gesture-hints {
@@ -119,17 +118,6 @@
             border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
             width: 100%;
-            border: 1px solid #e0e0e0;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: cardIn 1s 0.9s ease-out forwards;
-        }
-        
-        @keyframes cardIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         
         .gesture-item {
@@ -156,12 +144,6 @@
             margin: 10px 0;
             border: 2px solid #8B4513;
             touch-action: none;
-            animation: breathe 5s ease-in-out infinite alternate;
-        }
-        
-        @keyframes breathe {
-            from { transform: scale(0.995); }
-            to { transform: scale(1.005); }
         }
         
         #model-canvas {
@@ -180,10 +162,9 @@
             z-index: 10;
             text-align: center;
             max-width: 90%;
-            backdrop-filter: blur(10px);
         }
-        .loading { background: rgba(255,255,255,0.9); color: #8B4513; }
-        .error { background: rgba(255,255,255,0.9); color: #8B0000; border: 1px solid #ffcccc; display: none; }
+        .loading { background: #fff; color: #8B4513; }
+        .error { background: #fff; color: #8B0000; display: none; }
         
         .controls {
             display: flex;
@@ -202,15 +183,10 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
-            box-shadow: 0 2px 8px rgba(139,69,19,0.4);
             flex: 1;
-            transition: all 0.3s;
+            cursor: pointer;
         }
         .control-btn:active { transform: scale(0.98); }
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139,69,19,0.35);
-        }
 
         .fab-container {
             position: fixed;
@@ -230,6 +206,7 @@
             box-shadow: 0 6px 25px rgba(139,69,19,0.5);
             border: none;
             font-size: 24px;
+            cursor: pointer;
         }
         .fab-main:active { transform: scale(0.95); }
         .fab-menu {
@@ -240,13 +217,11 @@
             flex-direction: column;
             gap: 18px;
             opacity: 0;
-            transform: translateY(20px);
             transition: 0.4s;
             pointer-events: none;
         }
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0);
             pointer-events: all;
         }
         .fab-item {
@@ -267,7 +242,7 @@
 <body>
 
 <div class="page1-white-box">
-    <img src="../assets/images/111.png" alt="背景">
+    <img src="../assets/images/竹子背景.png" alt="背景">
 </div>
 
 <div class="container">
@@ -320,13 +295,15 @@
 <script src="../js/OrbitControls.js"></script>
 <script src="../js/GLTFLoader.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const loading = document.getElementById('loading');
-    const error = document.getElementById('error');
-    const container = document.querySelector('.model-container');
-    const autoRotateBtn = document.getElementById('auto-rotate-btn');
-    const resetBtn = document.getElementById('reset-btn');
+// 页面加载完成后执行3D逻辑
+document.addEventListener('DOMContentLoaded', function() {
+    var loading = document.getElementById('loading');
+    var error = document.getElementById('error');
+    var container = document.querySelector('.model-container');
+    var autoRotateBtn = document.getElementById('auto-rotate-btn');
+    var resetBtn = document.getElementById('reset-btn');
 
+    // 判断设备是否支持WebGL
     if (!window.WebGLRenderingContext) {
         error.textContent = "您的设备不支持WebGL";
         error.style.display = "block";
@@ -334,36 +311,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const scene = new THREE.Scene();
+    // 1. 创建3D场景
+    var scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffecd2);
 
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    // 2. 创建相机
+    var camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 3;
 
-    const renderer = new THREE.WebGLRenderer({
+    // 3. 创建渲染器
+    var renderer = new THREE.WebGLRenderer({
         canvas: document.getElementById('model-canvas'),
         antialias: true
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(window.devicePixelRatio);
 
-    // ====================== 【仅优化灯光】 ======================
+    // 4. 添加灯光
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    var dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(10, 10, 5);
     scene.add(dirLight);
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // 5. 鼠标/手指控制器
+    var controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
     controls.rotateSpeed = 0.7;
 
-    const loader = new THREE.GLTFLoader();
-    loader.load('../assets/images/精灵.glb', (gltf) => {
-        const model = gltf.scene;
+    // 6. 加载3D模型
+    var loader = new THREE.GLTFLoader();
+    loader.load('../assets/images/清补凉精灵.glb', function(gltf) {
+        var model = gltf.scene;
 
-        // ====================== 【仅优化材质】 ======================
-        model.traverse((child) => {
+        // 优化模型材质
+        model.traverse(function(child) {
             if (child.isMesh && child.material) {
                 child.material.metalness = 0.1;
                 child.material.roughness = 0.4;
@@ -373,41 +355,55 @@ document.addEventListener('DOMContentLoaded', () => {
         scene.add(model);
         loading.style.display = 'none';
 
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
+        // 自动适配相机视角
+        var box = new THREE.Box3().setFromObject(model);
+        var size = box.getSize(new THREE.Vector3());
+        var center = box.getCenter(new THREE.Vector3());
         camera.position.z = Math.max(size.x, size.y, size.z) * 2;
         controls.target.copy(center);
-    }, undefined, (err) => {
+    }, 
+    // 加载进度
+    function(){},
+    // 加载失败
+    function(err) {
         console.error(err);
-        const cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshNormalMaterial());
+        var cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshNormalMaterial());
         scene.add(cube);
         loading.style.display = 'none';
     });
 
-    let autoRotate = false;
-    autoRotateBtn.onclick = () => {
+    // 自动旋转按钮功能
+    var autoRotate = false;
+    autoRotateBtn.onclick = function() {
         autoRotate = !autoRotate;
         controls.autoRotate = autoRotate;
         autoRotateBtn.textContent = autoRotate ? '停止旋转' : '自动旋转';
     };
 
-    resetBtn.onclick = () => controls.reset();
+    // 重置视角按钮
+    resetBtn.onclick = function() {
+        controls.reset();
+    };
 
-    const fabMain = document.getElementById('fabMain');
-    const fabMenu = document.getElementById('fabMenu');
-    fabMain.onclick = (e) => {
+    // 右下角悬浮菜单
+    var fabMain = document.getElementById('fabMain');
+    var fabMenu = document.getElementById('fabMenu');
+    fabMain.onclick = function(e) {
         e.stopPropagation();
         fabMenu.classList.toggle('open');
     };
-    document.onclick = () => fabMenu.classList.remove('open');
+    document.onclick = function() {
+        fabMenu.classList.remove('open');
+    };
 
-    window.addEventListener('resize', () => {
+    // 屏幕适配
+    window.addEventListener('resize', function() {
         camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
+    // 3D渲染循环
     function animate() {
         requestAnimationFrame(animate);
         controls.update();

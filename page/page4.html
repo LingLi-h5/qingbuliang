@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>清补凉食材互动展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -10,34 +10,45 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: Arial, sans-serif;
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            background-image: url('../assets/images/2.png');
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            background-image: url('../assets/images/世纪大桥背景.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-attachment: fixed;
-            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
-            touch-action: manipulation;
-            position: relative;
+            padding: 10px;
+
+            /* 整页入场动画 */
+            opacity: 0;
+            animation: pageIn 1s ease-out forwards;
+        }
+
+        /* 整页淡入上移 */
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card {
-            background-color: #ffffff;
+            background: white;
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
-            border: 1px solid #e0e0e0;
-            position: relative;
-            z-index: 1;
+            border: 1px solid #eee;
         }
 
         .header {
@@ -45,62 +56,53 @@
             margin-bottom: 12px;
             width: 100%;
             padding: 12px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s forwards;
         }
 
         .header h1 {
             color: #8B4513;
             font-size: 1.7rem;
             margin-bottom: 6px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            font-weight: 600;
         }
 
         .header p {
             color: #654321;
             font-size: 0.9rem;
-            line-height: 1.4;
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
             width: 100%;
             max-width: 480px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            position: relative;
-            z-index: 1;
         }
 
         .bowl-container {
             position: relative;
             width: 100%;
-            height: 270px;
+            height: 260px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 16px;
-            padding: 12px;
-            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.15);
+            padding: 10px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
         }
 
         .bowl-wrapper {
             position: relative;
-            width: 210px;
-            height: 210px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
+            width: 200px;
+            height: 200px;
+            z-index: 1;
         }
 
         .custom-bowl {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            pointer-events: none;
-            filter: drop-shadow(0 4px 12px rgba(139, 69, 19, 0.2));
-            z-index: 2;
-            position: relative;
         }
 
         .ingredients-container {
@@ -109,83 +111,75 @@
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 99;
+            z-index: 10;
         }
 
         .ingredient {
             position: absolute;
-            width: 62px;
-            height: 62px;
-            border-radius: 18px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 18px rgba(139, 69, 19, 0.2);
-            z-index: 100;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: 0.3s;
+            border: 2px solid #fff;
             overflow: hidden;
-            user-select: none;
         }
 
         .ingredient.selected {
-            transform: scale(1.3);
-            border: 3px solid #fff;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            transform: scale(1.25);
+            box-shadow: 0 0 20px white;
         }
 
         .ingredient img {
-            width: 82%;
-            height: 82%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
-            border-radius: 14px;
         }
 
         .ingredient-in-bowl {
             position: absolute;
-            width: 85px;
-            height: 85px;
-            z-index: 3;
+            width: 80px;
+            height: 80px;
             top: 40%;
             left: 50%;
-            border-radius: 24px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.4);
-            border: 3px solid #fff;
-            background: #fff;
             transform: translate(-50%, -50%) scale(0);
+            border-radius: 20px;
+            border: 3px solid white;
+            background: white;
+            z-index: 3;
         }
 
         .ingredient-in-bowl.active {
             transform: translate(-50%, -50%) scale(1);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            transition: 0.4s;
         }
 
         .ingredient-in-bowl img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
+            border-radius: 18px;
         }
 
-        @keyframes flyToBowl {
+        @keyframes fly {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.1); opacity: 0; }
         }
 
         .flying {
-            animation: flyToBowl 0.8s forwards ease-out;
+            animation: fly 0.7s forwards;
         }
 
         .info-card {
             width: 100%;
             padding: 18px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 5;
+            transform: translateY(10px);
+            transition: 0.5s;
             margin-bottom: 16px;
+            animation: fadeUp 0.8s 0.7s forwards;
         }
 
         .info-card.active {
@@ -196,78 +190,67 @@
         .info-card h2 {
             color: #8B4513;
             margin-bottom: 10px;
-            font-size: 1.4rem;
             border-bottom: 2px solid #f0c9a6;
             padding-bottom: 6px;
-            font-weight: 600;
         }
 
         .info-card h3 {
             color: #8B4513;
             margin: 10px 0 6px;
-            font-size: 1.05rem;
-            font-weight: 600;
         }
 
-        .info-card p {
+        .info-card p, .info-card li {
             color: #654321;
             line-height: 1.5;
-            margin-bottom: 10px;
             font-size: 0.92rem;
         }
 
         .info-card ul {
-            padding-left: 16px;
-            color: #654321;
+            padding-left: 20px;
             margin-bottom: 10px;
         }
 
-        .info-card li {
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            line-height: 1.45;
-        }
-
         .instructions {
-            margin-top: 12px;
             text-align: center;
             color: #654321;
-            font-size: 0.88rem;
-            width: 100%;
             padding: 10px;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.9s forwards;
         }
 
-        .mung-bean { background: linear-gradient(135deg, #8B4513, #D2691E); top: 10%; left: 5%; }
-        .coconut { background: linear-gradient(135deg, #DC143C, #B22222); top: 15%; right: 5%; }
-        .jobstears { background: linear-gradient(135deg, #A0522D, #CD853F); bottom: 20%; left: 10%; }
-        .macaroni { background: linear-gradient(135deg, #D2691E, #CD853F); bottom: 5%; right: 50%; }
-        .red-date { background: linear-gradient(135deg, #8B4513, #A0522D); top: 30%; left: 20%; }
-        .taro-ball { background: linear-gradient(135deg, #8B0000, #A52A2A); top: 40%; right: 15%; }
-        .mango { background: linear-gradient(135deg, #A0522D, #DEB887); bottom: 10%; right: 25%; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mung-bean { background: #8B4513; top: 10%; left: 5%; }
+        .coconut { background: #DC143C; top: 15%; right: 5%; }
+        .jobstears { background: #A0522D; bottom: 20%; left: 10%; }
+        .macaroni { background: #D2691E; bottom: 5%; right: 50%; }
+        .red-date { background: #8B4513; top: 30%; left: 20%; }
+        .taro-ball { background: #8B0000; top: 40%; right: 15%; }
+        .mango { background: #A0522D; bottom: 10%; right: 25%; }
 
         .fab-container {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 200;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            opacity: 0;
+            animation: fadeUp 0.8s 1.1s forwards;
         }
 
         .fab-main {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
+            background: #8B4513;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
-            cursor: pointer;
-            transition: all 0.35s ease;
             border: none;
-            font-size: 24px;
-            z-index: 201;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
 
         .fab-menu {
@@ -276,208 +259,179 @@
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            transition: all 0.35s ease;
+            transform: translateY(10px);
+            transition: 0.3s;
             pointer-events: none;
-            z-index: 200;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: all;
         }
 
         .fab-item {
-            width: 64px;
-            height: 64px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            background-color: #ffffff;
+            background: white;
             color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-            cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            padding: 4px;
-            border: 1px solid #e0e0e0;
-            text-align: center;
-            z-index: 200;
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .bowl-container { height: 250px; }
-            .bowl-wrapper { width: 190px; height: 190px; }
-            .ingredient { width: 56px; height: 56px; border-radius: 16px; }
-            .ingredient-in-bowl { width: 75px; height: 75px; }
-            .fab-container { bottom: 20px; right: 20px; }
-            .fab-main { width: 56px; height: 56px; font-size: 22px; }
-            .fab-item { width: 58px; height: 58px; font-size: 14px; }
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div class="header card">
-        <h1>清补凉食材互动展示</h1>
-        <p>清补凉补而不滋腻，清而不伤正，四季皆宜，按体质选料更养生</p>
-    </div>
 
-    <div class="container">
-        <div class="bowl-container card">
-            <div class="bowl-wrapper" id="bowlWrapper">
-                <img src="../assets/images/椰子碗.png" class="custom-bowl">
-            </div>
-            
-            <div class="ingredients-container">
-                <div class="ingredient mung-bean" data-id="mung-bean">
-                    <img src="../assets/images/绿豆.png" alt="绿豆">
-                </div>
-                <div class="ingredient coconut" data-id="coconut">
-                    <img src="../assets/images/椰子.png" alt="椰子">
-                </div>
-                <div class="ingredient jobstears" data-id="jobstears">
-                    <img src="../assets/images/薏米.png" alt="薏米">
-                </div>
-                <div class="ingredient macaroni" data-id="macaroni">
-                    <img src="../assets/images/莲子.png" alt="莲子">
-                </div>
-                <div class="ingredient red-date" data-id="red-date">
-                    <img src="../assets/images/红枣.png" alt="红枣">
-                </div>
-                <div class="ingredient taro-ball" data-id="taro-ball">
-                    <img src="../assets/images/芋圆.png" alt="芋头">
-                </div>
-                <div class="ingredient mango" data-id="mango">
-                    <img src="../assets/images/苹果.png" alt="苹果">
-                </div>
-            </div>
+<div class="header card">
+    <h1>清补凉食材互动展示</h1>
+    <p>清补凉补而不滋腻，清而不伤正，四季皆宜，按体质选料更养生</p>
+</div>
+
+<div class="container">
+    <div class="bowl-container card">
+        <div class="bowl-wrapper" id="bowl">
+            <img src="../assets/images/椰子碗.png" class="custom-bowl">
         </div>
 
-        <div class="info-card card" id="info-card">
-            <h2>选择一种食材</h2>
-            <p>点击上方食材，查看清补凉正宗用料与体质适配说明。</p>
+        <div class="ingredients-container">
+            <div class="ingredient mung-bean" data-id="mung-bean"><img src="../assets/images/绿豆.png" alt="绿豆"></div>
+            <div class="ingredient coconut" data-id="coconut"><img src="../assets/images/椰子.png" alt="椰子"></div>
+            <div class="ingredient jobstears" data-id="jobstears"><img src="../assets/images/薏米.png" alt="薏米"></div>
+            <div class="ingredient macaroni" data-id="macaroni"><img src="../assets/images/莲子.png" alt="莲子"></div>
+            <div class="ingredient red-date" data-id="red-date"><img src="../assets/images/红枣.png" alt="红枣"></div>
+            <div class="ingredient taro-ball" data-id="taro-ball"><img src="../assets/images/芋圆.png" alt="芋头"></div>
+            <div class="ingredient mango" data-id="mango"><img src="../assets/images/苹果.png" alt="苹果"></div>
         </div>
     </div>
 
-    <div class="instructions card">
-        <p>👆 点击食材查看正宗清补凉养生知识</p>
+    <div class="info-card card" id="info">
+        <h2>点击上方食材</h2>
+        <p>查看清补凉正宗用料与体质适配说明。</p>
     </div>
+</div>
 
-    <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
-        <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">菜单</a>
-            <a href="page5.html" class="fab-item">下页</a>
-        </div>
+<div class="fab-container">
+    <button class="fab-main" id="menuBtn">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+    <div class="fab-menu" id="menuList">
+        <a href="page0.html" class="fab-item">菜单</a>
+        <a href="page5.html" class="fab-item">下页</a>
     </div>
+</div>
 
-    <script>
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        const ingredients = document.querySelectorAll('.ingredient');
-        const infoCard = document.getElementById('info-card');
-        const bowlWrapper = document.getElementById('bowlWrapper');
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const menuList = document.getElementById('menuList');
+    const ingredients = document.querySelectorAll('.ingredient');
+    const infoCard = document.getElementById('info');
+    const bowl = document.getElementById('bowl');
 
-        ingredients.forEach(ingredient => {
-            ingredient.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                const ingredientId = this.dataset.id;
-                
-                ingredients.forEach(i => i.classList.remove('selected'));
-                this.classList.add('selected');
-
-                infoCard.classList.remove('active');
-                setTimeout(() => {
-                    updateInfoCard({
-                        'mung-bean': {
-                            name:'绿豆',
-                            description:'绿豆为清补凉经典清热食材，适合血热体质选用。',
-                            benefits:['清热凉血，消暑生津','适合夏季高温燥热体质','清而不伤正，不寒凉伤胃','搭配土茯苓、马蹄效果更佳'],
-                            usage:'清补凉中直接煮制，适合血热、易上火人群。'
-                        },
-                        'coconut': {
-                            name:'椰子',
-                            description:'椰子为清补凉核心食材，适合阳虚、阴虚体质均可选用。',
-                            benefits:['养阴生津，改善口干','温和不寒凉，不伤阳气','适合大便干结、阴虚消瘦人群','搭配枸杞、生姜更温和'],
-                            usage:'椰肉切粒煮制，为阴虚体质清补凉标配用料。'
-                        },
-                        'jobstears': {
-                            name:'薏米',
-                            description:'薏米为清补凉祛湿食材，适合痰湿、湿热体质选用。',
-                            benefits:['利水渗湿，健脾化痰','适合痰湿体质、舌苔厚腻','搭配茯苓、赤小豆增强祛湿','老少皆宜，四季可用'],
-                            usage:'需提前煮30分钟，为祛湿清补凉必放食材。'
-                        },
-                        'macaroni': {
-                            name:'莲子',
-                            description:'莲子为清补凉健脾食材，适合气虚体质，甲状腺疾病者慎用。',
-                            benefits:['健脾益气，改善乏力','适合气虚、易出汗人群','搭配淮山、苹果更温和','慢病患者需遵体质选用'],
-                            usage:'与淮山、花生同煮，为气虚清补凉常用配料。'
-                        },
-                        'red-date': {
-                            name:'红枣',
-                            description:'红枣为清补凉养血食材，适合血虚体质，可替代部分糖分。',
-                            benefits:['养血安神，改善面色','适合血虚、形体偏胖人群','搭配荔枝肉、红豆效果更佳','天然甜味，减少加糖'],
-                            usage:'去核后加入，适合血虚体质清补凉配方。'
-                        },
-                        'taro-ball': {
-                            name:'芋头',
-                            description:'芋头为清补凉杂粮食材，甲状腺、胆囊疾病者不宜食用。',
-                            benefits:['补充膳食纤维，增加饱腹感','质地温和，适配多数体质','消化偏弱人群少量食用','搭配西米口感更佳'],
-                            usage:'切块煮制，消化不佳者慎用。'
-                        },
-                        'mango': {
-                            name:'苹果',
-                            description:'苹果为清补凉平和食材，适合气虚体质，搭配淮山健脾。',
-                            benefits:['健脾益气，温和调理','适合乏力、气短、易出汗人群','不寒凉、不滋腻，四季可用','老人儿童均可食用'],
-                            usage:'切块与淮山、莲子同煮，为气虚清补凉经典配方。'
-                        }
-                    }[ingredientId]);
-                }, 350);
-                
-                flyToBowl(this, ingredientId);
-            });
-        });
-
-        function updateInfoCard(data) {
-            infoCard.innerHTML = `<h2>${data.name}</h2><p>${data.description}</p><h3>体质适配：</h3><ul>${data.benefits.map(b => `<li>${b}</li>`).join('')}</ul><h3>清补凉用法：</h3><p>${data.usage}</p>`;
-            setTimeout(() => {
-                infoCard.classList.add('active');
-            }, 250);
+    const dataList = {
+        'mung-bean': {
+            name:'绿豆',
+            desc:'绿豆为清补凉经典清热食材，适合血热体质选用。',
+            tips:['清热凉血，消暑生津','适合夏季高温燥热体质','清而不伤正，不寒凉伤胃'],
+            use:'清补凉中直接煮制，适合血热、易上火人群。'
+        },
+        'coconut': {
+            name:'椰子',
+            desc:'椰子为清补凉核心食材，适合阳虚、阴虚体质均可选用。',
+            tips:['养阴生津，改善口干','温和不寒凉，不伤阳气','适合大便干结、阴虚消瘦人群'],
+            use:'椰肉切粒煮制，为阴虚体质清补凉标配用料。'
+        },
+        'jobstears': {
+            name:'薏米',
+            desc:'薏米为清补凉祛湿食材，适合痰湿、湿热体质选用。',
+            tips:['利水渗湿，健脾化痰','适合痰湿体质、舌苔厚腻','搭配茯苓、赤小豆增强祛湿'],
+            use:'需提前煮30分钟，为祛湿清补凉必放食材。'
+        },
+        'macaroni': {
+            name:'莲子',
+            desc:'莲子为清补凉健脾食材，适合气虚体质，甲状腺疾病者慎用。',
+            tips:['健脾益气，改善乏力','适合气虚、易出汗人群','搭配淮山、苹果更温和'],
+            use:'与淮山、花生同煮，为气虚清补凉常用配料。'
+        },
+        'red-date': {
+            name:'红枣',
+            desc:'红枣为清补凉养血食材，适合血虚体质，可替代部分糖分。',
+            tips:['养血安神，改善面色','适合血虚、形体偏胖人群','天然甜味，减少加糖'],
+            use:'去核后加入，适合血虚体质清补凉配方。'
+        },
+        'taro-ball': {
+            name:'芋头',
+            desc:'芋头为清补凉杂粮食材，甲状腺、胆囊疾病者不宜食用。',
+            tips:['补充膳食纤维，增加饱腹感','质地温和，适配多数体质','消化偏弱人群少量食用'],
+            use:'切块煮制，消化不佳者慎用。'
+        },
+        'mango': {
+            name:'苹果',
+            desc:'苹果为清补凉平和食材，适合气虚体质，搭配淮山健脾。',
+            tips:['健脾益气，温和调理','适合乏力、气短、易出汗人群','不寒凉、不滋腻，四季可用'],
+            use:'切块与淮山、莲子同煮，为气虚清补凉经典配方。'
         }
+    };
 
-        function flyToBowl(element, id) {
-            const bowlRect = bowlWrapper.getBoundingClientRect();
-            const ingRect = element.getBoundingClientRect();
-            const tx = bowlRect.left + bowlRect.width/2 - ingRect.left - ingRect.width/2;
-            const ty = bowlRect.top + bowlRect.height/2 - ingRect.top - ingRect.height/2;
+    ingredients.forEach(item => {
+        item.addEventListener('click', function () {
+            let id = this.dataset.id;
             
-            element.style.setProperty('--tx', tx + 'px');
-            element.style.setProperty('--ty', ty + 'px');
-            element.classList.add('flying');
-            
+            ingredients.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+
+            infoCard.classList.remove('active');
             setTimeout(() => {
-                bowlWrapper.querySelector('.ingredient-in-bowl')?.remove();
-                const el = document.createElement('div');
-                el.className = 'ingredient-in-bowl active';
-                el.innerHTML = `<img src="${element.querySelector('img').src}" alt="">`;
-                bowlWrapper.appendChild(el);
-                element.classList.remove('flying');
-            }, 700);
-        }
+                showInfo(dataList[id]);
+            }, 300);
 
-        fabMain.addEventListener('touchstart', e => {
-            e.preventDefault();
-            fabMenu.classList.toggle('open');
+            flyToBowl(this, id);
         });
-    </script>
+    });
+
+    function showInfo(data) {
+        infoCard.innerHTML = `
+            <h2>${data.name}</h2>
+            <p>${data.desc}</p>
+            <h3>体质适配：</h3>
+            <ul>${data.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+            <h3>清补凉用法：</h3>
+            <p>${data.use}</p>
+        `;
+        setTimeout(() => infoCard.classList.add('active'), 20);
+    }
+
+    function flyToBowl(elem, id) {
+        let bowlRect = bowl.getBoundingClientRect();
+        let ingRect = elem.getBoundingClientRect();
+        
+        let x = bowlRect.left + bowlRect.width/2 - ingRect.left - ingRect.width/2;
+        let y = bowlRect.top + bowlRect.height/2 - ingRect.top - ingRect.height/2;
+
+        elem.style.setProperty('--x', x + 'px');
+        elem.style.setProperty('--y', y + 'px');
+        elem.classList.add('flying');
+
+        setTimeout(() => {
+            bowl.querySelector('.ingredient-in-bowl')?.remove();
+            let img = document.createElement('div');
+            img.className = 'ingredient-in-bowl active';
+            img.innerHTML = `<img src="${elem.querySelector('img').src}">`;
+            bowl.appendChild(img);
+            elem.classList.remove('flying');
+        }, 600);
+    }
+
+    menuBtn.addEventListener('click', () => {
+        menuList.classList.toggle('open');
+    });
+</script>
+
 </body>
 </html>

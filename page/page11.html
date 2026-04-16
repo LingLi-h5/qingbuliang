@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: "Microsoft YaHei", sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -21,8 +21,23 @@
             flex-direction: column;
             align-items: center;
             overflow: hidden;
+            opacity: 0;
+            /* 从下往上入场动画 */
+            animation: pageIn 1s ease-out forwards;
         }
-        
+
+        /* 从下往上滑入 + 淡入 */
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .container {
             width: 100%;
             height: 100vh;
@@ -41,7 +56,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('../assets/images/99.png');
+            background-image: url('../assets/images/三角梅背景.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -55,12 +70,8 @@
             text-align: center;
             color: #333;
             z-index: 10;
-            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
             padding: 10px;
             margin: 20px 0 24px;
-            opacity: 0;
-            animation: bounceIn 0.75s ease forwards;
-            animation-delay: 0.1s;
         }
 
         .title h1 {
@@ -85,9 +96,6 @@
             flex-direction: column;
             gap: 14px;
             margin-bottom: 26px;
-            opacity: 0;
-            animation: bounceIn 0.75s ease forwards;
-            animation-delay: 0.25s;
         }
 
         .share-card {
@@ -95,40 +103,13 @@
             padding: 18px 16px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.06);
             cursor: pointer;
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .share-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-top: 20px solid #D2691E;
-            border-left: 20px solid transparent;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .share-card:active {
-            transform: scale(0.97);
-            background: #fff9f5;
+            transition: 0.2s;
         }
 
         .share-card.active {
             border: 2px solid #8B4513;
             background: #fff9f5;
-            box-shadow: 0 4px 18px rgba(139, 69, 19, 0.15);
-        }
-
-        .share-card.active::after {
-            opacity: 1;
         }
 
         .share-card h3 {
@@ -139,10 +120,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .share-card h3 i {
-            font-size: 1.1rem;
         }
 
         .share-card p {
@@ -156,9 +133,6 @@
             z-index: 10;
             width: 94%;
             margin-bottom: 28px;
-            opacity: 0;
-            animation: bounceIn 0.75s ease forwards;
-            animation-delay: 0.4s;
         }
 
         .share-channels h3 {
@@ -166,7 +140,6 @@
             color: #333;
             margin-bottom: 16px;
             text-align: center;
-            font-weight: 600;
         }
 
         .channels-grid {
@@ -186,12 +159,8 @@
             justify-content: center;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
             cursor: pointer;
-            transition: all 0.2s ease;
             position: relative;
-        }
-
-        .channel-item:active {
-            transform: scale(0.9);
+            transition: 0.2s;
         }
 
         .channel-item i {
@@ -206,7 +175,6 @@
             transform: translateX(-50%);
             font-size: 0.72rem;
             color: #555;
-            white-space: nowrap;
         }
 
         .main-share-btn {
@@ -214,38 +182,24 @@
             z-index: 10;
             width: 90%;
             height: 50px;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
+            background: #8B4513;
             color: white;
             border: none;
             border-radius: 25px;
             font-size: 1rem;
             font-weight: 600;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.28);
             cursor: pointer;
-            transition: all 0.25s ease;
-            margin-bottom: 20px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            opacity: 0;
-            animation: bounceIn 0.75s ease forwards;
-            animation-delay: 0.55s;
-        }
-
-        .main-share-btn:active {
-            transform: scale(0.96);
+            transition: 0.2s;
         }
 
         .main-share-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .main-share-btn i {
-            font-size: 1.15rem;
         }
 
         .fab-container {
@@ -259,22 +213,15 @@
             width: 54px;
             height: 54px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8B451E, #D2691E);
+            background: #8B4513;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 6px 20px rgba(139, 69, 19, 0.35);
             cursor: pointer;
-            transition: all 0.3s ease;
             border: none;
             font-size: 22px;
-            position: relative;
-            z-index: 101;
-        }
-
-        .fab-main.active {
-            transform: rotate(45deg);
         }
 
         .fab-menu {
@@ -285,14 +232,12 @@
             flex-direction: column;
             gap: 12px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
             pointer-events: none;
+            transition: 0.3s;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0);
             pointer-events: all;
         }
 
@@ -307,32 +252,13 @@
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
             cursor: pointer;
-            transition: all 0.2s ease;
             text-decoration: none;
             font-size: 12px;
             font-weight: 600;
         }
-
-        .fab-item:active {
-            transform: scale(0.9);
-        }
-
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.4) translateY(30px);
-            }
-            60% {
-                opacity: 1;
-                transform: scale(1.1) translateY(-6px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="title">
@@ -374,7 +300,7 @@
                 </div>
                 <div class="channel-item" id="xiaohongshu">
                     <i class="fas fa-book-open"></i>
-                    <span>小红书</span>
+                    <span>小 红书</span>
                 </div>
             </div>
         </div>
@@ -389,7 +315,7 @@
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">菜单</a>
+            <a href="page0.html" class="fab-item">菜单</a> 
             <a href="page12.html" class="fab-item">下页</a>
         </div>
     </div>
@@ -420,7 +346,7 @@
 
         function copyToShare() {
             const text = shareTexts[selectedCard];
-            const fullContent = `${text}\n\n${SHARE_LINK}`;
+            const fullContent = text + "\n\n" + SHARE_LINK;
 
             const textarea = document.createElement('textarea');
             textarea.value = fullContent;
@@ -429,7 +355,7 @@
             document.execCommand('copy');
             document.body.removeChild(textarea);
 
-            alert("✅ 分享内容已复制！\n\n打开微信/微博/QQ/小红书，粘贴给好友即可～\n好友点击链接就能直接打开页面！");
+            alert("✅ 分享内容已复制！");
         }
 
         shareBtn.addEventListener('click', copyToShare);
@@ -437,7 +363,7 @@
         channelItems.forEach(item => {
             item.addEventListener('click', () => {
                 if (!selectedCard) {
-                    alert("请先选择要分享的内容哦～");
+                    alert("请先选择要分享的内容");
                     return;
                 }
                 copyToShare();
@@ -447,12 +373,10 @@
         fabMain.addEventListener('click', (e) => {
             e.stopPropagation();
             fabMenu.classList.toggle('open');
-            fabMain.classList.toggle('active');
         });
 
         document.addEventListener('click', () => {
             fabMenu.classList.remove('open');
-            fabMain.classList.remove('active');
         });
     </script>
 </body>

@@ -2,21 +2,19 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>海南清补凉</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: Arial, sans-serif;
         }
         
         body {
             background-color: #fdf6e3;
             height: 100vh;
-            /* 去掉禁止滚动，更自然 */
         }
         
         .background-container {
@@ -26,15 +24,12 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
-            background-color: #fdf6e3;
         }
         
         .background-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
         
         .container {
@@ -54,189 +49,98 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s;
             z-index: 10;
         }
         
         .loading-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             width: 90%;
             max-width: 800px;
-            background-color: #fff;
+            background: white;
             padding: 25px 20px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e0e0e0;
-            animation: float 4s ease-in-out infinite; /* 更快更轻 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
         }
         
         .title {
             font-size: 2.8rem;
             color: #d35400;
             margin-bottom: 25px;
-            text-align: center;
             font-weight: bold;
-            position: relative;
-        }
-        
-        .title::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
-            border-radius: 2px;
         }
         
         .ingredients-container {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            width: 100%;
-            margin-bottom: 30px;
             gap: 12px;
+            margin-bottom: 30px;
         }
         
         .ingredient {
             width: 65px;
             height: 65px;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.5s ease;
+            transition: 0.5s;
             overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        /* 食材轻微呼吸，不死板 */
-        .ingredient.show {
-            animation: breathe 2.5s infinite alternate ease-in-out;
         }
         
         .ingredient-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 50%;
         }
         
         .loading-bar-container {
             width: 100%;
             height: 18px;
-            background-color: #f5f5f5;
+            background: #f5f5f5;
             border-radius: 10px;
-            overflow: hidden;
             margin-bottom: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border: 1px solid #e0e0e0;
         }
         
         .loading-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6, #1abc9c);
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
             border-radius: 10px;
-            transition: width 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .loading-bar::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* 浮动动画更轻盈 */
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0); } 
-        }
-
-        /* 食材轻微呼吸动画 */
-        @keyframes breathe {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-3px) scale(1.03); }
+            transition: 0.4s;
         }
         
         .loading-text {
             font-size: 1.2rem;
             color: #d35400;
             margin-bottom: 20px;
-            text-align: center;
-            font-weight: 500;
         }
         
         .enter-btn {
             padding: 16px 45px;
-            background: linear-gradient(135deg, #e67e22, #d35400);
+            background: #e67e22;
             color: white;
             border: none;
             border-radius: 35px;
             font-size: 1.3rem;
-            cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.5s ease;
-            box-shadow: 0 6px 15px rgba(211, 84, 0, 0.3);
+            transition: 0.5s;
             font-weight: bold;
-            min-height: 55px;
-            min-width: 200px;
-            position: relative;
-            overflow: hidden;
         }
         
-        .enter-btn:active {
-            transform: scale(0.96);
-        }
-        
-        .loading-content, .enter-btn, .ingredient {
-            user-select: none;
-        }
-
-        /* 响应式适配 */
-        @media (max-width: 768px) {
-            .loading-content { max-width: 90%; padding: 20px 15px; }
-        }
-        
+        /* 手机适配 */
         @media (max-width: 480px) {
-            .title { font-size: 2.2rem; margin-bottom: 20px; }
+            .title { font-size: 2.2rem; }
             .ingredient { width: 55px; height: 55px; }
-            .enter-btn { padding: 14px 35px; font-size: 1.2rem; min-height: 50px; min-width: 180px; }
-            .ingredients-container { gap: 10px; }
-        }
-        
-        @media (max-width: 360px) {
-            .title { font-size: 2rem; }
-            .ingredient { width: 50px; height: 50px; }
-            .ingredients-container { gap: 8px; }
-            .loading-content { padding: 18px 12px; }
+            .enter-btn { padding: 14px 35px; font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
     <div class="background-container">
-        <img src="assets/images/55.png" alt="背景" class="background-image">
+        <img src="assets/images/加载.png" class="background-image">
     </div>
     
     <div class="container">
@@ -245,11 +149,11 @@
                 <h1 class="title">海南清补凉</h1>
                 
                 <div class="ingredients-container">
-                    <div class="ingredient"><img src="assets/images/椰子.png" alt="" class="ingredient-img"></div>
-                    <div class="ingredient"><img src="assets/images/芒果.png" alt="" class="ingredient-img"></div>
-                    <div class="ingredient"><img src="assets/images/绿豆.png" alt="" class="ingredient-img"></div>
-                    <div class="ingredient"><img src="assets/images/通心粉.png" alt="" class="ingredient-img"></div>
-                    <div class="ingredient"><img src="assets/images/芋圆.png" alt="" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/椰子.png" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/芒果.png" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/绿豆.png" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/通心粉.png" class="ingredient-img"></div>
+                    <div class="ingredient"><img src="assets/images/芋圆.png" class="ingredient-img"></div>
                 </div>
                 
                 <div class="loading-bar-container">
@@ -264,56 +168,45 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            startMainLoading();
-
-            function startMainLoading() {
-                const loadingPage = document.getElementById('loading-page');
-                const enterBtn = document.getElementById('enter-btn');
-                const loadingBar = document.querySelector('.loading-bar');
-                const loadingText = document.querySelector('.loading-text');
-                const ingredients = document.querySelectorAll('.ingredient');
-                
-                let progress = 0;
-                const loadingInterval = setInterval(() => {
-                    progress += 10;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(loadingInterval);
-                        
-                        setTimeout(() => {
-                            loadingText.textContent = "加载完成！准备品尝美味...";
-                            enterBtn.style.opacity = "1";
-                            enterBtn.style.transform = "translateY(0)";
-                        }, 500);
-                    }
-                    
-                    loadingBar.style.width = progress + "%";
-                    
-                    ingredients.forEach((ing, index) => {
-                        if (progress >= 20 * (index + 1)) {
-                            ing.style.opacity = "1";
-                            ing.style.transform = "translateY(0)";
-                            ing.classList.add("show"); // 加个呼吸动画
-                        }
-                    });
-                }, 200);
-                
-                enterBtn.addEventListener('click', function() {
-                    loadingPage.style.opacity = "0";
-                    loadingPage.style.pointerEvents = "none";
+            const loadingPage = document.getElementById('loading-page');
+            const enterBtn = document.getElementById('enter-btn');
+            const loadingBar = document.querySelector('.loading-bar');
+            const loadingText = document.querySelector('.loading-text');
+            const ingredients = document.querySelectorAll('.ingredient');
+            
+            let progress = 0;
+            
+            // 加载进度动画
+            let timer = setInterval(() => {
+                progress += 10;
+                if(progress >= 100){
+                    progress = 100;
+                    clearInterval(timer);
                     
                     setTimeout(() => {
-                        window.location.href = 'page/page01.html';
-                    }, 800);
-                });
+                        loadingText.innerText = "加载完成！准备品尝美味...";
+                        enterBtn.style.opacity = "1";
+                        enterBtn.style.transform = "translateY(0)";
+                    }, 500);
+                }
                 
-                enterBtn.addEventListener('touchstart', function() {
-                    this.style.transform = "scale(0.95)";
-                });
+                loadingBar.style.width = progress + "%";
                 
-                enterBtn.addEventListener('touchend', function() {
-                    this.style.transform = "scale(1)";
+                // 食材依次显示
+                ingredients.forEach((item, index) => {
+                    if(progress >= 20 * (index+1)){
+                        item.style.opacity = "1";
+                        item.style.transform = "translateY(0)";
+                    }
                 });
+            }, 200);
+            
+            // 点击进入下一页
+            enterBtn.onclick = function(){
+                loadingPage.style.opacity = "0";
+                setTimeout(() => {
+                    window.location.href = 'page/page01.html';
+                }, 800);
             }
         });
     </script>

@@ -2,390 +2,186 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>清补凉文化溯源</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-brown: #8B4513;
-            --secondary-brown: #D2691E;
-            --light-brown: #CD853F;
-            --cream: #DEB887;
-            --light-cream: #F5DEB3;
-            --dark-text: #5a3921;
-            --medium-text: #654321;
-            --background-start: #ffecd2;
-            --background-end: #fcb69f;
-            --white: #fff;
-            --shadow-light: rgba(0, 0, 0, 0.1);
-            --shadow-medium: rgba(0, 0, 0, 0.15);
-            --shadow-dark: rgba(0, 0, 0, 0.25);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            outline: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0;
-            color: var(--dark-text);
+            color: #5a3921;
             position: relative;
-        }
-
-        /* 头部样式 */
-        .header {
-            text-align: center;
-            margin: 8px 0 12px;
-            width: 100%;
-            max-width: 340px;
-            padding: 0 8px;
-            position: relative;
-            z-index: 1;
-            /* 入场动画 */
             opacity: 0;
-            transform: translateY(-30px);
-            animation: fadeInDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            transform: translateY(20px);
+            animation: pageEnter 0.8s ease-out forwards;
         }
 
-        .header h1 {
-            color: var(--primary-brown);
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px var(--shadow-light);
-            font-weight: 700;
-            position: relative;
-            display: inline-block;
-            background: #ffffff;
-            padding: 8px 16px;
-            border-radius: 16px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e0e0e0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .header h1:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
-            border-radius: 2px;
-        }
-
-        .header p {
-            color: var(--medium-text);
-            font-size: 0.9rem;
-            max-width: 320px;
-            margin: 0 auto;
-            line-height: 1.6;
-            background-color: #ffffff;
-            padding: 12px 14px;
-            border-radius: 20px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e0e0e0;
-            opacity: 1;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .header p:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-        }
-
-        /* 背景图 */
         .page-bg-container {
             position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
-            max-width: 800px;
             height: calc(100vh - 30px);
             border-radius: 8px;
-            overflow: hidden;
             z-index: 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .page-bg-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('../assets/images/11.png');
+            background-image: url('../assets/images/天涯海角背景.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            z-index: 0;
-            pointer-events: none;
+            opacity: 1;
         }
 
-        /* 时间轴容器 */
+        .header {
+            text-align: center;
+            margin: 10px 0 15px;
+            width: 100%;
+            max-width: 340px;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 1.4rem;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 16px;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            background: white;
+            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+
         .timeline-container {
             width: 100%;
             max-width: 360px;
-            margin: 0 auto 20px;
-            position: relative;
-            padding: 15px 0;
-            background: #ffffff;
+            background: white;
             border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e0e0e0;
+            padding: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
             z-index: 1;
-            /* 入场动画 - 延迟 */
-            opacity: 0;
-            transform: translateY(40px);
-            animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .timeline-container:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
 
         .timeline {
             display: flex;
             overflow-x: auto;
-            padding: 50px 18px 20px;
-            gap: 28px;
-            scroll-behavior: smooth;
-            position: relative;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-
-        .timeline::-webkit-scrollbar {
-            display: none;
+            padding: 50px 20px 20px;
+            gap: 25px;
         }
 
         .timeline-line {
             position: absolute;
             top: 62px;
-            left: 18px;
-            right: 18px;
+            left: 20px;
+            right: 20px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown), var(--light-brown));
-            border-radius: 2px;
+            background: #8B4513;
             z-index: 1;
-            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.25);
-            animation: lineGlow 2s infinite alternate;
         }
 
-        /* 时间轴节点 */
         .timeline-node {
             flex: 0 0 auto;
             width: 90px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 10px 6px;
-            border-radius: 16px;
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(30px) scale(0.9);
             border: 2px solid #E4A97E;
-            animation: floatNode 3s ease-in-out infinite;
-        }
-
-        .timeline-node:nth-child(1) { animation: fadeInUp 0.6s ease 0.6s forwards, floatNode 3s ease-in-out infinite; }
-        .timeline-node:nth-child(2) { animation: fadeInUp 0.6s ease 0.7s forwards, floatNode 3.2s ease-in-out infinite; }
-        .timeline-node:nth-child(3) { animation: fadeInUp 0.6s ease 0.8s forwards, floatNode 3.4s ease-in-out infinite; }
-        .timeline-node:nth-child(4) { animation: fadeInUp 0.6s ease 0.9s forwards, floatNode 3.6s ease-in-out infinite; }
-        .timeline-node:nth-child(5) { animation: fadeInUp 0.6s ease 1.0s forwards, floatNode 3.8s ease-in-out infinite; }
-
-        .timeline-node:hover {
-            transform: translateY(-8px) scale(1.1);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
-            border-color: var(--secondary-brown);
-        }
-
-        .timeline-node:active {
-            transform: scale(0.95);
-            transition: all 0.15s ease;
+            border-radius: 16px;
+            padding: 10px 5px;
+            z-index: 2;
         }
 
         .timeline-node.active {
-            transform: translateY(-8px) scale(1.1);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 15px 35px rgba(210, 105, 30, 0.3);
-            border-color: var(--secondary-brown);
+            background: #fff;
+            border-color: #D2691E;
         }
 
         .node-icon {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--white), #f9f9f9);
+            margin: 0 auto 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 12px var(--shadow-medium);
-            position: relative;
-            z-index: 2;
-            border: 2px solid var(--secondary-brown);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            animation: iconPulse 2.2s infinite alternate, glowEffect 3s infinite ease-in-out;
-        }
-
-        .node-icon::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown), var(--light-brown));
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .timeline-node:hover .node-icon {
-            transform: scale(1.2);
-            box-shadow: 0 10px 25px rgba(210, 105, 30, 0.4);
-        }
-
-        .timeline-node.active .node-icon {
-            transform: scale(1.2);
-            box-shadow: 0 10px 30px rgba(210, 105, 30, 0.45);
-        }
-
-        .timeline-node.active .node-icon::before {
-            opacity: 1;
+            border: 2px solid #D2691E;
         }
 
         .node-icon-content {
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            font-weight: bold;
+            border-radius: 50%;
         }
 
-        .qinhan { background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown)); color: white; }
-        .tang { background: linear-gradient(135deg, var(--light-brown), var(--secondary-brown)); color: white; }
-        .ming { background: linear-gradient(135deg, var(--secondary-brown), var(--light-brown)); color: white; }
-        .minguo { background: linear-gradient(135deg, var(--light-brown), var(--cream)); color: white; }
-        .modern { background: linear-gradient(135deg, var(--cream), var(--light-cream)); color: var(--primary-brown); }
+        .qinhan { background: #8B4513; }
+        .tang { background: #D2691E; }
+        .minguo { background: #DEB887; }
+        .modern { background: #F5DEB3; color: #8B4513; }
 
         .node-year {
-            font-weight: 700;
-            color: var(--primary-brown);
+            font-weight: bold;
+            color: #8B4513;
             font-size: 0.9rem;
             margin-bottom: 5px;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .timeline-node:hover .node-year {
-            transform: translateY(-2px);
         }
 
         .node-title {
-            color: var(--medium-text);
-            text-align: center;
             font-size: 0.8rem;
-            line-height: 1.3;
-            font-weight: 500;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #654321;
         }
 
-        .timeline-node:hover .node-title {
-            transform: translateY(-2px);
-        }
-
-        /* 滚动提示 */
         .scroll-hint {
             text-align: center;
-            color: var(--primary-brown);
-            margin-top: 8px;
-            font-size: 0.82rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            opacity: 0.8;
-            background: #ffffff;
-            padding: 6px 14px;
-            border-radius: 16px;
-            margin: 8px auto;
-            width: fit-content;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: hintFloat 2.5s infinite ease-in-out;
+            color: #8B4513;
+            font-size: 0.8rem;
+            margin-top: 5px;
         }
 
-        .scroll-hint:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
-            opacity: 1;
-        }
-
-        .scroll-hint i {
-            font-size: 0.95rem;
-            animation: arrowSlide 2s infinite;
-        }
-
-        /* 食材标签 */
-        .ingredients {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-            justify-content: center;
-        }
-
-        .ingredient {
-            background: #f5e3d4;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            color: var(--primary-brown);
-            font-weight: 500;
-            box-shadow: 0 2px 6px rgba(139, 69, 19, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .ingredient:hover {
-            transform: translateY(-4px) scale(1.1);
-            box-shadow: 0 8px 18px rgba(139, 69, 19, 0.2);
-            background: linear-gradient(135deg, #f9e6d8, #f5d7bc);
-        }
-
-        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -393,173 +189,83 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
+            background: rgba(0,0,0,0.8);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.4s ease;
-            padding: 15px;
+            padding: 20px;
         }
 
         .modal-content {
-            background-color: #ffffff;
-            width: 100%;
-            max-width: 320px;
-            padding: 18px 16px;
-            border-radius: 20px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-            border: 1px solid #e0e0e0;
-            opacity: 1;
-            animation: modalBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.4);
-            max-height: 80vh;
-            overflow-y: auto;
+            background: white;
+            max-width: 92%;
+            width: 380px;
+            border-radius: 24px;
+            overflow: hidden;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-header {
-            background: linear-gradient(to right, var(--primary-brown), var(--secondary-brown));
+            background: #8B4513;
             color: white;
-            padding: 16px 20px;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            border-radius: 16px 16px 0 0;
-            margin: -18px -16px 18px -16px;
-        }
-
-        .modal-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--light-brown), var(--cream));
-        }
-
-        .modal-header h2 {
-            font-size: 1.15rem;
-            font-weight: 600;
+            flex-shrink: 0;
         }
 
         .close-btn {
-            background: rgba(255, 255, 250, 0.2);
+            background: none;
             border: none;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             cursor: pointer;
-            width: 34px;
-            height: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg) scale(1.15);
         }
 
         .modal-body {
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            padding: 22px;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
         .modal-text {
-            line-height: 1.6;
-            color: #333;
-            font-size: 0.9rem;
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 20px;
         }
 
-        .modal-text p {
-            margin-bottom: 12px;
-        }
-
-        .modal-map {
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px var(--shadow-light);
-            background: #f9f5f0;
-            padding: 12px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .modal-map:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
-        }
-
+        /* 已修改：四周均匀留白、更小 */
         .photo-container {
             width: 100%;
-            height: 200px;
-            border-radius: 12px;
-            overflow: hidden;
+            height: 260px;
+            border: 2px solid #D2691E;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-brown);
-            border: 2px solid var(--secondary-brown);
-            background: linear-gradient(135deg, #fff9f0 0%, #f5e9d8 100%);
-            box-shadow: inset 0 0 15px rgba(139, 69, 19, 0.1);
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #f9f5f0;
+            overflow: hidden;
+            padding: 10px; /* 上下左右一样 */
         }
 
-        .photo-container:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.18);
-        }
-
-        .photo-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 249, 240, 0.8) 0%, rgba(245, 233, 216, 0.8) 100%);
-            z-index: 1;
-        }
-
+        /* 已修改：图片四周等距、更美观 */
         .history-photo {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            position: relative;
-            z-index: 2;
+            display: block;
+            margin: 0 auto;
         }
 
         .photo-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f5e3d4 0%, #e9d0b8 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-brown);
-            font-weight: bold;
-            font-size: 1rem;
             text-align: center;
-            padding: 15px;
-            position: relative;
-            z-index: 3;
+            color: #8B4513;
+            font-size: 1rem;
         }
 
-        .photo-placeholder i {
-            font-size: 2.8rem;
-            margin-bottom: 12px;
-            opacity: 0.7;
-            animation: iconFloat 3s infinite ease-in-out;
-        }
-
-        /* 浮动操作按钮 */
         .fab-container {
             position: fixed;
             bottom: 25px;
@@ -571,423 +277,202 @@
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
+            background: #8B4513;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.35);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: none;
-            font-size: 22px;
-            position: relative;
-            z-index: 101;
-            animation: fabPulse 2.5s infinite;
-        }
-
-        .fab-main:hover {
-            transform: scale(1.2) rotate(90deg);
-            box-shadow: 0 10px 28px rgba(139, 69, 19, 0.65);
-        }
-
-        .fab-main:active {
-            transform: scale(0.95) rotate(90deg);
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 65px;
+            bottom: 70px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
             opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
+            transition: 0.3s;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
             pointer-events: all;
         }
 
         .fab-item {
-            width: 54px;
-            height: 54px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--white);
-            color: var(--primary-brown);
+            background: white;
+            color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 12px var(--shadow-dark);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            position: relative;
-            text-align: center;
-            padding: 4px;
-        }
-
-        .fab-item:hover {
-            transform: translateY(-6px) scale(1.15);
-            background: linear-gradient(135deg, #fff, #f9f0e6);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .fab-item:active {
-            transform: translateY(-2px) scale(0.98);
-        }
-
-        .fab-label {
-            position: absolute;
-            right: 65px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            font-weight: 500;
-        }
-
-        .fab-item:hover .fab-label {
-            opacity: 1;
-        }
-
-        /* 核心动画 */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity:1; transform:translateY(0); } }
-
-        @keyframes modalBounce {
-            0% { opacity: 0; transform: scale(0.75) translateY(40px); }
-            60% { transform: scale(1.1) translateY(0); }
-            80% { transform: scale(0.98) translateY(0); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes floatNode {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes glowEffect {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.15); }
-        }
-
-        @keyframes iconPulse {
-            0% { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-            100% { box-shadow: 0 8px 22px rgba(210,105,30,0.3); }
-        }
-
-        @keyframes hintFloat {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        @keyframes arrowSlide {
-            0%,100% { transform: translateX(0); }
-            50% { transform: translateX(-4px); }
-        }
-
-        @keyframes iconFloat {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes fabPulse {
-            0% { box-shadow: 0 5px 15px rgba(139,69,19,0.35); }
-            50% { box-shadow: 0 10px 28px rgba(139,69,19,0.6); }
-            100% { box-shadow: 0 5px 15px rgba(139,69,19,0.35); }
-        }
-
-        @keyframes lineGlow {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div class="page-bg-container"></div>
 
-    <div class="header">
-        <h1>清补凉文化溯源</h1>
-        <p>清补凉是海南标志性传统甜品，融合岭南药食理念与热带食材，兼具消暑、清热、滋补功效，是海南饮食文化的重要符号。</p>
-    </div>
+<div class="page-bg-container"></div>
 
-    <div class="timeline-container">
-        <div class="timeline-line"></div>
-        <div class="timeline">
-            <div class="timeline-node" data-year="秦汉" data-title="岭南药食雏形">
-                <div class="node-icon">
-                    <div class="node-icon-content qinhan">秦汉</div>
-                </div>
-                <div class="node-year">秦汉时期</div>
-                <div class="node-title">岭南药食雏形</div>
+<div class="header">
+    <h1>清补凉文化溯源</h1>
+    <p>清补凉是海南最具代表性的传统甜品，始于秦汉药膳，兴于唐宋，民国普及，现代成为海南饮食文化名片。</p>
+</div>
+
+<div class="timeline-container">
+    <div class="timeline-line"></div>
+    <div class="timeline">
+        <div class="timeline-node active" data-year="秦汉时期">
+            <div class="node-icon">
+                <div class="node-icon-content qinhan">秦汉</div>
             </div>
-
-            <div class="timeline-node" data-year="北宋" data-title="东坡定名典故">
-                <div class="node-icon">
-                    <div class="node-icon-content tang">北宋</div>
-                </div>
-                <div class="node-year">北宋时期</div>
-                <div class="node-title">东坡定名典故</div>
-            </div>
-
-            <div class="timeline-node" data-year="明清" data-title="岭南体系定型">
-                <div class="node-icon">
-                    <div class="node-icon-content ming">明清</div>
-                </div>
-                <div class="node-year">明清时期</div>
-                <div class="node-title">岭南体系定型</div>
-            </div>
-
-            <div class="timeline-node" data-year="民国" data-title="海南本土化成熟">
-                <div class="node-icon">
-                    <div class="node-icon-content minguo">民国</div>
-                </div>
-                <div class="node-year">民国时期</div>
-                <div class="node-title">海南本土化成熟</div>
-            </div>
-
-            <div class="timeline-node" data-year="现代" data-title="非遗化与标准化">
-                <div class="node-icon">
-                    <div class="node-icon-content modern">现代</div>
-                </div>
-                <div class="node-year">现代</div>
-                <div class="node-title">非遗化与标准化</div>
-            </div>
+            <div class="node-year">秦汉时期</div>
+            <div class="node-title">药食同源起源</div>
         </div>
-        <div class="scroll-hint">
-            <i class="fas fa-chevron-left"></i>
-            <span>左右滑动查看更多</span>
-            <i class="fas fa-chevron-right"></i>
+
+        <div class="timeline-node" data-year="唐宋时期">
+            <div class="node-icon">
+                <div class="node-icon-content tang">唐宋</div>
+            </div>
+            <div class="node-year">唐宋时期</div>
+            <div class="node-title">文人盛赞定型</div>
+        </div>
+
+        <div class="timeline-node" data-year="民国时期">
+            <div class="node-icon">
+                <div class="node-icon-content minguo">民国</div>
+            </div>
+            <div class="node-year">民国时期</div>
+            <div class="node-title">街头市井普及</div>
+        </div>
+
+        <div class="timeline-node" data-year="现代">
+            <div class="node-icon">
+                <div class="node-icon-content modern">现代</div>
+            </div>
+            <div class="node-year">现代</div>
+            <div class="node-title">文旅非遗名片</div>
         </div>
     </div>
+    <div class="scroll-hint">左右滑动查看更多</div>
+</div>
 
-    <div class="modal" id="historyModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">清补凉文化溯源</h2>
-                <button class="close-btn">&times;</button>
+<div class="modal" id="historyModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">清补凉文化溯源</h2>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-text" id="modalText">
+                <p>请点击时间轴节点查看详情</p>
             </div>
-            <div class="modal-body">
-                <div class="modal-text" id="modalText">
-                    <p>请点击时间轴节点查看详情</p>
-                </div>
-                <div class="modal-map">
-                    <div class="photo-container" id="photoContainer">
-                        <div class="photo-placeholder">
-                            <i class="fas fa-image"></i>
-                            <span>点击时间轴节点查看历史照片</span>
-                        </div>
-                    </div>
+            <div class="photo-container" id="photoContainer">
+                <div class="photo-placeholder">
+                    <i class="fas fa-image"></i><br>
+                    <span>点击查看历史照片</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 浮动操作按钮 -->
-    <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
-        <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item" id="menuBtn">菜单</a>
-            <a href="page2.html" class="fab-item">下页</a>
-        </div>
+<div class="fab-container">
+    <button class="fab-main" id="fabMain">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu">
+        <a href="page0.html" class="fab-item">菜单</a>
+        <a href="page2.html" class="fab-item">下页</a>
     </div>
+</div>
 
-    <script>
-        // 真实史料数据（全部来自参考文献）
-        const historyData = {
-            "秦汉": {
-                title: "岭南药食雏形",
-                content: `
-                    <p>秦汉时期，岭南湿热气候催生药食同源理念，清补凉雏形源于民间清热祛湿食疗方。</p>
-                    <p>先民以绿豆、薏米、莲子等天然食材煮制汤水，用于消暑解毒、调理脾胃，是清补凉最早的实用形态。</p>
-                    <div class="ingredients">
-                        <div class="ingredient">绿豆</div>
-                        <div class="ingredient">薏米</div>
-                        <div class="ingredient">莲子</div>
-                        <div class="ingredient">百合</div>
-                    </div>
-                `,
-            },
-            "北宋": {
-                title: "东坡定名典故",
-                content: `
-                    <p>北宋苏轼被贬海南，品尝当地椰奶甜品后盛赞：<strong>“椰树之上采琼浆，捧来一碗白玉香”</strong>。</p>
-                    <p>苏轼将此方定名“清补凉”，取“清凉、滋补、降火”之意，成为海南清补凉最早的文字记载与文化符号。</p>
-                    <div class="ingredients">
-                        <div class="ingredient">椰奶</div>
-                        <div class="ingredient">红枣</div>
-                        <div class="ingredient">鹌鹑蛋</div>
-                        <div class="ingredient">通心粉</div>
-                    </div>
-                `,
-            },
-            "明清": {
-                title: "岭南体系定型",
-                content: `
-                    <p>明清时期，清补凉在岭南形成完整体系，广东、广西、海南三地各具特色。</p>
-                    <p>海南版本因热带物产丰富，加入椰子、西瓜、菠萝等食材，与两广清补凉明显区分，成为海岛特色甜品。</p>
-                    <div class="ingredients">
-                        <div class="ingredient">椰子水</div>
-                        <div class="ingredient">西瓜粒</div>
-                        <div class="ingredient">菠萝粒</div>
-                        <div class="ingredient">葡萄干</div>
-                    </div>
-                `,
-            },
-            "民国": {
-                title: "海南本土化成熟",
-                content: `
-                    <p>民国时期，海南清补凉进入街头常态化经营，20世纪20年代已遍布海口街巷。</p>
-                    <p>售价低廉，三五个铜板即可享用，成为平民消暑必备；原料扩展至二十余种，椰奶、椰子水版本成为主流。</p>
-                    <div class="ingredients">
-                        <div class="ingredient">椰奶清补凉</div>
-                        <div class="ingredient">椰子水清补凉</div>
-                        <div class="ingredient">红糖水清补凉</div>
-                        <div class="ingredient">凉粉块</div>
-                    </div>
-                `,
-            },
-            "现代": {
-                title: "非遗化与标准化",
-                content: `
-                    <p>当代清补凉成为海南国际旅游岛标志性美食，入选地方特色饮食文化名录。</p>
-                    <p>制作工艺规范化，原料讲究新鲜现煮，低糖健康化趋势明显，成为传播海南文化的重要载体。</p>
-                    <div class="ingredients">
-                        <div class="ingredient">鲜椰现榨</div>
-                        <div class="ingredient">原料分煮</div>
-                        <div class="ingredient">低糖配方</div>
-                        <div class="ingredient">文创包装</div>
-                    </div>
-                `,
-            }
-        };
-
-        // DOM元素
-        const modal = document.getElementById('historyModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalText = document.getElementById('modalText');
-        const closeBtn = document.querySelector('.close-btn');
-        const fabMain = document.getElementById('fabMain');
-        const fabMenu = document.getElementById('fabMenu');
-        const timeline = document.querySelector('.timeline');
-        const photoContainer = document.getElementById('photoContainer');
-        let activeNode = document.querySelector('.timeline-node:first-child');
-
-        // 照片路径
-        const photoPaths = {
-            "秦汉": '../assets/images/图1.png',
-            "北宋": '../assets/images/图2.png',
-            "明清": '../assets/images/图3.png',
-            "民国": '../assets/images/图4.png',
-            "现代": '../assets/images/图5.png'
-        };
-
-        const photoDescriptions = {
-            "秦汉": "秦汉岭南药食食材",
-            "北宋": "苏轼与清补凉典故",
-            "明清": "明清岭南清补凉体系",
-            "民国": "民国海南街头清补凉摊",
-            "现代": "现代清补凉标准化制作"
-        };
-
-        function createPhotoElement(photoPath, altText) {
-            const img = document.createElement('img');
-            img.src = photoPath;
-            alt = altText;
-            img.className = 'history-photo';
-            img.onerror = function() {
-                this.parentElement.innerHTML = `
-                    <div class="photo-placeholder">
-                        <i class="fas fa-image"></i>
-                        <span>图片加载失败</span>
-                    </div>
-                `;
-            };
-            return img;
+<script>
+    const historyData = {
+        "秦汉时期": {
+            title: "药食同源起源",
+            content: `<p>清补凉雏形可追溯至公元前219年，秦始皇南征百越时，随军大夫以莲子、百合、沙参等药材熬制药膳粥，用于清热祛湿、抵御暑湿，这便是清补凉的最早形态。</p>
+                      <p>核心理念为“清热、补气、祛湿”，是岭南药食同源文化的早期体现。</p>`
+        },
+        "唐宋时期": {
+            title: "文人盛赞定型",
+            content: `<p>北宋文学家苏轼被贬海南期间，品尝椰奶清补凉后留下名句：<strong>“椰树之上采琼浆，捧来一碗白玉香”</strong>。</p>
+                      <p>清补凉由此从药膳走向民间，成为海南特色甜品，奠定椰香清甜的风格。</p>`
+        },
+        "民国时期": {
+            title: "街头市井普及",
+            content: `<p>1920年代，清补凉开始在海南街头小摊普及，三五个铜板即可购买。</p>
+                      <p>1953年，海口第二饮食公司将清补凉引入门店经营，成为夏季消暑主流甜品，形成三大经典品类。</p>`
+        },
+        "现代": {
+            title: "文旅非遗名片",
+            content: `<p>随着海南国际旅游岛建设，清补凉成为海内外游客必尝的海南标志性美食。</p>
+                      <p>在传统基础上创新口味，成为海南饮食文化与非遗文化的重要代表。</p>`
         }
+    };
 
-        // 浮动按钮
-        fabMain.addEventListener('click', function() {
-            fabMenu.classList.toggle('open');
-        });
+    const photoPaths = {
+        "秦汉时期": "../assets/images/图1.png",
+        "唐宋时期": "../assets/images/图2.png",
+        "民国时期": "../assets/images/图4.png",
+        "现代": "../assets/images/图5.png"
+    };
 
-        document.addEventListener('click', function(e) {
-            if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
-            }
-        });
+    const modal = document.getElementById('historyModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const closeBtn = document.querySelector('.close-btn');
+    const photoContainer = document.getElementById('photoContainer');
+    const fabMain = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    const nodes = document.querySelectorAll('.timeline-node');
 
-        // 时间轴点击
-        timeline.addEventListener('click', (e) => {
-            const node = e.target.closest('.timeline-node');
-            if (!node) return;
+    fabMain.onclick = function(){
+        fabMenu.classList.toggle('open');
+    }
 
-            const year = node.dataset.year;
-            const data = historyData[year];
+    document.onclick = function(e){
+        if(!fabMain.contains(e.target) && !fabMenu.contains(e.target)){
+            fabMenu.classList.remove('open');
+        }
+    }
+
+    nodes.forEach(node => {
+        node.onclick = function(){
+            nodes.forEach(n => n.classList.remove('active'));
+            this.classList.add('active');
             
-            if (data) {
-                modalTitle.textContent = `${year} - ${data.title}`;
-                modalText.innerHTML = data.content;
-                
-                if (photoPaths[year]) {
-                    photoContainer.innerHTML = '';
-                    const photoAlt = photoDescriptions[year] || `${year}清补凉历史照片`;
-                    const photoElement = createPhotoElement(photoPaths[year], photoAlt);
-                    photoContainer.appendChild(photoElement);
-                } else {
-                    photoContainer.innerHTML = `
-                        <div class="photo-placeholder">
-                            <i class="fas fa-image"></i>
-                            <span>暂无${year}的照片</span>
-                        </div>
-                    `;
-                }
-                
-                if (activeNode) activeNode.classList.remove('active');
-                node.classList.add('active');
-                activeNode = node;
-                
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-        });
-
-        // 关闭模态框
-        closeBtn.addEventListener('click', closeModal);
-        window.addEventListener('click', (e) => e.target === modal && closeModal());
-
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            let year = this.dataset.year;
+            let data = historyData[year];
+            
+            modalTitle.innerText = year + " - " + data.title;
+            modalText.innerHTML = data.content;
+            
+            photoContainer.innerHTML = `<img src="${photoPaths[year]}" class="history-photo">`;
+            
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden";
         }
+    });
 
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            activeNode.classList.add('active');
-            const initialYear = activeNode.dataset.year;
-            if (photoPaths[initialYear]) {
-                photoContainer.innerHTML = '';
-                const photoAlt = photoDescriptions[initialYear] || `${initialYear}清补凉历史照片`;
-                const photoElement = createPhotoElement(photoPaths[initialYear], photoAlt);
-                photoContainer.appendChild(photoElement);
-            }
-        });
-    </script>
+    closeBtn.onclick = function(){
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    window.onclick = function(e){
+        if(e.target == modal){
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+</script>
 </body>
 </html>

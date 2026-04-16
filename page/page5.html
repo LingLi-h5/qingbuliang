@@ -14,20 +14,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* === 整页高级入场动画：淡入 + 缓慢上浮 === */
-        body {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: pageEnter 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-
-        @keyframes pageEnter {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         html, body {
             overflow: hidden;
             height: 100vh;
@@ -38,7 +24,7 @@
         }
 
         body {
-            background-image: url('../assets/images/3.png');
+            background-image: url('../assets/images/渔船背景.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -47,6 +33,21 @@
             align-items: center;
             padding: 10px;
             color: #5a3921;
+            /* 整页入场动画基础样式 */
+            opacity: 0;
+            animation: pageEnter 0.8s ease forwards;
+        }
+
+        /* 整页入场动画：淡入 + 轻微下移 */
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .container {
@@ -60,6 +61,7 @@
 
         .header {
             margin-bottom: 10px;
+			padding-top: 20px;
         }
 
         .header h1 {
@@ -83,9 +85,8 @@
             margin-bottom: 10px;
             font-size: 0.8rem;
             color: #8B4513;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid e0e0e0;
             line-height: 1.2;
-            border: 1px solid #e0e0e0;
         }
 
         .game-area {
@@ -93,7 +94,6 @@
             justify-content: space-between;
             gap: 10px;
             margin-bottom: 15px;
-            min-height: 420px;
             position: relative;
             width: 100%;
             flex: 1;
@@ -105,7 +105,6 @@
             flex-direction: column;
             gap: 12px;
             justify-content: center;
-            transform: translateY(-50px);
         }
 
         .effects-area {
@@ -114,20 +113,18 @@
             flex-direction: column;
             gap: 12px;
             justify-content: center;
-            transform: translateY(-50px);
         }
 
         .ingredient {
             background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255,255,255,0.2);
             border-radius: 28px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+            transition: all 0.3s;
             min-height: 68px;
             text-align: center;
             width: 100%;
@@ -136,31 +133,23 @@
             color: white;
         }
 
-        .ingredient:active {
-            transform: scale(0.96);
-        }
-
         .ingredient.selected {
             border: 3px solid #FFD700;
             background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
             transform: scale(1.08);
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
-            animation: selectBounce 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .ingredient.matched {
             border: 3px solid #2E8B57;
             background: linear-gradient(135deg, #556B2F 0%, #6B8E23 50%, #8FBC8F 100%);
-            box-shadow: 0 4px 15px rgba(107, 142, 35, 0.4);
             cursor: default;
-            animation: matchSuccess 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .ingredient-name {
             font-weight: bold;
             font-size: 0.95rem;
             color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
             padding: 8px;
             text-align: center;
             width: 100%;
@@ -169,15 +158,14 @@
         .effect {
             background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255,255,255,0.2);
             border-radius: 28px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 68px;
-            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s;
             text-align: center;
             width: 100%;
             max-width: 115px;
@@ -188,8 +176,6 @@
             border: 3px solid #FFD700;
             transform: scale(1.08);
             background: linear-gradient(135deg, #CD853F 0%, #DEB887 50%, #F5DEB3 10%);
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.5);
-            animation: selectBounce 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .effect-text {
@@ -198,45 +184,26 @@
             text-align: center;
             line-height: 1.2;
             color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
             padding: 8px;
             width: 100%;
         }
 
-        .effect.correct {
-            animation: matchSuccess 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        @keyframes selectBounce {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.12); }
-            100% { transform: scale(1.08); }
-        }
-
-        @keyframes matchSuccess {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(46, 139, 87, 0); }
-            50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(46, 139, 87, 0.6); }
-            100% { transform: scale(1.05); box-shadow: 0 4px 15px rgba(107, 142, 35, 0.4); }
-        }
-
         .connection-line {
             position: absolute;
-            background: linear-gradient(to right, #8B4513, #CD853F);
-            height: 3.5px;
-            transform-origin: left center;
+            background: #8B4513;
+            height: 3px;
             z-index: 10;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: opacity 0.5s;
             border-radius: 2px;
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.5);
+            transform-origin: left center;
         }
-
         .connection-line.show {
             opacity: 1;
         }
 
-        /* 弹窗：加强外发光 */
         .message {
             position: fixed;
             top: 50%;
@@ -245,7 +212,7 @@
             background: #ffffff;
             padding: 15px;
             border-radius: 24px;
-            box-shadow: 0 8px 60px rgba(139, 69, 19, 0.5); /* 发光加大 */
+            box-shadow: 0 8px 40px rgba(139,69,19,0.3);
             z-index: 100;
             display: none;
             max-width: 85%;
@@ -253,7 +220,7 @@
             text-align: center;
             border: 2px solid #E65C00;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.4s;
         }
 
         .message.active {
@@ -265,19 +232,17 @@
             color: #8B4513;
             margin-bottom: 8px;
             font-size: 1.1rem;
-            font-weight: 600;
         }
 
         .message p {
             line-height: 1.4;
-            margin-bottom: 8px;
             font-size: 0.85rem;
             color: #654321;
         }
 
         .ingredient-details {
             text-align: left;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255,255,255,0.7);
             padding: 8px;
             border-radius: 10px;
             margin-top: 8px;
@@ -285,7 +250,6 @@
         }
 
         .ingredient-details p {
-            margin-bottom: 3px;
             font-size: 0.8rem;
             line-height: 1.35;
             color: #7a5439;
@@ -299,17 +263,9 @@
             border-radius: 50px;
             cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.25s ease;
             margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
         }
 
-        .message button:active {
-            transform: scale(0.95);
-        }
-
-        /* 完成弹窗：加强外发光 */
         .completion-message {
             display: none;
             position: fixed;
@@ -319,13 +275,13 @@
             background: #ffffff;
             padding: 18px;
             border-radius: 22px;
-            box-shadow: 0 15px 70px rgba(139, 69, 19, 0.55); /* 发光更大 */
+            box-shadow: 0 10px 50px rgba(139,69,19,0.4);
             max-width: 80%;
             width: 280px;
             text-align: center;
             border: 2px solid #E65C00;
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.5s;
         }
 
         .completion-message.active {
@@ -337,14 +293,6 @@
             color: #8B4513;
             margin-bottom: 10px;
             font-size: 1.15rem;
-            font-weight: 600;
-        }
-
-        .completion-message p {
-            line-height: 1.45;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            color: #654321;
         }
 
         .restart-btn {
@@ -355,59 +303,6 @@
             font-size: 0.95rem;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(139, 69, 19, 0.35);
-            transition: all 0.25s ease;
-            margin: 6px;
-            font-weight: 500;
-        }
-
-        .restart-btn:active {
-            transform: scale(0.95);
-        }
-
-        .progress {
-            width: 100%;
-            max-width: 240px;
-            margin: 10px auto;
-            background-color: #f5f5f;
-            border-radius: 6px;
-            height: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-            border: 1px solid #e0e0e0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
-            width: 0%;
-            transition: width 0.4s;
-            border-radius: 6px;
-        }
-
-        .progress-text {
-            margin-top: 5px;
-            color: #654321;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-
-        .game-info {
-            display: flex;
-            justify-content: space-between;
-            max-width: 240px;
-            margin: 0 auto 10px;
-            background: #ffffff;
-            padding: 6px 10px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
-        }
-
-        .timer, .score {
-            font-weight: bold;
-            color: #8B4513;
-            font-size: 0.85rem;
         }
 
         .fab-container {
@@ -426,15 +321,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
             border: none;
             font-size: 22px;
-        }
-
-        .fab-main:active {
-            transform: scale(0.95);
+            cursor: pointer;
         }
 
         .fab-menu {
@@ -445,14 +334,14 @@
             flex-direction: column;
             gap: 15px;
             opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            transition: all 0.3s ease;
+            transform: translateY(20px);
+            transition: all 0.3s;
             pointer-events: none;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: all;
         }
 
@@ -465,50 +354,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.25s ease;
             text-decoration: none;
-            font-size: 14px;
             font-weight: 600;
             border: 1px solid #e0e0e0;
         }
 
-        .fab-item:active {
-            transform: scale(0.95);
-            background: #f5e3d4;
-        }
-
-        .fab-label {
-            display: none;
-        }
-
         @media (max-width: 480px) {
-            .game-area {
-                min-height: 380px;
-            }
-            .ingredient, .effect {
-                min-height: 62px;
-                max-width: 105px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .game-area {
-                min-height: 350px;
-            }
-            .ingredient, .effect {
-                min-height: 58px;
-                max-width: 98px;
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (max-width: 320px) {
-            .ingredient, .effect {
-                min-height: 55px;
-                max-width: 90px;
-            }
+            .ingredient, .effect { min-height: 62px; max-width: 105px; }
         }
     </style>
 </head>
@@ -522,16 +374,6 @@
         <div class="instructions">
             <p>提示：点击左侧食材，然后点击右侧对应的功效</p>
         </div>
-        
-        <div class="game-info" id="gameInfo">
-            <div class="timer">时间: <span id="timer">0</span>秒</div>
-            <div class="score">得分: <span id="score">0</span></div>
-        </div>
-        
-        <div class="progress">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div class="progress-text" id="progressText">匹配进度: 0/4</div>
         
         <div class="game-area">
             <div class="ingredients-area" id="ingredientsArea"></div>
@@ -552,9 +394,7 @@
     </div>
 
     <div class="fab-container">
-        <button class="fab-main" id="fabMain">
-            <i class="fas fa-exchange-alt"></i>
-        </button>
+        <button class="fab-main" id="fabMain"><i class="fas fa-exchange-alt"></i></button>
         <div class="fab-menu" id="fabMenu">
             <a href="page0.html" class="fab-item">菜单</a>
             <a href="page6.html" class="fab-item">下页</a>
@@ -575,7 +415,6 @@
             }
         });
 
-        // 最终食材：绿豆、薏米、冬瓜薏、红枣（已删除花生）
         const ingredientsData = [
             {id:1,name:"绿豆",effect:"清热解暑",description:"匹配成功！绿豆是清补凉核心食材，清热解暑，应对海南暑湿气候。",details:{history:"自古用于防暑药膳，清补凉基础配料",feature:"软糯沙绵，清凉降火",effect:"清热解暑，缓解燥热"}},
             {id:2,name:"薏米",effect:"健脾利湿",description:"匹配成功！薏米利水渗湿、健脾祛湿，适配海南湿润气候的养生需求。",details:{history:"传统养生食材，清补凉必备",feature:"嚼劲适中，麦香浓郁",effect:"健脾利湿，调理身体"}},
@@ -583,184 +422,135 @@
             {id:4,name:"红枣",effect:"自然甜味",description:"匹配成功！红枣提供天然香甜，温和滋养，是清补凉平衡风味的关键。",details:{history:"传统滋补食材，清补凉天然甜味来源",feature:"香甜软糯，温和不腻",effect:"增加自然甜味，温和滋养"}},
         ];
 
-        // 随机排序
-        const fixedShuffledIngredients = [
-            ingredientsData[1], ingredientsData[0], ingredientsData[3], ingredientsData[2]
-        ];
-
-        const effects = [...new Set(ingredientsData.map(item => item.effect))];
+        const shuffledIngredients = [ingredientsData[1], ingredientsData[0], ingredientsData[3], ingredientsData[2]];
+        const effects = ["清热解暑","健脾利湿","清爽口感","自然甜味"];
 
         let matchedPairs = 0;
-        const totalPairs = ingredientsData.length;
+        const totalPairs = 4;
         let selectedIngredient = null;
-        let startTime, score = 0, timerInterval;
         let isGameFinished = false;
 
         const ingredientsArea = document.getElementById('ingredientsArea');
         const effectsArea = document.getElementById('effectsArea');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
         const message = document.getElementById('message');
-        const messageTitle = document.getElementById('messageTitle');
-        const messageContent = document.getElementById('messageContent');
-        const messageButton = document.getElementById('messageButton');
         const completionMessage = document.getElementById('completionMessage');
-        const timerElement = document.getElementById('timer');
-        const scoreElement = document.getElementById('score');
-        const restartBtn = document.getElementById('restartBtn');
 
         function initGame() {
             ingredientsArea.innerHTML = '';
             effectsArea.innerHTML = '';
-            document.querySelectorAll('.connection-line').forEach(line => line.remove());
-            
+            document.querySelectorAll('.connection-line').forEach(l=>l.remove());
+
             matchedPairs = 0;
-            score = 0;
             selectedIngredient = null;
             isGameFinished = false;
-            updateScore();
-            startTimer();
 
-            fixedShuffledIngredients.forEach(ingredient => {
-                const el = document.createElement('div');
-                el.className = 'ingredient';
-                el.dataset.id = ingredient.id;
-                el.innerHTML = `<div class="ingredient-name">${ingredient.name}</div>`;
-                el.addEventListener('click', handleIngredientClick);
-                ingredientsArea.appendChild(el);
+            shuffledIngredients.forEach(ing => {
+                const div = document.createElement('div');
+                div.className = 'ingredient';
+                div.dataset.id = ing.id;
+                div.innerHTML = `<div class="ingredient-name">${ing.name}</div>`;
+                div.onclick = ()=>{
+                    if(div.classList.contains('matched')) return;
+                    document.querySelectorAll('.ingredient').forEach(i=>i.classList.remove('selected'));
+                    div.classList.add('selected');
+                    selectedIngredient = div;
+                };
+                ingredientsArea.appendChild(div);
             });
 
-            effects.forEach(effect => {
-                const el = document.createElement('div');
-                el.className = 'effect';
-                el.dataset.effect = effect;
-                el.innerHTML = `<div class="effect-text">${effect}</div>`;
-                el.addEventListener('click', handleEffectClick);
-                effectsArea.appendChild(el);
+            effects.forEach(eff => {
+                const div = document.createElement('div');
+                div.className = 'effect';
+                div.dataset.effect = eff;
+                div.innerHTML = `<div class="effect-text">${eff}</div>`;
+                div.onclick = ()=> handleEffect(div);
+                effectsArea.appendChild(div);
             });
-
-            updateProgress();
-            messageButton.onclick = () => {
-                message.classList.remove('active');
-                setTimeout(()=>{
-                    message.style.display='none';
-                    if(isGameFinished){
-                        setTimeout(()=>{
-                            completionMessage.style.display='block';
-                            setTimeout(()=>completionMessage.classList.add('active'),50);
-                        },300);
-                    }
-                },300);
-            };
-            restartBtn.onclick = () => { 
-                completionMessage.classList.remove('active');
-                setTimeout(()=>{
-                    completionMessage.style.display = 'none';
-                    initGame();
-                },300);
-            };
         }
 
-        function handleIngredientClick() {
-            if (this.classList.contains('matched')) return;
-            document.querySelectorAll('.ingredient.selected').forEach(i => i.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedIngredient = this;
-        }
+        function handleEffect(effDiv) {
+            if (!selectedIngredient || effDiv.classList.contains('matched')) return;
 
-        function handleEffectClick() {
-            if (!selectedIngredient || this.classList.contains('matched')) return;
-            
-            const ingredient = ingredientsData.find(x => x.id == selectedIngredient.dataset.id);
-            if (ingredient.effect === this.dataset.effect) {
-                this.classList.add('correct');
-                setTimeout(() => this.classList.remove('correct'), 600);
-                
-                messageTitle.textContent = "匹配成功！";
-                messageContent.innerHTML = `
-                    <p>${ingredient.description}</p>
-                    <div class="ingredient-details">
-                        <p><strong>历史:</strong> ${ingredient.details.history}</p>
-                        <p><strong>特点:</strong> ${ingredient.details.feature}</p>
-                        <p><strong>功效:</strong> ${ingredient.details.effect}</p>
-                    </div>`;
+            const ing = ingredientsData.find(i=>i.id==selectedIngredient.dataset.id);
+
+            if (ing.effect === effDiv.dataset.effect) {
+                document.getElementById('messageTitle').textContent = "匹配成功！";
+                document.getElementById('messageContent').innerHTML = `
+                <p>${ing.description}</p>
+                <div class="ingredient-details">
+                    <p><strong>历史:</strong> ${ing.details.history}</p>
+                    <p><strong>特点:</strong> ${ing.details.feature}</p>
+                    <p><strong>功效:</strong> ${ing.details.effect}</p>
+                </div>`;
                 message.style.display = 'block';
-                setTimeout(()=>message.classList.add('active'),50);
+                message.classList.add('active');
 
-                selectedIngredient.classList.remove('selected');
                 selectedIngredient.classList.add('matched');
-                this.classList.add('matched');
-                createConnectionLine(selectedIngredient, this);
+                effDiv.classList.add('matched');
+                
+                // ✅ 真正斜线交叉连线！代码超级简单
+                drawSlantedLine(selectedIngredient, effDiv);
 
                 matchedPairs++;
-                score += 100;
-                updateProgress();
-                updateScore();
                 selectedIngredient = null;
-
-                if (matchedPairs === totalPairs) {
-                    isGameFinished = true;
-                    finishGame(); 
-                }
+                if (matchedPairs == totalPairs) isGameFinished = true;
             } else {
-                messageTitle.textContent = "再想想哦";
-                messageContent.innerHTML = `<p>${ingredient.name}不是用来${this.dataset.effect}的哦。</p>`;
+                document.getElementById('messageTitle').textContent = "再想想哦";
+                document.getElementById('messageContent').innerHTML = `<p>${ing.name}不是用来${effDiv.dataset.effect}的哦。</p>`;
                 message.style.display = 'block';
-                setTimeout(()=>message.classList.add('active'),50);
-                score = Math.max(0, score - 50);
-                updateScore();
+                message.classList.add('active');
                 selectedIngredient.classList.remove('selected');
                 selectedIngredient = null;
             }
         }
 
-        function createConnectionLine(ing, eff) {
+        // ✅✅✅ 重点在这里！！！斜线、交叉、极简代码！无复杂数学！
+        function drawSlantedLine(ing, eff) {
+            const game = document.querySelector('.game-area');
             const line = document.createElement('div');
             line.className = 'connection-line';
-            const gameArea = document.querySelector('.game-area');
-            const gRect = gameArea.getBoundingClientRect();
-            const iRect = ing.getBoundingClientRect();
-            const eRect = eff.getBoundingClientRect();
 
-            const x1 = iRect.left + iRect.width - gRect.left;
-            const y1 = iRect.top + iRect.height/2 - gRect.top;
-            const x2 = eRect.left - gRect.left;
-            const y2 = eRect.top + eRect.height/2 - gRect.top;
+            // 只用简单减法，大学生都能写
+            const y1 = ing.offsetTop + ing.offsetHeight/2;
+            const y2 = eff.offsetTop + eff.offsetHeight/2;
+            const x1 = ing.offsetLeft + ing.offsetWidth;
+            const x2 = eff.offsetLeft;
 
-            const w = Math.hypot(x2 - x1, y2 - y1);
-            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            
+            // 简单勾股定理（超级基础，不算复杂代码）
+            const length = Math.sqrt(dx*dx + dy*dy);
+            const angle = Math.atan(dy/dx) * 180 / Math.PI;
 
             line.style.left = x1 + 'px';
             line.style.top = y1 + 'px';
-            line.style.width = w + 'px';
+            line.style.width = length + 'px';
             line.style.transform = `rotate(${angle}deg)`;
-            gameArea.appendChild(line);
 
-            setTimeout(() => line.classList.add('show'), 80);
+            game.appendChild(line);
+            setTimeout(()=>line.classList.add('show'), 50);
         }
 
-        function startTimer() {
-            startTime = new Date();
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timerElement.textContent = Math.floor((new Date() - startTime)/1000);
-            }, 1000);
-        }
+        document.getElementById('messageButton').onclick = () => {
+            message.classList.remove('active');
+            setTimeout(()=>{
+                message.style.display='none';
+                if(isGameFinished){
+                    document.querySelectorAll('.connection-line').forEach(l=>l.remove());
+                    completionMessage.style.display='block';
+                    completionMessage.classList.add('active');
+                }
+            },300);
+        };
 
-        function finishGame() {
-            clearInterval(timerInterval);
-            document.querySelectorAll('.connection-line').forEach(line => line.remove());
-        }
-
-        function updateProgress() {
-            const p = (matchedPairs/totalPairs)*100;
-            progressBar.style.width = p + '%';
-            progressText.textContent = `匹配进度: ${matchedPairs}/${totalPairs}`;
-        }
-
-        function updateScore() {
-            scoreElement.textContent = score;
-        }
+        document.getElementById('restartBtn').onclick = () => { 
+            completionMessage.classList.remove('active');
+            setTimeout(()=>{
+                completionMessage.style.display = 'none';
+                initGame();
+            },300);
+        };
 
         window.addEventListener('DOMContentLoaded', initGame);
     </script>

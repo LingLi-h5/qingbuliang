@@ -2,203 +2,84 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>苏东坡与清补凉 - 交互对话</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏东坡与清补凉</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: "Microsoft YaHei", sans-serif;
+			-webkit-tap-highlight-color: transparent; /* 移动端触摸高亮 */
+			outline: none; /* 清除焦点边框 */
         }
 
+        /* 整页入场动画核心样式 */
         body {
-            opacity: 0;
-            animation: pageEnter 1s ease-out forwards;
             background-image: url('../assets/images/2222.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-attachment: fixed;
-            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px;
+            justify-content: center;
+            padding: 10px;
             color: #5a3921;
-            touch-action: manipulation;
-            position: relative;
+            /* 入场动画 */
+            opacity: 0;
+            animation: pageFadeIn 1.2s ease forwards;
         }
 
-        @keyframes pageEnter {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes containerEnter {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        /* 定义整页淡入 + 轻微上浮动画 */
+        @keyframes pageFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .container {
-            max-width: 100%;
             width: 100%;
-            text-align: center;
+            max-width: 500px;
+            /* 容器延迟动画，更有层次感 */
             opacity: 0;
-            animation: containerEnter 1s ease-out 0.3s forwards;
+            animation: containerSlide 0.8s ease 0.5s forwards;
+        }
+
+        @keyframes containerSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #ffffff;
+            background: #fff;
             border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
-            animation: breatheShadow 6s infinite ease-in-out;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .header h1 {
             color: #8B4513;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 5px;
         }
 
         .header p {
             color: #654321;
-            font-size: 0.9rem;
-            max-width: 100%;
-        }
-
-        .dialogue-container {
-            background-color: #fcf7f2;
-            border-radius: 12px;
-            padding: 18px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-            min-height: 380px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            animation: breatheShadow 6s infinite ease-in-out 0.5s;
-        }
-
-        .dialogue-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            margin-bottom: 15px;
-            overflow-y: auto;
-            max-height: 300px;
-            padding-right: 5px;
-        }
-
-        .dialogue-bubble {
-            padding: 14px 16px;
-            border-radius: 16px;
-            max-width: 88%;
-            text-align: left;
-            line-height: 1.5;
-            position: relative;
-            animation: bounceIn 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            font-size: 0.95rem;
-            word-break: break-word;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06);
-        }
-
-        .character {
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-        }
-
-        .character-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 2px solid #fff;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-            animation: avatarFloat 3.5s infinite ease-in-out;
-        }
-
-        .sufang {
-            align-self: flex-start;
-            background: #e8f4f8;
-            border: 2px solid #4a90a4;
-        }
-
-        .sufang .character {
-            color: #2c6b7c;
-        }
-
-        .dongpo {
-            align-self: flex-end;
-            background: #fff0e0;
-            border: 2px solid #d4a574;
-        }
-
-        .dongpo .character {
-            color: #8B4513;
-        }
-
-        .villager {
-            align-self: flex-start;
-            background: #f0f8e8;
-            border: 2px solid #7a9c5e;
-        }
-
-        .villager .character {
-            color: #556b2f;
-        }
-
-        .choice-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .choice-btn {
-            background: linear-gradient(to right, #8B4513, #A0522D);
-            color: white;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 24px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: choicePop 0.5s cubic-bezier(0.18, 0.74, 0.28, 1) forwards;
-            min-height: 50px;
-        }
-
-        .choice-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(139, 69, 19, 0.35);
-        }
-
-        .choice-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(139, 69, 19, 0.25);
-            background: linear-gradient(to right, #7a3a10, #8f4820);
-        }
-
-        .choice-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+            font-size: 14px;
         }
 
         .progress-bar {
@@ -206,230 +87,211 @@
             height: 5px;
             background: #f5f5f5;
             border-radius: 3px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             overflow: hidden;
-            border: 1px solid #e0e0e0;
         }
 
         .progress {
             height: 100%;
             background: linear-gradient(to right, #8B4513, #A0522D);
             width: 0%;
-            transition: width 0.6s cubic-bezier(0.34, 1.3, 0.64, 1);
+            transition: width 0.5s;
         }
 
         .scene-indicator {
+            text-align: center;
             color: #654321;
-            margin-bottom: 12px;
-            font-style: italic;
+            margin-bottom: 10px;
             font-weight: bold;
-            font-size: 0.95rem;
-            animation: fadeIn 0.8s ease-out;
+            font-size: 14px;
+        }
+
+        .dialogue-container {
+            background: #fcf7f2;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dialogue-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            max-height: 280px;
+            margin-bottom: 15px;
+        }
+
+        .dialogue-bubble {
+            max-width: 85%;
+            padding: 12px 14px;
+            border-radius: 15px;
+            line-height: 1.5;
+            font-size: 14px;
+            border: 2px solid;
+        }
+
+        .character {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .character-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .sufang {
+            align-self: flex-start;
+            background: #e8f4f8;
+            border-color: #4a90a4;
+        }
+
+        .dongpo {
+            align-self: flex-end;
+            background: #fff0e0;
+            border-color: #d4a574;
+        }
+
+        .choice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .choice-btn:active {
+            opacity: 0.8;
         }
 
         .thinking-indicator {
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             color: #8B4513;
             font-style: italic;
-            animation: pulse 1.2s infinite, breathe 3s infinite ease-in-out;
-            font-size: 0.9rem;
-            border-radius: 10px;
-            background: #ffffff;
-            margin-top: 8px;
-            border: 1px solid #e0e0e0;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(3px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.92) translateY(8px); }
-            60% { opacity: 1; transform: scale(1.03) translateY(-2px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes choicePop {
-            0% { opacity: 0; transform: scale(0.9) translateY(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes avatarFloat {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-2px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes breatheShadow {
-            0% { box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-            50% { box-shadow: 0 5px 16px rgba(0,0,0,0.13); }
-            100% { box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-        }
-
-        @keyframes breathe {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
         }
 
         .completion-message {
-            background: #ffffff;
+            background: white;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-top: 15px;
-            display: none;
             text-align: center;
-            animation: fadeIn 0.5s ease-out;
-            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .completion-message h2 {
+            color: #8B4513;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
 
         .restart-btn {
-            background: linear-gradient(to right, #8B4513, #A0522D);
+            background: #8B4513;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 24px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.25s ease;
-            box-shadow: 0 3px 8px rgba(139, 69, 19, 0.3);
-            margin: 12px auto 0;
-            min-height: 46px;
-        }
-
-        .restart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(139, 69, 19, 0.35);
         }
 
         .fab-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 100;
         }
 
         .fab-main {
-            width: 56px;
-            height: 56px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
+            background: #8B4513;
             color: white;
+            border: none;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 20px rgba(139, 69, 19, 0.4);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: none;
-            font-size: 22px;
-            position: relative;
-            z-index: 101;
-            animation: fabFloat 4s infinite ease-in-out;
-        }
-
-        .fab-main:hover {
-            transform: scale(1.08);
-        }
-
-        @keyframes fabFloat {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-            100% { transform: translateY(0); }
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 65px;
+            bottom: 60px;
             right: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
             opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             pointer-events: none;
+            transition: 0.3s;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
             pointer-events: all;
         }
 
         .fab-item {
-                    width: 56px;
-                    height: 56px;
-                    border-radius: 50%;
-                    background: #ffffff;
-                    color: #8B4513;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                    cursor: pointer;
-                    transition: all 0.25s ease;
-                    text-decoration: none;
-                    font-size: 14px;
-                    font-weight: 600;
-                    border: 1px solid #e0e0e0;
-                }
-
-        .fab-item:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 5px 18px rgba(0,0,0,0.25);
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .dialogue-container { min-height: 340px; padding: 15px; }
-            .dialogue-content { max-height: 260px; }
-            .dialogue-bubble { max-width: 90%; padding: 12px 14px; font-size: 0.9rem; }
-            .character-avatar { width: 44px; height: 44px; }
-            .choice-btn { min-height: 46px; font-size: 0.9rem; }
-        }
-
-        @media (max-width: 380px) {
-            .dialogue-container { min-height: 300px; }
-            .dialogue-content { max-height: 220px; }
-            .character-avatar { width: 40px; height: 40px; }
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            color: #8B4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>苏东坡与清补凉</h1>
-            <p>扮演苏东坡的书童"苏方"，体验这段美食奇缘</p>
+            <p>扮演苏东坡的书童“苏方”，体验美食奇缘</p>
         </div>
-        
+
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
-        
+
         <div class="scene-indicator" id="sceneIndicator">第一幕：初到岭南</div>
-        
+
         <div class="dialogue-container">
             <div class="dialogue-content" id="dialogueContent"></div>
             <div class="choice-container" id="choiceContainer"></div>
         </div>
-        
+
         <div class="completion-message" id="completionMessage">
-            <h2 style="color: #8B4513; margin-bottom: 12px; font-size: 1.2rem;">对话完成！</h2>
-            <p style="color: #654321; line-height: 1.5; margin-bottom: 12px; font-size: 0.9rem;">
-                恭喜你完成了与苏东坡的对话体验！<br>
-                通过这次互动，你了解了清补凉的养生智慧<br>
-                以及苏东坡对这份岭南美食的赞叹。
-            </p>
+            <h2>对话完成！</h2>
+            <p>恭喜你完成了与苏东坡的对话体验！<br>通过互动了解清补凉的养生智慧。</p>
             <button class="restart-btn" id="restartBtn">
                 <i class="fas fa-redo"></i> 重新开始
             </button>
@@ -446,26 +308,24 @@
     </div>
 
     <script>
-        let dialogueContent, choiceContainer, progressBar, sceneIndicator;
-        let currentDialogueIndex = 0;
-        let isProcessing = false;
+        let currentIndex = 0;
+        let isLock = false;
 
-        const avatarConfig = {
+        const avatar = {
             dongpo: '../assets/images/苏东坡.png',
-            sufang: '../assets/images/书童.png',
+            sufang: '../assets/images/书童.png'
         };
 
-        // 已修复：对话逻辑流畅，无卡顿、无死循环
-        const dialogueData = [
+        const dialogueList = [
             {
                 scene: "初到海南",
                 progress: 10,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "苏方，海南暑热难耐，可有解暑良方？",
+                msg: "苏方，海南暑热难耐，可有解暑良方？",
                 choices: [
-                    { text: "问当地人消暑食饮", next: 2, response: "我这就去打听。" },
-                    { text: "建议吃冰镇瓜果", next: 1, response: "大人，冰镇瓜果最是解暑。" }
+                    { text: "问当地人消暑食饮", next: 2, res: "我这就去打听。" },
+                    { text: "建议吃冰镇瓜果", next: 1, res: "大人，冰镇瓜果最是解暑。" }
                 ]
             },
             {
@@ -473,138 +333,133 @@
                 progress: 20,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "冰镇之物伤脾胃，非长久之计，你去问问当地人有什么良方。",
-                choices: [ { text: "遵命，去寻民间良方", next: 2, response: "是，大人。" } ]
+                msg: "冰镇之物伤脾胃，非长久之计，你去问问当地人有什么良方。",
+                choices: [{ text: "遵命，去寻民间良方", next: 2, res: "是，大人。" }]
             },
             {
                 scene: "偶遇清补凉",
                 progress: 30,
                 speaker: "苏方",
                 type: "sufang",
-                message: "大人，此地有椰奶清补凉，乃海南消暑佳品。",
-                choices: [ { text: "取一碗来品尝", next: 3, response: "这就为您取来。" } ]
+                msg: "大人，此地有椰奶清补凉，乃海南消暑佳品。",
+                choices: [{ text: "取一碗来品尝", next: 3, res: "这就为您取来。" }]
             },
             {
                 scene: "品尝白玉香",
                 progress: 60,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "椰树之上采琼浆，捧来一碗白玉香！温润甘美，暑气全消！",
-                choices: [ { text: "赞叹美味", next: 4, response: "果然是人间至味！" } ]
+                msg: "椰树之上采琼浆，捧来一碗白玉香！温润甘美，暑气全消！",
+                choices: [{ text: "赞叹美味", next: 4, res: "果然是人间至味！" }]
             },
             {
                 scene: "东坡最爱",
                 progress: 80,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "此后在琼，吾每日必食一碗，此乃我在海南最爱之物！",
-                choices: [ { text: "记下这段佳话", next: 5, response: "我定将此事记下。" } ]
+                msg: "此后在琼，吾每日必食一碗，此乃我在海南最爱之物！",
+                choices: [{ text: "记下这段佳话", next: 5, res: "我定将此事记下。" }]
             },
             {
                 scene: "美食传世",
                 progress: 100,
                 speaker: "苏东坡",
                 type: "dongpo",
-                message: "海韵南风如在沐，应无何处话炎凉。有清补凉相伴，天涯亦不觉苦。",
-                choices: [ { text: "完成对话", next: -1, response: "是，大人！" } ]
+                msg: "海韵南风如在沐，应无何处话炎凉。有清补凉相伴，天涯亦不觉苦。",
+                choices: [{ text: "完成对话", next: -1, res: "是，大人！" }]
             }
         ];
 
-        document.addEventListener('DOMContentLoaded', function() {
-            dialogueContent = document.getElementById('dialogueContent');
-            choiceContainer = document.getElementById('choiceContainer');
-            progressBar = document.getElementById('progress');
-            sceneIndicator = document.getElementById('sceneIndicator');
-            
-            loadDialogue(currentDialogueIndex);
-
-            document.getElementById('restartBtn').addEventListener('click', function() {
-                if (isProcessing) return;
-                currentDialogueIndex = 0;
-                document.getElementById('completionMessage').style.display = 'none';
-                loadDialogue(currentDialogueIndex);
-            });
-
+        window.onload = function () {
+            const content = document.getElementById('dialogueContent');
+            const choiceBox = document.getElementById('choiceContainer');
+            const progress = document.getElementById('progress');
+            const scene = document.getElementById('sceneIndicator');
+            const finish = document.getElementById('completionMessage');
+            const restart = document.getElementById('restartBtn');
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
-            
-            fabMain.addEventListener('click', function() {
-                fabMenu.classList.toggle('open');
-            });
 
-            document.addEventListener('click', function(e) {
+            showDialogue(0);
+
+            restart.onclick = function () {
+                currentIndex = 0;
+                finish.style.display = 'none';
+                content.innerHTML = '';
+                showDialogue(0);
+            };
+
+            fabMain.onclick = function () {
+                fabMenu.classList.toggle('open');
+            };
+
+            document.onclick = function (e) {
                 if (!fabMain.contains(e.target) && !fabMenu.contains(e.target)) {
                     fabMenu.classList.remove('open');
                 }
-            });
-        });
+            };
 
-        function loadDialogue(index) {
-            isProcessing = false;
-            if (index < 0) {
-                document.getElementById('completionMessage').style.display = 'block';
-                dialogueContent.innerHTML = '';
-                choiceContainer.innerHTML = '';
-                return;
-            }
-            if (index >= dialogueData.length) return;
+            function showDialogue(index) {
+                isLock = false;
+                if (index === -1) {
+                    finish.style.display = 'block';
+                    content.innerHTML = '';
+                    choiceBox.innerHTML = '';
+                    return;
+                }
 
-            const dialogue = dialogueData[index];
-            progressBar.style.width = `${dialogue.progress}%`;
-            sceneIndicator.textContent = dialogue.scene;
-            choiceContainer.innerHTML = '';
+                const data = dialogueList[index];
+                progress.style.width = data.progress + '%';
+                scene.innerText = data.scene;
+                choiceBox.innerHTML = '';
 
-            const bubble = document.createElement('div');
-            bubble.className = `dialogue-bubble ${dialogue.type}`;
-            bubble.innerHTML = `
-                <div class="character">
-                    <img src="${avatarConfig[dialogue.type]}" alt="${dialogue.speaker}" class="character-avatar">
-                    ${dialogue.speaker}
-                </div>
-                <div>${dialogue.message}</div>
-            `;
-            dialogueContent.appendChild(bubble);
-            
-            dialogueContent.scrollTop = dialogueContent.scrollHeight;
+                const bubble = document.createElement('div');
+                bubble.className = `dialogue-bubble ${data.type}`;
+                bubble.innerHTML = `
+                    <div class="character">
+                        <img src="${avatar[data.type]}" class="character-avatar"> ${data.speaker}
+                    </div>
+                    <div>${data.msg}</div>
+                `;
+                content.appendChild(bubble);
+                content.scrollTop = content.scrollHeight;
 
-            dialogue.choices.forEach((choice, i) => {
-                const button = document.createElement('button');
-                button.className = 'choice-btn';
-                button.style.animationDelay = (i * 0.08) + 's';
-                button.innerHTML = `<i class="fas fa-comment"></i>${choice.text}`;
-                button.addEventListener('click', function() {
-                    if (isProcessing) return;
-                    isProcessing = true;
-                    
-                    choiceContainer.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
-                    
-                    if (choice.response) {
-                        const userBubble = document.createElement('div');
-                        userBubble.className = 'dialogue-bubble sufang';
-                        userBubble.innerHTML = `
-                            <div class="character">
-                                <img src="${avatarConfig.sufang}" alt="苏方" class="character-avatar">
-                                苏方
-                            </div>
-                            <div>${choice.response}</div>
-                        `;
-                        dialogueContent.appendChild(userBubble);
-                        dialogueContent.scrollTop = dialogueContent.scrollHeight;
-                    }
+                data.choices.forEach((item, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.innerHTML = `<i class="fas fa-comment"></i>${item.text}`;
+                    btn.onclick = function () {
+                        if (isLock) return;
+                        isLock = true;
+                        btn.disabled = true;
 
-                    const thinking = document.createElement('div');
-                    thinking.className = 'thinking-indicator';
-                    thinking.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 思考中...';
-                    choiceContainer.appendChild(thinking);
+                        if (item.res) {
+                            const userBubble = document.createElement('div');
+                            userBubble.className = 'dialogue-bubble sufang';
+                            userBubble.innerHTML = `
+                                <div class="character">
+                                    <img src="${avatar.sufang}" class="character-avatar"> 苏方
+                                </div>
+                                <div>${item.res}</div>
+                            `;
+                            content.appendChild(userBubble);
+                            content.scrollTop = content.scrollHeight;
+                        }
 
-                    setTimeout(() => {
-                        currentDialogueIndex = choice.next;
-                        loadDialogue(currentDialogueIndex);
-                    }, 600);
+                        const tip = document.createElement('div');
+                        tip.className = 'thinking-indicator';
+                        tip.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 思考中...';
+                        choiceBox.appendChild(tip);
+
+                        setTimeout(() => {
+                            currentIndex = item.next;
+                            showDialogue(currentIndex);
+                        }, 600);
+                    };
+                    choiceBox.appendChild(btn);
                 });
-                choiceContainer.appendChild(button);
-            });
-        }
+            }
+        };
     </script>
 </body>
 </html>

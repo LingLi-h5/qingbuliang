@@ -1,139 +1,123 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>清补凉主题页</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清补凉主题页</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        /* 整页入场动画：淡入+上滑 0.8秒 */
+        animation: pageIn 0.8s ease forwards;
+    }
 
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+    /* 入场动画关键帧 */
+    @keyframes pageIn {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
         }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-        .background-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
 
-        .container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            padding: 0 20px;
-            transform: translateY(5%);
-            transition: opacity 0.3s ease;
-        }
+    .background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-        .title {
-            position: fixed;
-            top: 0.5vh;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            
-            color: #e67e22;
-            font-size: 12vw;
-            font-weight: bold;
-            animation: bounceTitle 1.2s ease-out;
-            -webkit-text-stroke: 0.5px #663300;
-            text-stroke: 0.5px #663300;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
+    .container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        transform: translateY(5%);
+        transition: all 0.3s ease; /* 让点击淡出缩小更流畅 */
+    }
 
-        .enter-prompt {
-            color: #fff;
-            font-size: 7vw;
-            padding: 16px 48px;
-            background: #e67e22;
-            border-radius: 50px;
-            border: 2px solid #fff;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease-out 0.5s both, breathe 2.5s infinite ease-in-out;
-            user-select: none;
-            -webkit-user-select: none;
-            white-space: nowrap;
-        }
+    .title {
+        position: fixed;
+        top: 0.5vh;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        color: #e67e22;
+        font-size: 12vw;
+        font-weight: bold;
+        -webkit-text-stroke: 0.5px #663300;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
 
-        .enter-prompt:active {
-            transform: scale(0.92);
-            background: #d35400;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
+    .enter {
+        color: #fff;
+        font-size: 7vw;
+        padding: 16px 48px;
+        background: #e67e22;
+        border-radius: 50px;
+        border: 2px solid #fff;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        white-space: nowrap;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        @keyframes bounceTitle {
-            0% { opacity:0; transform: translateX(-50%) translateY(-30px) scale(0.8); }
-            70% { transform: translateX(-50%) translateY(5px) scale(1.05); }
-            100% { opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity:0; transform: translateY(30px); }
-            to { opacity:1; transform: translateY(0); }
-        }
-
-        @keyframes breathe {
-            0%,100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-    </style>
+    .enter:active {
+        transform: scale(0.92);
+        background: #d35400;
+    }
+</style>
 </head>
+
 <body>
 
-<div class="background-container">
-    <img src="../assets/images/222.png" alt="背景" class="background-image">
+<div class="background">
+    <img src="../assets/images/主题页.png">
 </div>
 
 <div class="container">
     <h1 class="title">清补凉主题</h1>
-    <div class="enter-prompt" id="enterPrompt">点击进入</div>
+    <div class="enter" id="enter">点击进入</div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const enter = document.getElementById('enterPrompt');
+    var enter = document.getElementById("enter");
+    var container = document.querySelector(".container");
 
-    enter.addEventListener('click', () => {
-        document.querySelector('.container').style.opacity = '0';
-        setTimeout(() => {
-            window.location.href = 'page0.html';
-        }, 250);
-    });
-
-    let lastTouch = 0;
-    document.addEventListener('touchend', e => {
-        const now = Date.now();
-        if (now - lastTouch <= 200) e.preventDefault();
-        lastTouch = now;
-    }, false);
-});
+    enter.onclick = function() {
+        // 点击后：缩小 + 淡出
+        container.style.opacity = "0";
+        container.style.transform = "translateY(5%) scale(0.9)";
+        
+        setTimeout(function() {
+            window.location.href = "page0.html";
+        }, 300);
+    };
 </script>
 
 </body>

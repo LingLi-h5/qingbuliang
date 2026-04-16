@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>沉浸式清补凉制作体验</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -10,174 +10,155 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: "Microsoft YaHei", sans-serif;
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
         }
 
+        /* 整页入场动画 - 核心部分 */
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow: hidden;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
             height: 100vh;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 10px;
-            touch-action: manipulation;
+            opacity: 0;
+            animation: pageEnter 1s ease forwards;
+        }
+
+        /* 入场动画关键帧 */
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .container {
             width: 100%;
-            height: calc(100vh - 20px);
-            max-height: calc(100vh - 20px);
-            background-color: #ffffff;
+            height: 100%;
+            background: #fff;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid #e0e0e0;
+            opacity: 0;
+            animation: containerFade 0.8s ease 0.3s forwards;
+        }
+
+        @keyframes containerFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
         
         header {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
             color: #5a3e36;
             text-align: center;
-            padding: 15px 10px;
-            border-bottom-left-radius: 40% 30%;
-            border-bottom-right-radius: 40% 30%;
-            flex-shrink: 0;
+            padding: 15px;
+            border-bottom-left-radius: 40% 20%;
+            border-bottom-right-radius: 40% 20%;
         }
         
         h1 {
             font-size: 1.4rem;
             margin-bottom: 5px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            font-weight: 600;
         }
         
         .subtitle {
             font-size: 0.8rem;
-            opacity: 0.9;
-            line-height: 1.2;
         }
         
         .main-content {
-            display: flex;
-            flex-direction: column;
             flex: 1;
-            overflow: hidden;
             padding: 10px;
-            background: url('../assets/images/8.png');
+            background: url('../assets/images/鱼虾背景.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             border-radius: 12px;
         }
         
         .progress-container {
-            margin: 10px 0;
-            flex-shrink: 0;
-            background-color: #ffffff;
+            background: #fff;
             padding: 10px;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
         }
         
         .progress-bar {
             height: 6px;
-            background-color: #f5f5f5;
+            background: #f5f5f5;
             border-radius: 3px;
             overflow: hidden;
             margin-bottom: 8px;
-            border: 1px solid #e0e0e0;
         }
         
         .progress {
             height: 100%;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.5s;
         }
         
         .steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 5px;
-            margin-top: 8px;
         }
         
         .step {
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            padding: 5px 2px;
-        }
-        
-        .step:active {
-            transform: translateY(-2px);
+            padding: 5px;
         }
         
         .step-icon {
             width: 30px;
             height: 30px;
-            background-color: #ffffff;
+            background: #fff;
             border-radius: 50%;
+            margin: 0 auto 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 4px;
             font-size: 0.8rem;
             color: #5a3e36;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 1px solid #e0e0e0;
-        }
-        
-        /* 移除激活状态的橙色样式，保持默认白色 */
-        .step.active .step-icon {
-            /* 清空原有样式，不显示橙色 */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
         
         .step.completed .step-icon {
-            background-color: #a8d8b9;
-            color: white;
+            background: #a8d8b9;
+            color: #fff;
         }
         
-        /* 放大步骤文字 */
         .step-title {
             font-weight: bold;
             font-size: 0.75rem;
             color: #5a3e36;
-            line-height: 1.1;
         }
         
         .demo-area {
             flex: 1;
-            background-color: transparent;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
             display: flex;
             flex-direction: column;
-            margin-top: 8px;
         }
         
         .gif-container {
             flex: 1;
-            max-height: 450px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            min-height: 0;
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
         }
         
         .step-gif {
@@ -185,72 +166,49 @@
             height: 100%;
             border-radius: 8px;
             object-fit: cover;
-            object-position: center;
             display: none;
         }
         
         .step-gif.active {
             display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
         }
         
         .button-group {
             display: flex;
             gap: 8px;
             justify-content: center;
-            flex-shrink: 0;
         }
         
         .action-btn {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
             color: #5a3e36;
             padding: 12px 20px;
             font-size: 0.9rem;
             border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(252, 182, 159, 0.4);
-            transition: all 0.3s ease;
+            border: none;
             font-weight: bold;
             flex: 1;
             max-width: 120px;
-            border: 1px solid rgba(255, 236, 210, 0.5);
-        }
-        
-        .action-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(252, 182, 159, 0.6);
+            box-shadow: 0 3px 8px rgba(252,182,159,0.4);
         }
         
         .action-btn:disabled {
             background: #e0d3c7;
             color: #a89a8e;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
         
         .complete-btn {
-            background: linear-gradient(135deg, #a8d8b9 0%, #c8e6c9 100%);
+            background: linear-gradient(135deg, #a8d8b9, #c8e6c9);
             color: #2d5a3d;
-            box-shadow: 0 3px 8px rgba(168, 216, 185, 0.4);
         }
         
-        .complete-btn:active {
-            box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
-        }
-
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             display: none;
             justify-content: center;
             align-items: center;
@@ -258,213 +216,78 @@
         }
         
         .modal-content {
-            background: #ffffff;
+            background: #fff;
             padding: 25px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             max-width: 280px;
-            width: 80%;
-            animation: modalFadeIn 0.3s ease;
-            border: 1px solid #e0e0e0;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .modal-content h2 {
-            color: #2d5a3d;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-        
-        .modal-content p {
-            color: #5a3e36;
-            margin-bottom: 18px;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .modal-btn {
-            background: linear-gradient(135deg, #a8d8b9 0%, #c8e6c9 100%);
+            background: linear-gradient(135deg, #a8d8b9, #c8e6c9);
             color: #2d5a3d;
             border: none;
             padding: 10px 20px;
-            font-size: 0.9rem;
             border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(168, 216, 185, 0.4);
-            transition: all 0.3s ease;
             font-weight: bold;
-        }
-        
-        .modal-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(168, 216, 185, 0.6);
+            margin-top: 10px;
         }
 
         .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
         }
 
         .fab-main {
-            width: 64px;
-            height: 64px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 24px;
             border: none;
-            font-size: 26px;
-            position: relative;
-            z-index: 101;
-        }
-
-        .fab-main:active {
-            transform: scale(0.95);
+            box-shadow: 0 6px 20px rgba(139,69,19,0.4);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 75px;
+            bottom: 70px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 15px;
             opacity: 0;
-            transform: translateY(25px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px);
+            transition: 0.4s;
             pointer-events: none;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: all;
         }
 
         .fab-item {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: #ffffff;
+            background: white;
             color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
-            position: relative;
-            text-align: center;
-            padding: 5px;
-            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
-        .fab-item:active {
-            transform: scale(0.95);
-            background: #f5e3d4;
-        }
-
-        @media (max-width: 768px) {
-            .fab-container { bottom: 25px; right: 25px; }
-            .fab-main { width: 58px; height: 58px; font-size: 24px; }
-            .fab-item { width: 60px; height: 60px; font-size: 14px; }
-        }
-
-        @media (max-width: 480px) {
-            .fab-container { bottom: 20px; right: 20px; }
-            .fab-main { width: 52px; height: 52px; font-size: 22px; }
-            .fab-item { width: 55px; height: 55px; font-size: 13px; }
-        }
-
-        @media (max-height: 600px) {
-            header { padding: 12px 8px; }
-            h1 { font-size: 1.2rem; }
-            .subtitle { font-size: 0.7rem; }
-            .step-icon { width: 28px; height: 28px; font-size: 0.75rem; }
-            .step-title { font-size: 0.7rem; }
-            .demo-area { padding: 12px; }
-            .action-btn { padding: 10px 16px; font-size: 0.8rem; }
-        }
-
-        @media (max-height: 500px) {
-            .main-content { padding: 8px; }
-            .action-btn { padding: 8px 14px; font-size: 0.75rem; }
-        }
-
-        /* ===================== 只新增以下入场动画 ===================== */
-        body {
-            opacity: 0;
-            animation: bodyFadeIn 0.6s ease forwards;
-        }
-        .container {
-            opacity: 0;
-            animation: containerBounce 1.1s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s forwards;
-        }
-        header {
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: headerIn 0.6s ease 0.5s forwards;
-        }
-        .progress-container {
-            opacity: 0;
-            transform: translateY(15px);
-            animation: progressIn 0.6s ease 0.9s forwards;
-        }
-        .step {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: stepIn 0.5s ease forwards;
-        }
-        .step:nth-child(1) { animation-delay: 1.3s; }
-        .step:nth-child(2) { animation-delay: 1.4s; }
-        .step:nth-child(3) { animation-delay: 1.5s; }
-        .step:nth-child(4) { animation-delay: 1.6s; }
-        .step:nth-child(5) { animation-delay: 1.7s; }
-        .step:nth-child(6) { animation-delay: 1.8s; }
-        .step:nth-child(7) { animation-delay: 1.9s; }
-        .step:nth-child(8) { animation-delay: 2.0s; }
-        .gif-container {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: gifIn 0.6s ease 2.3s forwards;
-        }
-        .button-group {
-            opacity: 0;
-            transform: translateY(15px);
-            animation: btnIn 0.6s ease 2.7s forwards;
-        }
-        .fab-container {
-            opacity: 0;
-            animation: fabIn 0.5s ease 3.1s forwards;
-        }
-
-        @keyframes bodyFadeIn { to { opacity: 1; } }
-        @keyframes containerBounce {
-            0% { opacity:0; transform:translateY(30px) scale(0.92); }
-            60% { opacity:1; transform:translateY(-5px) scale(1.02); }
-            100% { opacity:1; transform:translateY(0) scale(1); }
-        }
-        @keyframes headerIn { to { opacity:1; transform:translateY(0); } }
-        @keyframes progressIn { to { opacity:1; transform:translateY(0); } }
-        @keyframes stepIn { to { opacity:1; transform:translateY(0); } }
-        @keyframes gifIn { to { opacity:1; transform:translateY(0); } }
-        @keyframes btnIn { to { opacity:1; transform:translateY(0); } }
-        @keyframes fabIn { to { opacity:1; } }
     </style>
 </head>
 <body>
@@ -517,15 +340,15 @@
             
             <div class="demo-area">
                 <div class="gif-container">
-                    <img src="../assets/images/second_10-84573eb31c.gif" class="step-gif" id="gif-0">
-                    <img src="../assets/images/second_01-994117d703.gif" class="step-gif" id="gif-1">
-                    <img src="../assets/images/second_03-c75041c97c.gif" class="step-gif" id="gif-2">
-                    <img src="../assets/images/second_04-8150dfece2.gif" class="step-gif" id="gif-3">
-                    <img src="../assets/images/second_05-33624a5639.gif" class="step-gif" id="gif-4">
-                    <img src="../assets/images/second_06-9876b58186.gif" class="step-gif" id="gif-5">
-                    <img src="../assets/images/second_07-fe8c5c736e.gif" class="step-gif" id="gif-6">
-                    <img src="../assets/images/second_08-96d69c90b9.gif" class="step-gif" id="gif-7">
-                    <img src="../assets/images/second_09-571881628c.gif" class="step-gif" id="gif-8">
+                    <img src="../assets/images/10.gif" class="step-gif" id="gif-0">
+                    <img src="../assets/images/1.gif" class="step-gif" id="gif-1">
+                    <img src="../assets/images/3.gif" class="step-gif" id="gif-2">
+                    <img src="../assets/images/4.gif" class="step-gif" id="gif-3">
+                    <img src="../assets/images/5.gif" class="step-gif" id="gif-4">
+                    <img src="../assets/images/6.gif" class="step-gif" id="gif-5">
+                    <img src="../assets/images/7.gif" class="step-gif" id="gif-6">
+                    <img src="../assets/images/8.gif" class="step-gif" id="gif-7">
+                    <img src="../assets/images/9.gif" class="step-gif" id="gif-8">
                 </div>
                 
                 <div class="button-group">
@@ -561,22 +384,21 @@
             const completeBtn = document.getElementById('complete-btn');
             const progressBar = document.getElementById('progress');
             const gifs = document.querySelectorAll('.step-gif');
-            const modalOverlay = document.getElementById('modal-overlay');
-            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modal = document.getElementById('modal-overlay');
             const fabMain = document.getElementById('fabMain');
             const fabMenu = document.getElementById('fabMenu');
             
             let currentStep = 0;
             const totalSteps = 8;
             
-            updateAll();
+            updatePage();
             
             steps.forEach(step => {
                 step.addEventListener('click', function() {
-                    const num = parseInt(this.dataset.step);
-                    if(num <= currentStep + 1){
-                        currentStep = num - 1;
-                        updateAll();
+                    let stepNum = parseInt(this.dataset.step);
+                    if(stepNum <= currentStep + 1){
+                        currentStep = stepNum - 1;
+                        updatePage();
                     }
                 });
             });
@@ -587,51 +409,48 @@
                 }else{
                     currentStep = 0;
                 }
-                updateAll();
+                updatePage();
             });
             
-            completeBtn.addEventListener('click', () => modalOverlay.style.display = 'flex');
-            modalCloseBtn.addEventListener('click', () => modalOverlay.style.display = 'none');
-            modalOverlay.addEventListener('click', e => e.target === modalOverlay && (modalOverlay.style.display = 'none'));
+            completeBtn.addEventListener('click', function() {
+                modal.style.display = 'flex';
+            });
             
-            fabMain.addEventListener('click', () => fabMenu.classList.toggle('open'));
-            document.addEventListener('click', e => {
+            document.getElementById('modal-close-btn').onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            fabMain.onclick = function() {
+                fabMenu.classList.toggle('open');
+            }
+            
+            document.onclick = function(e) {
                 if(!fabMain.contains(e.target) && !fabMenu.contains(e.target)){
                     fabMenu.classList.remove('open');
                 }
-            });
-            
-            function updateAll(){
-                updateProgress();
-                updateGIF();
-                updateActionButton();
             }
             
-            function updateProgress(){
-                const per = (currentStep / totalSteps) * 100;
-                progressBar.style.width = per + '%';
-                steps.forEach((s,i) => {
-                    const n = i+1;
-                    s.classList.remove('active','completed');
-                    if(n < currentStep+1) s.classList.add('completed');
-                    else if(n === currentStep+1) s.classList.add('active');
+            function updatePage() {
+                let percent = (currentStep / totalSteps) * 100;
+                progressBar.style.width = percent + '%';
+                
+                steps.forEach((item, index) => {
+                    item.classList.remove('active', 'completed');
+                    if(index + 1 < currentStep + 1) item.classList.add('completed');
+                    if(index + 1 == currentStep + 1) item.classList.add('active');
                 });
-            }
-            
-            function updateGIF(){
+                
                 gifs.forEach(g => g.classList.remove('active'));
                 document.getElementById(`gif-${currentStep}`).classList.add('active');
-            }
-            
-            function updateActionButton(){
+                
                 if(currentStep === 0){
-                    actionBtn.textContent = '开始制作';
+                    actionBtn.innerText = '开始制作';
                     completeBtn.style.display = 'none';
                 }else if(currentStep < totalSteps){
-                    actionBtn.textContent = '下一步';
+                    actionBtn.innerText = '下一步';
                     completeBtn.style.display = 'none';
                 }else{
-                    actionBtn.textContent = '重新开始';
+                    actionBtn.innerText = '重新开始';
                     completeBtn.style.display = 'block';
                 }
             }

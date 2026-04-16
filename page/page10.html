@@ -2,39 +2,66 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>分享美好，传承清补凉文化</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
+            font-family: "Microsoft YaHei", sans-serif;
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
         }
 
         html, body {
             height: 100%;
-            overflow: hidden;
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            /* 页面默认隐藏，上滑入场（从上方下来） */
+            opacity: 0;
+            animation: pageIn 1s ease forwards;
         }
         
+        /* 整页上滑入场：从上方 -30px 滑入到原位 */
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px); /* 上方开始 */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 容器 */
         .container {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
             padding: 10px 15px 80px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
+            /* 内容延迟上滑入场 */
+            opacity: 0;
+            animation: cardIn 0.8s 0.3s ease forwards;
         }
 
+        @keyframes cardIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px); /* 上方开始 */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 背景图 */
         .container::before {
             content: '';
             position: absolute;
@@ -42,30 +69,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('../assets/images/77.png');
+            background-image: url('../assets/images/云洞图书馆背景.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             z-index: 0;
-            pointer-events: none;
-            opacity:1;
+            opacity: 1;
         }
 
+        /* 标题区域 */
         .title {
             position: relative;
             z-index: 10;
             text-align: center;
             color: #333;
-            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
             margin: 10px 0 25px;
-            /* 更强的入场动画：弹跳+淡入 */
-            animation: fadeInBounce 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
 
         .title h1 {
             font-size: 1.4rem;
             margin-bottom: 10px;
-            font-weight: 600;
             color: #8B4513;
         }
 
@@ -73,10 +95,26 @@
             font-size: 1rem;
             color: #666;
             line-height: 1.6;
-            max-width: 95%;
-            margin: 0 auto;
         }
 
+        /* 点击提示 */
+        .tip-text {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #8B4513;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: fadeIn 1s 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 卡片区域 */
         .core-values {
             position: relative;
             z-index: 10;
@@ -84,46 +122,29 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-            margin-bottom: 30px;
         }
 
+        /* 卡片样式 */
         .value-card {
             background: rgba(255, 255, 255, 0.95);
             padding: 20px 16px;
             border-radius: 18px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
             display: flex;
             align-items: flex-start;
             gap: 15px;
-            transition: all 0.3s ease;
+            transition: 0.2s;
+        }
+
+        /* 可点击卡片才有手型和点击效果 */
+        .value-card.clickable {
             cursor: pointer;
-            opacity: 0;
-            /* 卡片更强入场：放大+滑入 */
-            transform: translateY(80px) scale(0.8);
-            animation: zoomSlideUp 1.1s cubic-bezier(0.17, 0.67, 0.23, 0.99) forwards;
+        }
+        .value-card.clickable:active {
+            transform: scale(0.95);
         }
 
-        .value-card:nth-child(1){animation-delay: 0.2s;}
-        .value-card:nth-child(2){animation-delay: 0.4s;}
-        .value-card:nth-child(3){animation-delay: 0.6s;}
-        .value-card:nth-child(4){animation-delay: 0.8s;}
-
-        /* 点击动态效果 超强版 */
-        .value-card:active {
-            transform: scale(0.92) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
-            background: rgba(255,248,240,0.98) !important;
-            border-color: #8B4513;
-        }
-
-        /* 悬浮效果（手机触摸也生效） */
-        .value-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 28px rgba(139, 69, 19, 0.15);
-        }
-
+        /* 图标 */
         .value-icon {
             width: 50px;
             height: 50px;
@@ -133,13 +154,6 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.25);
-            transition: transform 0.2s ease;
-        }
-
-        /* 点击时图标也动 */
-        .value-card:active .value-icon {
-            transform: scale(0.9);
         }
 
         .value-icon i {
@@ -147,11 +161,11 @@
             font-size: 22px;
         }
 
+        /* 卡片文字 */
         .value-content h3 {
             font-size: 1.15rem;
             color: #8B4513;
             margin-bottom: 6px;
-            font-weight: 600;
         }
 
         .value-content p {
@@ -160,13 +174,25 @@
             line-height: 1.55;
         }
 
+        /* 悬浮按钮 */
         .fab-container {
             position: fixed;
             bottom: 25px;
             right: 20px;
             z-index: 100;
             opacity: 0;
-            animation: fadeIn 1s ease 1.2s forwards;
+            animation: btnIn 0.6s 0.6s ease forwards;
+        }
+
+        @keyframes btnIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .fab-main {
@@ -179,18 +205,17 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 8px 20px rgba(139, 69, 19, 0.35);
-            cursor: pointer;
-            transition: all 0.3s ease;
             border: none;
             font-size: 24px;
-            position: relative;
-            z-index: 101;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
         .fab-main.active {
             transform: rotate(45deg);
         }
 
+        /* 菜单 */
         .fab-menu {
             position: absolute;
             bottom: 70px;
@@ -199,14 +224,12 @@
             flex-direction: column;
             gap: 15px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             pointer-events: none;
         }
 
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0);
             pointer-events: all;
         }
 
@@ -220,16 +243,11 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s ease;
             text-decoration: none;
-            font-size: 13px;
             font-weight: 600;
         }
 
-        .fab-item:active {
-            transform: scale(0.95);
-        }
-
+        /* 视频弹窗 */
         .video-modal {
             position: fixed;
             top: 0;
@@ -249,7 +267,6 @@
         .video-modal video {
             max-width: 100%;
             max-height: 80vh;
-            outline: none;
             border-radius: 12px;
         }
         .video-close {
@@ -266,50 +283,12 @@
             font-size: 20px;
             color: #8B4513;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* 更强的标题动画：弹跳淡入 */
-        @keyframes fadeInBounce {
-            0% {
-                opacity: 0;
-                transform: translateY(-60px) scale(0.9);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(10px) scale(1.03);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* 卡片超强动画：放大 + 滑上 + 弹性结束 */
-        @keyframes zoomSlideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(80px) scale(0.8);
-            }
-            80% {
-                transform: translateY(-5px) scale(1.05);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        /* 手机适配 */
         @media (max-width: 480px) {
             .title h1 { font-size: 1.3rem; }
-            .title p { font-size: 0.95rem; }
-            .value-card { padding: 16px 14px; }
-            .value-icon { width: 46px; height: 46px; }
+            .value-card { padding: 16px; }
         }
     </style>
 </head>
@@ -321,8 +300,11 @@
         <p>每一份分享，都是文化的传递。清补凉不仅仅是一碗甜品，更是千年食疗智慧、地域人文与舌尖记忆的凝结。通过分享，我们可以：</p>
     </div>
 
+    <!-- 点击提示文字 -->
+    <div class="tip-text">👇 点击卡片观看介绍视频</div>
+
     <div class="core-values">
-        <div class="value-card" data-video="../assets/images/视频1.mp4">
+        <div class="value-card clickable" data-video="../assets/images/视频1.mp4">
             <div class="value-icon">
                 <i class="fas fa-leaf"></i>
             </div>
@@ -332,7 +314,7 @@
             </div>
         </div>
 
-        <div class="value-card" data-video="../assets/images/视频2.mp4">
+        <div class="value-card clickable" data-video="../assets/images/视频2.mp4">
             <div class="value-icon">
                 <i class="fas fa-map-marked-alt"></i>
             </div>
@@ -342,7 +324,7 @@
             </div>
         </div>
 
-        <div class="value-card" data-video="../assets/images/视频3.mp4">
+        <div class="value-card clickable" data-video="../assets/images/视频3.mp4">
             <div class="value-icon">
                 <i class="fas fa-heart"></i>
             </div>
@@ -352,7 +334,8 @@
             </div>
         </div>
 
-        <div class="value-card" data-video="video4.mp4">
+        <!-- 第四张卡片：纯展示，无点击无视频 -->
+        <div class="value-card">
             <div class="value-icon">
                 <i class="fas fa-users"></i>
             </div>
@@ -364,6 +347,7 @@
     </div>
 </div>
 
+<!-- 视频弹窗 -->
 <div class="video-modal" id="videoModal">
     <div class="video-close" id="videoClose">
         <i class="fas fa-times"></i>
@@ -371,6 +355,7 @@
     <video id="videoPlayer" controls></video>
 </div>
 
+<!-- 悬浮菜单 -->
 <div class="fab-container">
     <button class="fab-main" id="fabMain">
         <i class="fas fa-exchange-alt"></i>
@@ -382,45 +367,49 @@
 </div>
 
 <script>
+    // 悬浮菜单功能
     const fabMain = document.getElementById('fabMain');
     const fabMenu = document.getElementById('fabMenu');
-    fabMain.addEventListener('click', (e) => {
+    
+    fabMain.onclick = function(e) {
         e.stopPropagation();
         fabMenu.classList.toggle('open');
         fabMain.classList.toggle('active');
-    });
-    document.addEventListener('click', () => {
+    };
+    
+    document.onclick = function() {
         fabMenu.classList.remove('open');
         fabMain.classList.remove('active');
-    });
+    };
 
+    // 视频播放功能
     const videoModal = document.getElementById('videoModal');
     const videoPlayer = document.getElementById('videoPlayer');
     const videoClose = document.getElementById('videoClose');
-    const cards = document.querySelectorAll('.value-card');
+    const cards = document.querySelectorAll('.value-card.clickable');
 
+    // 点击卡片播放视频
     cards.forEach(card => {
-        card.addEventListener('click', () => {
-            const src = card.dataset.video;
-            
-            setTimeout(() => {
-                videoPlayer.src = src;
-                videoModal.classList.add('show');
-                videoPlayer.play();
-            }, 200);
-        });
+        card.onclick = function() {
+            let videoSrc = this.dataset.video;
+            videoPlayer.src = videoSrc;
+            videoModal.classList.add('show');
+            videoPlayer.play();
+        };
     });
 
-    function closeModal() {
+    // 关闭视频
+    function closeVideo() {
         videoModal.classList.remove('show');
         videoPlayer.pause();
         videoPlayer.src = '';
     }
 
-    videoClose.addEventListener('click', closeModal);
-    videoModal.addEventListener('click', (e) => {
-        if (e.target === videoModal) closeModal();
-    });
+    videoClose.onclick = closeVideo;
+    
+    videoModal.onclick = function(e) {
+        if(e.target === videoModal) closeVideo();
+    };
 </script>
 </body>
 </html>

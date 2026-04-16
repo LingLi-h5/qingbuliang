@@ -2,44 +2,21 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>清补凉亚硝酸盐变化曲线</title>
+    <!-- 引入图表库 -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- 引入图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-brown: #8B4513;
-            --secondary-brown: #D2691E;
-            --light-brown: #CD853F;
-            --text-dark: #5a4a42;
-            --text-light: #666;
-            --background-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            --card-gradient: linear-gradient(135deg, #f8f4e9 0%, #f0e6d2 100%);
-            --header-gradient: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-            --income-gradient: linear-gradient(90deg, #ffd666 0%, #ffa940 100%);
-            
-            --header-font-size: 1.2rem;
-            --subtitle-font-size: 0.85rem;
-            --info-title-size: 1rem;
-            --detail-font-size: 0.8rem;
-            --small-font-size: 0.75rem;
-            
-            --container-padding: 8px;
-            --header-padding: 15px 12px;
-            --chart-padding: 15px 12px;
-            --info-padding: 12px 12px 15px;
-            --detail-padding: 12px;
-
-            --bounce-curve: cubic-bezier(0.2, 0.9, 0.4, 1.2);
-            --ease-curve: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
+        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: "PingFang SC", Arial, sans-serif;
+			-webkit-tap-highlight-color: transparent; /* 移动端触摸高亮 */
+			outline: none; /* 清除焦点边框 */
         }
 
         html, body {
@@ -49,111 +26,21 @@
         }
 
         body {
-            background: var(--background-gradient);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: center;
-            padding: var(--container-padding);
-            touch-action: manipulation;
+            padding: 8px;
+            /* 整页入场动画 */
+            animation: pageEnter 0.8s ease-out forwards;
             opacity: 0;
-            animation: pageFadeIn 0.8s var(--ease-curve) forwards;
         }
 
-        @keyframes pageFadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            width: 100%;
-            height: calc(100vh - 16px);
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: scale(0.92);
-            animation: containerPop 1s var(--bounce-curve) 0.2s forwards;
-        }
-
-        @keyframes containerPop {
-            0% { opacity: 0; transform: scale(0.92); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .header {
-            background: var(--header-gradient);
-            color: white;
-            padding: var(--header-padding);
-            text-align: center;
-            position: relative;
-            flex-shrink: 0;
-            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
-            min-height: 70px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(-10px);
-            animation: elementFadeUp 0.7s var(--ease-curve) 0.5s forwards;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 2%, transparent 10%);
-            pointer-events: none;
-        }
-
-        .header h1 {
-            font-size: var(--header-font-size);
-            margin-bottom: 6px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            font-weight: 600;
-            line-height: 1.3;
-            z-index: 1;
-        }
-
-        .header .subtitle {
-            font-size: var(--subtitle-font-size);
-            opacity: 0.95;
-            line-height: 1.3;
-            z-index: 1;
-        }
-
-        .content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            overflow: hidden;
-        }
-
-        .chart-container {
-            flex: 1.5;
-            min-height: 0;
-            padding: var(--chart-padding);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: elementFadeUp 0.7s var(--ease-curve) 0.8s forwards;
-        }
-
-        @keyframes elementFadeUp {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes cardFloatIn {
+        /* 页面入场动画核心 */
+        @keyframes pageEnter {
             0% {
                 opacity: 0;
-                transform: translateY(40px) scale(0.8);
+                transform: translateY(-30px) scale(0.95);
             }
             100% {
                 opacity: 1;
@@ -161,125 +48,123 @@
             }
         }
 
+        /* 主容器 */
+        .container {
+            width: 100%;
+            height: calc(100vh - 16px);
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            text-align: center;
+            padding: 15px 12px;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.95;
+        }
+
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            flex: 1.5;
+            padding: 15px 12px;
+        }
+
         #line-chart {
-            position: relative;
-            z-index: 1;
-            width: 100%; 
+            width: 100%;
             height: 100%;
         }
 
+        /* 信息面板 */
         .info-panel {
-            flex-shrink: 0;
-            padding: var(--info-padding);
-            background: var(--card-gradient);
-            border-top: 3px solid var(--secondary-brown);
-            max-height: 40vh;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: elementFadeUp 0.7s var(--ease-curve) 1.1s forwards;
+            padding: 12px 12px 15px;
+            background: linear-gradient(135deg, #f8f4e9, #f0e6d2);
+            border-top: 3px solid #D2691E;
         }
 
         .info-title {
-            font-size: var(--info-title-size);
-            color: var(--primary-brown);
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--light-brown);
+            font-size: 1rem;
+            color: #8B4513;
             text-align: center;
-            font-weight: 600;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #CD853F;
         }
 
         .detail-item {
-            margin-bottom: 10px;
-            padding: var(--detail-padding);
             background: white;
+            padding: 12px;
             border-radius: 28px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid var(--light-brown);
-            transition: all 0.4s var(--bounce-curve);
-            animation: cardFloatIn 0.6s var(--bounce-curve) forwards;
-            overflow-y: auto;
-            max-height: 30vh;
-        }
-
-        .detail-item:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid #CD853F;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .detail-item h3 {
-            color: var(--primary-brown);
+            color: #8B4513;
             font-size: 0.95rem;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
         }
 
-        .income-text {
+        .detail-item p {
             font-size: 0.8rem;
-            color: var(--text-dark);
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            line-height: 1.3;
+            line-height: 1.4;
+            color: #666;
         }
 
-        .highlight {
-            color: #d46b08;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-
-        .comparison {
-            color: #d46b08;
-            font-weight: bold;
-            background: rgba(212, 107, 8, 0.1);
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-        }
-
+        /* 悬浮按钮菜单 */
         .fab-container {
             position: fixed;
-            bottom: 15px; right: 15px;
+            bottom: 15px;
+            right: 15px;
             z-index: 100;
-            opacity: 0;
-            animation: elementFadeUp 0.6s var(--ease-curve) 1.4s forwards;
         }
 
         .fab-main {
-            width: 48px; height: 48px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-brown), var(--secondary-brown));
+            background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
+            border: none;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.25);
             cursor: pointer;
-            transition: all 0.3s var(--bounce-curve);
-            border: none;
-            font-size: 20px;
-            z-index: 101;
-        }
-
-        .fab-main:active {
-            transform: scale(0.92);
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+            box-shadow: 0 4px 15px rgba(139,69,19,0.25);
         }
 
         .fab-menu {
             position: absolute;
-            bottom: 60px; right: 0;
+            bottom: 60px;
+            right: 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s var(--bounce-curve);
+            transition: 0.3s;
             pointer-events: none;
         }
 
@@ -290,67 +175,48 @@
         }
 
         .fab-item {
-            width: 56px; height: 56px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: white;
-            color: var(--primary-brown);
+            color: #8B4513;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s var(--bounce-curve);
             text-decoration: none;
             font-size: 13px;
-            font-weight: 600;
-            position: relative;
-            text-align: center;
-            padding: 5px;
-        }
-
-        .fab-item:active {
-            transform: scale(0.92);
-            background: #f5e3d4;
-        }
-
-        .fab-label {
-            position: absolute;
-            right: 65px;
-            background: rgba(0, 0, 0, 0.75);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .fab-item:hover .fab-label {
-            opacity: 1;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 头部 -->
         <div class="header">
             <h1>常温 vs 冷藏 · 科学食用时间</h1>
             <div class="subtitle">清补凉亚硝酸盐变化曲线</div>
         </div>
 
+        <!-- 内容区域 -->
         <div class="content">
+            <!-- 图表 -->
             <div class="chart-container">
                 <div id="line-chart"></div>
             </div>
+
+            <!-- 说明信息 -->
             <div class="info-panel">
                 <div class="info-title">📊 科学食用指南</div>
                 <div id="detail-content">
                     <div class="detail-item">
-                        <h3><span>👆</span>点击图表查看详情</h3>
-                        <p style="font-size: var(--detail-font-size); line-height: 1.4; color: var(--text-light);">
-                            红色线=常温放置，蓝色线=冰箱冷藏。曲线越高，亚硝酸盐含量越高。<br>
-                            数据来源：海南热带海洋学院·徐小雄（2017）实测研究。
+                        <h3>曲线说明</h3>
+                        <p>
+                            红色线=常温放置，蓝色线=冰箱冷藏。曲线越高，亚硝酸盐含量越高。<br><br>
+                            🔸 最佳食用：制作后30分钟内<br>
+                            🔸 冷藏安全：不超过8小时<br>
+                            🔸 常温4小时达到峰值，已超标<br>
+                            🔸 超过时间风险升高，不建议食用
                         </p>
                     </div>
                 </div>
@@ -358,50 +224,39 @@
         </div>
     </div>
 
+    <!-- 悬浮菜单 -->
     <div class="fab-container">
-        <button class="fab-main" id="fabMain" aria-label="菜单">
+        <button class="fab-main" id="fabMain">
             <i class="fas fa-exchange-alt"></i>
         </button>
         <div class="fab-menu" id="fabMenu">
-            <a href="page0.html" class="fab-item">
-                菜单
-                <span class="fab-label">返回菜单</span>
-            </a>
+            <a href="page0.html" class="fab-item">菜单</a>
         </div>
     </div>
 
     <script>
+        // 初始化图表
         const chartDom = document.getElementById('line-chart');
-        const myChart = echarts.init(chartDom, null, {
-            renderer: 'canvas',
-            useDirtyRect: false,
-            devicePixelRatio: Math.min(window.devicePixelRatio, 2)
-        });
+        const myChart = echarts.init(chartDom);
 
-        const colors = ['#5A93D7', '#E65A45'];
+        // 图表配置
         const option = {
-            color: colors,
+            color: ['#5A93D7', '#E65A45'],
             tooltip: {
-                trigger: 'none',
-                axisPointer: { type: 'cross' },
-                backgroundColor: 'rgba(255,255,255,0.98)',
-                borderColor: '#8B4513',
-                borderWidth: 3,
-                textStyle: { color: '#333', fontSize: 14 }
+                trigger: 'axis',
+                axisPointer: { type: 'cross' }
             },
-            legend: { top: 10, textStyle: { fontSize: 13 } },
+            legend: { top: 10 },
             grid: { top: 70, bottom: 50, left: '10%', right: '10%' },
             xAxis: {
                 type: 'category',
-                axisTick: { alignWithLabel: true },
                 axisLine: { lineStyle: { color: '#8B4513', width: 2 } },
                 data: ['0h', '2h', '4h', '6h', '8h', '10h']
             },
             yAxis: [{ 
                 type: 'value', 
-                name: '亚硝酸盐 (mg/kg)', 
-                nameTextStyle: { color: '#8B4513', fontSize: 12 }, 
-                nameGap: 27 
+                name: '亚硝酸盐 (mg/kg)',
+                nameTextStyle: { color: '#8B4513' }
             }],
             series: [
                 {
@@ -411,8 +266,7 @@
                     lineStyle: { width: 3 },
                     symbol: 'circle',
                     symbolSize: 8,
-                    emphasis: { focus: 'series' },
-                    data: [0.065, 3.648, 6.905, 2.020, 1.042, 0.391],
+                    data: [0.065, 3.648, 6.905, 2.020, 1.042, 0.391]
                 },
                 {
                     name: '常温放置',
@@ -421,67 +275,35 @@
                     lineStyle: { width: 3 },
                     symbol: 'circle',
                     symbolSize: 8,
-                    emphasis: { focus: 'series' },
-                    data: [0.065, 5.605, 6.415, 4.135, 2.020, 0.228],
+                    data: [0.065, 5.605, 6.415, 4.135, 2.020, 0.228]
                 }
             ]
         };
 
-        // 核心：真正从左到右画线动画 + 等待页面完全加载
-        window.addEventListener('load', () => {
-            // 等待页面所有动画全部结束（2.2秒）
-            setTimeout(() => {
-                myChart.setOption(option);
-                
-                // 从左到右绘制曲线（两条线同时画）
-                setTimeout(() => {
-                    myChart.setOption({
-                        series: [
-                            {
-                                animation: true,
-                                animationDuration: 2500,
-                                animationEasing: 'linear',
-                                animationDelay: 0
-                            },
-                            {
-                                animation: true,
-                                animationDuration: 2500,
-                                animationEasing: 'linear',
-                                animationDelay: 0
-                            }
-                        ]
-                    });
-                }, 100);
-            }, 2200);
-        });
+        // 页面加载完成渲染图表
+        window.onload = function () {
+            myChart.setOption(option);
+        };
 
-        myChart.on('click', function (params) {
-            if (!params || params.componentType !== 'series') return;
-            const time = params.name;
-            const idx = params.dataIndex;
-            const dataCold = option.series[0].data[idx];
-            const dataRt = option.series[1].data[idx];
-            let tip = time === '4h' ? '<div class="comparison">⚠️ 常温4小时达到峰值，已超标</div>' : '';
-            document.getElementById('detail-content').innerHTML = `
-            <div class="detail-item">
-                <h3><span>⏰</span>${time} 亚硝酸盐含量</h3>
-                <div class="income-text"><span>常温：</span><span class="highlight">${dataRt} mg/kg</span></div>
-                <div class="income-text"><span>冷藏：</span><span class="highlight">${dataCold} mg/kg</span></div>
-                ${tip}
-                <p style="margin-top:8px;font-size:var(--small-font-size);color:var(--text-light);">
-                    🔸 最佳食用：制作后<strong>30分钟内</strong><br>
-                    🔸 冷藏安全：不超过<strong>8小时</strong><br>
-                    🔸 超过时间风险升高，不建议食用
-                </p>
-            </div>`;
-        });
-
+        // 悬浮菜单功能
         const fabMain = document.getElementById('fabMain');
         const fabMenu = document.getElementById('fabMenu');
-        
-        fabMain.addEventListener('click', e => { e.stopPropagation(); fabMenu.classList.toggle('open'); });
-        document.addEventListener('click', () => fabMenu.classList.remove('open'));
-        window.addEventListener('resize', () => myChart.resize());
+
+        // 点击按钮展开/收起菜单
+        fabMain.addEventListener('click', function (e) {
+            e.stopPropagation();
+            fabMenu.classList.toggle('open');
+        });
+
+        // 点击其他区域关闭菜单
+        document.addEventListener('click', function () {
+            fabMenu.classList.remove('open');
+        });
+
+        // 窗口大小变化时自适应图表
+        window.onresize = function () {
+            myChart.resize();
+        };
     </script>
 </body>
 </html>
